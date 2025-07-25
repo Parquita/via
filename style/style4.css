@@ -6,7 +6,7 @@ body {
     display: flex;
     justify-content: center; /* Centra horizontalmente */
     align-items: center; /* Centra verticalmente */
-    background-image: url( https://imagenes.eltiempo.com/files/image_1200_600/uploads/2022/07/18/62d568a914174.jpeg);
+    background-color: #301c41;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -76,7 +76,7 @@ input {
 button {
     width: 100%;
     padding: 10px;
-    background-color: #4CAF50;
+    background-color: #4c1c70;
     color: white;
     border: none;
     border-radius: 4px;
@@ -85,7 +85,7 @@ button {
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #423495;
 }
 
 /* Estilo para el texto "usa tu email para registrarte" */
