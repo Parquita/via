@@ -6,10 +6,10 @@
 
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient( #a144b4cb, #330e50f1);
+  background: linear-gradient(to left, #a144b4cb, #301c41);
   color: white;
   min-height: 100vh;
-  display: flex;
+  display: flex;  
   justify-content: center;
   align-items: center;
   padding-top: 120px; /* Espacio para el header fijo */
@@ -154,7 +154,7 @@ body {
   color: black;
 }
 .modal-content {
-  background-color: #fff;
+  background-color: #ffffffde;
   margin: 10% auto;
   padding: 20px;
   border: 1px solid #888;
