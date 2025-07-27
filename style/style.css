@@ -219,6 +219,7 @@ body {
   gap: 30px;
   margin-top: 60px;
   flex-wrap: wrap;
+  margin-left: 250px;
 }
 .dashboard-card {
   background: #fff;
@@ -244,4 +245,33 @@ body {
   font-size: 2.2em;
   color: #007bff;
   margin-bottom: 8px;
+}
+
+
+aside {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 250px;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 20px;
+  color: #423495;
+  font-size: 1.1em;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+aside img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 8px rgb(0, 0, 0);
 }
