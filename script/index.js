@@ -30,10 +30,12 @@ formRegistro.onsubmit = function(event) {
 
   const nombre = document.getElementById('nombre').value.trim();
   const correo = document.getElementById('correo').value.trim();
+  const telefono = document.getElementById('telefono').value.trim();
+  const direccion = document.getElementById('direccion').value.trim();
   const contrasena = document.getElementById('contrasena').value;
 
   // Validaciones
-  if (!nombre || !correo || !contrasena) {
+  if (!nombre || !correo || !telefono || !direccion || !contrasena) {
     mensajeRegistro.textContent = 'Por favor, completa todos los campos.';
     return;
   }
@@ -49,6 +51,19 @@ formRegistro.onsubmit = function(event) {
     return;
   }
 
+  // Validar teléfono
+  const regexTelefono = /^\d{10}$/;
+  if (!regexTelefono.test(telefono)) {
+    mensajeRegistro.textContent = 'El teléfono debe tener exactamente 10 dígitos.';
+    return;
+  }
+
+  // Validar dirección
+  if (direccion.length < 10) {
+    mensajeRegistro.textContent = 'La dirección debe tener al menos 10 caracteres.';
+    return;
+  }
+
   // Guardar en localStorage
   let usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
   // Verificar si el correo ya está registrado
@@ -56,7 +71,7 @@ formRegistro.onsubmit = function(event) {
     mensajeRegistro.textContent = 'Este correo ya está registrado.';
     return;
   }
-  usuarios.push({ nombre, correo, contrasena });
+  usuarios.push({ nombre, correo, telefono, direccion, contrasena });
   localStorage.setItem('usuarios', JSON.stringify(usuarios));
 
   mensajeRegistro.style.color = 'green';
