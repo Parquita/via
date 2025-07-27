@@ -6,10 +6,10 @@
 
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient( #423495, #a244b4);
+  background: linear-gradient(to left, #a144b4cb, #301c41);
   color: white;
   min-height: 100vh;
-  display: flex;
+  display: flex;  
   justify-content: center;
   align-items: center;
   padding-top: 120px; /* Espacio para el header fijo */
@@ -28,7 +28,7 @@ body {
   margin-left: 50px;
   margin-bottom: 0;
   margin-top: 10px;
-  background: linear-gradient(to right, #f02708, #f9a61c);
+  background: linear-gradient(to right, #c81a65d2, #f9a41ccc);
   color: #1f2d3d;
   padding: 20px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
@@ -37,13 +37,13 @@ body {
 .logo {
   font-size: 24px;
   font-weight: bold;
-  color: #0a3d62;
+  color: #ffffff;
 }
 
 .nav a {
   margin: 0 10px;
   text-decoration: none;
-  color: #1f2d3d;
+  color: #ffffff;
   font-weight: 500;
   font-size: 14px;
 }
@@ -57,8 +57,8 @@ body {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  margin-left: 40px;
-  margin-right: 30px;
+  margin: 40px;
+ 
 }
 
 .text-content {
@@ -68,7 +68,7 @@ body {
 .text-content h1 {
   font-size: 28px;
   margin-bottom: 20px;
-  color: #130a62;
+  color: #ffffff;
   text-transform: uppercase;
 }
 
@@ -80,7 +80,10 @@ body {
 
 .buttons {
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 15px;
+  margin: 30px;
 }
 
 .buttons button {
@@ -94,21 +97,21 @@ body {
 }
 
 .btn-info {
-  background-color: #5c6bc0;
+  background-color: #c81a66;
   color: white;
 }
 
 .btn-info:hover {
-  background-color: #3f51b5;
+  background-color: #f15339;
 }
 
 .btn-join {
-  background-color: #7e57c2;
+  background-color: #f15339;
   color: white;
 }
 
 .btn-join:hover {
-  background-color: #6a1b9a;
+  background-color: #f9a61c;
 }
 
 .image-content {
@@ -120,6 +123,7 @@ body {
 
 .image-content img {
   max-width: 100%;
+  border-radius: 15%;
   height: auto;
 }
 
@@ -137,4 +141,137 @@ body {
     justify-content: center;
     flex-wrap: wrap;
   }
+}
+
+/* Modal de Registro */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+  color: black;
+}
+.modal-content {
+  background-color: #ffffffde;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  position: relative;
+}
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+/* Estilos para formularios de registro e inicio de sesión */
+#form-registro label, #form-login label {
+  display: block;
+  margin-top: 10px;
+}
+#form-registro input, #form-login input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+#form-registro button, #form-login button {
+  width: 100%;
+  padding: 10px;
+  background-color: #c81a66;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+#form-registro button:hover, #form-login button:hover {
+  background-color: #f9a61c;
+}
+
+
+/* Estilos para el dashboard */
+.dashboard-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 30px;
+  margin-top: 60px;
+  flex-wrap: wrap;
+  margin-left: 250px;
+}
+.dashboard-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 30px 24px;
+  min-width: 260px;
+  max-width: 320px;
+  text-align: center;
+  color: #423495;
+  font-size: 1.1em;
+}
+.dashboard-card h3 {
+  margin-bottom: 16px;
+  color: #a244b4;
+}
+.stars {
+  font-size: 2em;
+  color: #FFD700;
+  margin-bottom: 8px;
+}
+.viajes-num {
+  font-size: 2.2em;
+  color: #007bff;
+  margin-bottom: 8px;
+}
+
+
+aside {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 250px;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 20px;
+  color: #423495;
+  font-size: 1.1em;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+aside img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 8px rgb(0, 0, 0);
 }
