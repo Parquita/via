@@ -187,30 +187,6 @@ p {
   justify-content: center;
 }
 
-/* Trazo izquierdo de la V */
-.logo-v-left {
-  position: absolute;
-  width: 8px;
-  height: 32px;
-  background: linear-gradient(180deg, #f97316 0%, #ef4444 50%, #a855f7 100%);
-  border-radius: 4px;
-  transform: rotate(-45deg);
-  transform-origin: bottom center;
-  left: 8px;
-}
-
-/* Trazo derecho de la V */
-.logo-v-right {
-  position: absolute;
-  width: 8px;
-  height: 32px;
-  background: linear-gradient(180deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%);
-  border-radius: 4px;
-  transform: rotate(45deg);
-  transform-origin: bottom center;
-  right: 8px;
-}
-
 /* Texto VIA */
 .logo-text {
   color: var(--white);
@@ -223,14 +199,6 @@ p {
 .logo:hover .logo-circle {
   transform: scale(1.05);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-}
-
-.logo:hover .logo-v-left {
-  animation: logoPulse 0.6s ease-in-out;
-}
-
-.logo:hover .logo-v-right {
-  animation: logoPulse 0.6s ease-in-out 0.1s;
 }
 
 @keyframes logoPulse {
@@ -254,25 +222,6 @@ p {
 .footer-logo .logo-v {
   width: 40px;
   height: 40px;
-}
-
-.footer-logo .logo-v-left,
-.footer-logo .logo-v-right {
-  width: 10px;
-  height: 40px;
-}
-
-.footer-logo .logo-text {
-  font-size: 1.75rem;
-}
-
-/* Variables CSS para las rotaciones */
-.logo-v-left {
-  --rotation: -45deg;
-}
-
-.logo-v-right {
-  --rotation: 45deg;
 }
 
 .nav {
