@@ -1,29 +1,55 @@
 
-// Mostrar el modal al hacer clic en 'REGISTRASE'
-document.getElementById('btn-registrarse').onclick = function() {
-  document.getElementById('modal-registro').style.display = 'block';
-};
-// Ocultar el modal al hacer clic en la X
-document.getElementById('cerrar-modal').onclick = function() {
-  document.getElementById('modal-registro').style.display = 'none';
-};
-// Ocultar el modal si se hace clic fuera del contenido
-document.getElementById('modal-registro').onclick = function(event) {
-  if (event.target === this) {
-    this.style.display = 'none';
+// ===== MODAL DE REGISTRO =====
+document.addEventListener('DOMContentLoaded', function() {
+  const btnRegistrarse = document.getElementById('btn-registrarse');
+  const btnRegistrarse1 = document.getElementById('btn-registrarse-1');
+  const modalRegistro = document.getElementById('modal-registro');
+  const cerrarModal = document.getElementById('cerrar-modal');
+
+  // Mostrar el modal al hacer clic en 'REGISTRASE'
+  if (btnRegistrarse) {
+    btnRegistrarse.addEventListener('click', function() {
+      modalRegistro.style.display = 'block';
+      modalRegistro.classList.add('show');
+    });
   }
-};
+  if (btnRegistrarse1) {
+    btnRegistrarse1.addEventListener('click', function() {
+      modalRegistro.style.display = 'block';
+      modalRegistro.classList.add('show');
+    });
+  }
+  // Ocultar el modal al hacer clic en la X
+  if (cerrarModal) {
+    cerrarModal.addEventListener('click', function() {
+      modalRegistro.style.display = 'none';
+      modalRegistro.classList.remove('show');
+    });
+  }
+
+  // Ocultar el modal si se hace clic fuera del contenido
+  if (modalRegistro) {
+    modalRegistro.addEventListener('click', function(event) {
+      if (event.target === this) {
+        this.style.display = 'none';
+        this.classList.remove('show');
+      }
+    });
+  }
+});
 
 // Validación y guardado en localStorage del formulario de registro
-const formRegistro = document.getElementById('form-registro');
+document.addEventListener('DOMContentLoaded', function() {
+  const formRegistro = document.getElementById('form-registro');
 
-// Crear elemento para mensajes
-let mensajeRegistro = document.createElement('div');
-mensajeRegistro.id = 'mensaje-registro';
-mensajeRegistro.style.marginTop = '10px';
-formRegistro.appendChild(mensajeRegistro);
+  if (formRegistro) {
+    // Crear elemento para mensajes
+    let mensajeRegistro = document.createElement('div');
+    mensajeRegistro.id = 'mensaje-registro';
+    mensajeRegistro.style.marginTop = '10px';
+    formRegistro.appendChild(mensajeRegistro);
 
-formRegistro.onsubmit = function(event) {
+    formRegistro.addEventListener('submit', function(event) {
   event.preventDefault();
   mensajeRegistro.textContent = '';
   mensajeRegistro.style.color = 'red';
@@ -33,10 +59,25 @@ formRegistro.onsubmit = function(event) {
   const telefono = document.getElementById('telefono').value.trim();
   const direccion = document.getElementById('direccion').value.trim();
   const contrasena = document.getElementById('contrasena').value;
+  const confirmarContrasena = document.getElementById('confirmar-contrasena').value;
+  const fechaNacimiento = document.getElementById('fecha-nacimiento').value;
+  const tipoUsuario = document.getElementById('tipo-usuario').value;
+  const ciudad = document.getElementById('ciudad').value.trim();
+  const codigoPostal = document.getElementById('codigo-postal').value.trim();
+  const documento = document.getElementById('documento').value.trim();
+  const emergencia = document.getElementById('emergencia').value.trim();
+  const terminos = document.getElementById('terminos').checked;
+  const privacidad = document.getElementById('privacidad').checked;
 
   // Validaciones
-  if (!nombre || !correo || !telefono || !direccion || !contrasena) {
-    mensajeRegistro.textContent = 'Por favor, completa todos los campos.';
+  if (!nombre || !correo || !telefono || !direccion || !contrasena || !confirmarContrasena || 
+      !fechaNacimiento || !tipoUsuario || !ciudad || !codigoPostal || !documento || !emergencia) {
+    mensajeRegistro.textContent = 'Por favor, completa todos los campos obligatorios.';
+    return;
+  }
+
+  if (!terminos || !privacidad) {
+    mensajeRegistro.textContent = 'Debes aceptar los términos y condiciones y la política de privacidad.';
     return;
   }
   // Validar correo
@@ -48,6 +89,12 @@ formRegistro.onsubmit = function(event) {
   // Validar contraseña
   if (contrasena.length < 6) {
     mensajeRegistro.textContent = 'La contraseña debe tener al menos 6 caracteres.';
+    return;
+  }
+
+  // Validar confirmación de contraseña
+  if (contrasena !== confirmarContrasena) {
+    mensajeRegistro.textContent = 'Las contraseñas no coinciden.';
     return;
   }
 
@@ -64,6 +111,13 @@ formRegistro.onsubmit = function(event) {
     return;
   }
 
+  // Validar teléfono de emergencia
+  const regexTelefonoEmergencia = /^\d{10}$/;
+  if (!regexTelefonoEmergencia.test(emergencia)) {
+    mensajeRegistro.textContent = 'El teléfono de emergencia debe tener exactamente 10 dígitos.';
+    return;
+  }
+
   // Guardar en localStorage
   let usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
   // Verificar si el correo ya está registrado
@@ -71,7 +125,19 @@ formRegistro.onsubmit = function(event) {
     mensajeRegistro.textContent = 'Este correo ya está registrado.';
     return;
   }
-  usuarios.push({ nombre, correo, telefono, direccion, contrasena });
+  usuarios.push({ 
+    nombre, 
+    correo, 
+    telefono, 
+    direccion, 
+    contrasena,
+    fechaNacimiento,
+    tipoUsuario,
+    ciudad,
+    codigoPostal,
+    documento,
+    emergencia
+  });
   localStorage.setItem('usuarios', JSON.stringify(usuarios));
 
   mensajeRegistro.style.color = 'green';
@@ -83,33 +149,54 @@ formRegistro.onsubmit = function(event) {
     // Abrir modal de login automáticamente
     document.getElementById('modal-login').style.display = 'block';
   }, 1200);
-};
-
-// Mostrar el modal de login
-const btnLogin = document.getElementById('btn-login');
-const modalLogin = document.getElementById('modal-login');
-const cerrarModalLogin = document.getElementById('cerrar-modal-login');
-
-btnLogin.onclick = function() {
-  modalLogin.style.display = 'block';
-};
-cerrarModalLogin.onclick = function() {
-  modalLogin.style.display = 'none';
-};
-modalLogin.onclick = function(event) {
-  if (event.target === this) {
-    this.style.display = 'none';
+    });
   }
-};
+});
+
+// ===== MODAL DE LOGIN =====
+document.addEventListener('DOMContentLoaded', function() {
+  const btnLogin = document.getElementById('btn-login');
+  const modalLogin = document.getElementById('modal-login');
+  const cerrarModalLogin = document.getElementById('cerrar-modal-login');
+
+  // Mostrar el modal de login
+  if (btnLogin) {
+    btnLogin.addEventListener('click', function() {
+      modalLogin.style.display = 'block';
+      modalLogin.classList.add('show');
+    });
+  }
+
+  // Ocultar el modal de login
+  if (cerrarModalLogin) {
+    cerrarModalLogin.addEventListener('click', function() {
+      modalLogin.style.display = 'none';
+      modalLogin.classList.remove('show');
+    });
+  }
+
+  // Ocultar el modal si se hace clic fuera del contenido
+  if (modalLogin) {
+    modalLogin.addEventListener('click', function(event) {
+      if (event.target === this) {
+        this.style.display = 'none';
+        this.classList.remove('show');
+      }
+    });
+  }
+});
 
 // Validación y autenticación de inicio de sesión
-const formLogin = document.getElementById('form-login');
-let mensajeLogin = document.createElement('div');
-mensajeLogin.id = 'mensaje-login';
-mensajeLogin.style.marginTop = '10px';
-formLogin.appendChild(mensajeLogin);
+document.addEventListener('DOMContentLoaded', function() {
+  const formLogin = document.getElementById('form-login');
+  
+  if (formLogin) {
+    let mensajeLogin = document.createElement('div');
+    mensajeLogin.id = 'mensaje-login';
+    mensajeLogin.style.marginTop = '10px';
+    formLogin.appendChild(mensajeLogin);
 
-formLogin.onsubmit = function(event) {
+    formLogin.addEventListener('submit', function(event) {
   event.preventDefault();
   mensajeLogin.textContent = '';
   mensajeLogin.style.color = 'red';
@@ -145,7 +232,9 @@ formLogin.onsubmit = function(event) {
     // Redirigir al dashboard
     window.location.href = 'dashboard.html';
   }, 1200);
-};
+    });
+  }
+});
 
 // ===== CAMBIO ENTRE MODALES =====
 document.addEventListener('DOMContentLoaded', function() {
@@ -158,7 +247,9 @@ document.addEventListener('DOMContentLoaded', function() {
     switchToLogin.addEventListener('click', (e) => {
       e.preventDefault();
       modalRegistro.style.display = 'none';
+      modalRegistro.classList.remove('show');
       modalLogin.style.display = 'block';
+      modalLogin.classList.add('show');
     });
   }
   
@@ -166,7 +257,9 @@ document.addEventListener('DOMContentLoaded', function() {
     switchToRegister.addEventListener('click', (e) => {
       e.preventDefault();
       modalLogin.style.display = 'none';
+      modalLogin.classList.remove('show');
       modalRegistro.style.display = 'block';
+      modalRegistro.classList.add('show');
     });
   }
 });
