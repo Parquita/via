@@ -802,13 +802,15 @@ p {
 .modal {
   display: none;
   position: fixed;
-  z-index: 2000;
+  z-index: 9999;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(4px);
+  opacity: 1;
+  visibility: visible;
 }
 
 .modal-content {
@@ -818,8 +820,44 @@ p {
   box-shadow: var(--shadow-xl);
   width: 90%;
   max-width: 500px;
+  max-height: 90vh;
   position: relative;
   animation: modalSlideIn 0.3s ease;
+  z-index: 10000;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.modal.show {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Estilos personalizados para la barra de desplazamiento del modal */
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: var(--gray-100);
+  border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* Para Firefox */
+.modal-content {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) var(--gray-100);
 }
 
 @keyframes modalSlideIn {
@@ -884,10 +922,32 @@ p {
   transition: var(--transition);
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group select:focus {
   outline: none;
   border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  transition: var(--transition);
+  background-color: var(--white);
+  cursor: pointer;
+}
+
+.link-primary {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.link-primary:hover {
+  text-decoration: underline;
 }
 
 .form-options {
