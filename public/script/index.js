@@ -146,3 +146,673 @@ formLogin.onsubmit = function(event) {
     window.location.href = 'dashboard.html';
   }, 1200);
 };
+
+// ===== CAMBIO ENTRE MODALES =====
+document.addEventListener('DOMContentLoaded', function() {
+  const switchToLogin = document.getElementById('switch-to-login');
+  const switchToRegister = document.getElementById('switch-to-register');
+  const modalRegistro = document.getElementById('modal-registro');
+  const modalLogin = document.getElementById('modal-login');
+  
+  if (switchToLogin) {
+    switchToLogin.addEventListener('click', (e) => {
+      e.preventDefault();
+      modalRegistro.style.display = 'none';
+      modalLogin.style.display = 'block';
+    });
+  }
+  
+  if (switchToRegister) {
+    switchToRegister.addEventListener('click', (e) => {
+      e.preventDefault();
+      modalLogin.style.display = 'none';
+      modalRegistro.style.display = 'block';
+    });
+  }
+});
+
+// ===== SPINNER DE CARGA VIA =====
+document.addEventListener('DOMContentLoaded', function() {
+  const spinnerContainer = document.getElementById('spinner-container');
+  
+  // Mostrar spinner al cargar la página
+  spinnerContainer.style.display = 'flex';
+  
+  // Ocultar spinner después de 3 segundos (simulando carga)
+  setTimeout(() => {
+    spinnerContainer.classList.add('hidden');
+    
+    // Ocultar completamente después de la transición
+    setTimeout(() => {
+      spinnerContainer.style.display = 'none';
+    }, 500);
+  }, 3000);
+  
+  // Función para mostrar spinner manualmente
+  window.showSpinner = function() {
+    spinnerContainer.style.display = 'flex';
+    spinnerContainer.classList.remove('hidden');
+  };
+  
+  // Función para ocultar spinner manualmente
+  window.hideSpinner = function() {
+    spinnerContainer.classList.add('hidden');
+    setTimeout(() => {
+      spinnerContainer.style.display = 'none';
+    }, 500);
+  };
+});
+
+// ===== MENÚ MÓVIL =====
+document.addEventListener('DOMContentLoaded', function() {
+  const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+  const nav = document.querySelector('.nav');
+  
+  if (mobileMenuToggle && nav) {
+    mobileMenuToggle.addEventListener('click', () => {
+      nav.classList.toggle('active');
+    });
+  }
+});
+
+// ===== EFECTOS DE SCROLL =====
+document.addEventListener('DOMContentLoaded', function() {
+  // Efecto de aparición al hacer scroll
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('fade-in-up');
+      }
+    });
+  }, observerOptions);
+  
+  // Observar elementos para animación
+  const animatedElements = document.querySelectorAll('.service-card, .feature-card, .about-content, .help-content');
+  animatedElements.forEach(el => {
+    observer.observe(el);
+  });
+});
+
+// ===== CARRUSEL AUTOMÁTICO =====
+document.addEventListener('DOMContentLoaded', function() {
+  // Seleccionar elementos del carrusel del hero
+  const heroCarousel = document.querySelector('.hero-carousel');
+  const carouselTrack = heroCarousel ? heroCarousel.querySelector('.carousel-track') : document.querySelector('.carousel-track');
+  const slides = heroCarousel ? heroCarousel.querySelectorAll('.carousel-slide') : document.querySelectorAll('.carousel-slide');
+  const indicators = heroCarousel ? heroCarousel.querySelectorAll('.carousel-indicator') : document.querySelectorAll('.carousel-indicator');
+  const prevBtn = heroCarousel ? heroCarousel.querySelector('.carousel-prev') : document.querySelector('.carousel-prev');
+  const nextBtn = heroCarousel ? heroCarousel.querySelector('.carousel-next') : document.querySelector('.carousel-next');
+  
+  let currentSlide = 0;
+  let autoPlayInterval;
+  
+  // Función para mostrar una slide específica
+  function showSlide(index) {
+    // Ocultar todas las slides
+    slides.forEach(slide => slide.classList.remove('active'));
+    indicators.forEach(indicator => indicator.classList.remove('active'));
+    
+    // Mostrar la slide actual
+    currentSlide = index;
+    slides[currentSlide].classList.add('active');
+    indicators[currentSlide].classList.add('active');
+  }
+  
+  // Función para ir a la siguiente slide
+  function nextSlide() {
+    const nextIndex = (currentSlide + 1) % slides.length;
+    showSlide(nextIndex);
+  }
+  
+  // Función para ir a la slide anterior
+  function prevSlide() {
+    const prevIndex = (currentSlide - 1 + slides.length) % slides.length;
+    showSlide(prevIndex);
+  }
+  
+  // Función para iniciar el auto-play
+  function startAutoPlay() {
+    autoPlayInterval = setInterval(nextSlide, 5000); // Cambiar cada 5 segundos
+  }
+  
+  // Función para detener el auto-play
+  function stopAutoPlay() {
+    if (autoPlayInterval) {
+      clearInterval(autoPlayInterval);
+    }
+  }
+  
+  // Event listeners para los botones
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      stopAutoPlay();
+      prevSlide();
+      startAutoPlay(); // Reiniciar auto-play
+    });
+  }
+  
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      stopAutoPlay();
+      nextSlide();
+      startAutoPlay(); // Reiniciar auto-play
+    });
+  }
+  
+  // Event listeners para los indicadores
+  indicators.forEach((indicator, index) => {
+    indicator.addEventListener('click', () => {
+      stopAutoPlay();
+      showSlide(index);
+      startAutoPlay(); // Reiniciar auto-play
+    });
+  });
+  
+  // Pausar auto-play al hacer hover sobre el carrusel
+  if (carouselTrack) {
+    carouselTrack.addEventListener('mouseenter', stopAutoPlay);
+    carouselTrack.addEventListener('mouseleave', startAutoPlay);
+  }
+  
+  // Iniciar auto-play cuando se carga la página
+  if (slides.length > 0) {
+    startAutoPlay();
+  }
+  
+  // Función para mostrar slide específica (puede ser llamada desde otros lugares)
+  window.showCarouselSlide = function(index) {
+    if (index >= 0 && index < slides.length) {
+      stopAutoPlay();
+      showSlide(index);
+      startAutoPlay();
+    }
+  };
+});
+
+// ===== FUNCIONALIDADES PARA PÁGINA AYUDA =====
+
+// FAQ Interactivo
+function initFAQ() {
+  const faqItems = document.querySelectorAll('.faq-item');
+  
+  faqItems.forEach(item => {
+    const question = item.querySelector('.faq-question');
+    const answer = item.querySelector('.faq-answer');
+    const icon = question.querySelector('i');
+    
+    if (question && answer) {
+      question.addEventListener('click', () => {
+        const isOpen = answer.style.display === 'block';
+        
+        // Cerrar todas las respuestas
+        faqItems.forEach(otherItem => {
+          const otherAnswer = otherItem.querySelector('.faq-answer');
+          const otherIcon = otherItem.querySelector('.faq-question i');
+          if (otherAnswer) {
+            otherAnswer.style.display = 'none';
+          }
+          if (otherIcon) {
+            otherIcon.style.transform = 'rotate(0deg)';
+          }
+        });
+        
+        // Abrir/cerrar la respuesta actual
+        if (!isOpen) {
+          answer.style.display = 'block';
+          if (icon) {
+            icon.style.transform = 'rotate(180deg)';
+          }
+        }
+      });
+      
+      // Ocultar respuesta por defecto
+      if (answer) {
+        answer.style.display = 'none';
+      }
+    }
+  });
+}
+
+// ===== FUNCIONALIDADES PARA FORMULARIOS =====
+
+// Formulario de Contacto
+function initContactForm() {
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Obtener datos del formulario
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData);
+      
+      // Validación básica
+      if (!data.firstName || !data.email || !data.message) {
+        showNotification('Por favor completa todos los campos obligatorios', 'error');
+        return;
+      }
+      
+      // Simular envío
+      showNotification('Enviando mensaje...', 'info');
+      
+      setTimeout(() => {
+        showNotification('¡Mensaje enviado exitosamente! Te responderemos pronto.', 'success');
+        this.reset();
+      }, 2000);
+    });
+  }
+}
+
+// Formulario de CV
+function initCVForm() {
+  const cvForm = document.getElementById('cvForm');
+  if (cvForm) {
+    cvForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Obtener datos del formulario
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData);
+      
+      // Validación básica
+      if (!data.fullName || !data.email || !data.phone || !data.city) {
+        showNotification('Por favor completa todos los campos obligatorios', 'error');
+        return;
+      }
+      
+      // Simular envío
+      showNotification('Enviando CV...', 'info');
+      
+      setTimeout(() => {
+        showNotification('¡CV enviado exitosamente! Te contactaremos pronto.', 'success');
+        this.reset();
+      }, 2000);
+    });
+  }
+}
+
+// Formulario de Prensa
+function initPressForm() {
+  const pressForm = document.getElementById('pressForm');
+  if (pressForm) {
+    pressForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Obtener datos del formulario
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData);
+      
+      // Validación básica
+      if (!data.mediaName || !data.contactPerson || !data.email || !data.message) {
+        showNotification('Por favor completa todos los campos obligatorios', 'error');
+        return;
+      }
+      
+      // Simular envío
+      showNotification('Enviando solicitud...', 'info');
+      
+      setTimeout(() => {
+        showNotification('¡Solicitud enviada exitosamente! Te contactaremos pronto.', 'success');
+        this.reset();
+      }, 2000);
+    });
+  }
+}
+
+// Formulario de Suscripción
+function initSubscribeForm() {
+  const subscribeForm = document.getElementById('subscribeForm');
+  if (subscribeForm) {
+    subscribeForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Obtener datos del formulario
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData);
+      
+      // Validación básica
+      if (!data.subscribeEmail) {
+        showNotification('Por favor ingresa tu correo electrónico', 'error');
+        return;
+      }
+      
+      // Simular suscripción
+      showNotification('Suscribiendo...', 'info');
+      
+      setTimeout(() => {
+        showNotification('¡Te has suscrito exitosamente! Recibirás nuestras actualizaciones pronto.', 'success');
+        this.reset();
+      }, 2000);
+    });
+  }
+}
+
+// ===== SISTEMA DE NOTIFICACIONES =====
+
+function showNotification(message, type = 'info') {
+  // Crear elemento de notificación
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.innerHTML = `
+    <div class="notification-content">
+      <i class="fas fa-${getNotificationIcon(type)}"></i>
+      <span>${message}</span>
+      <button class="notification-close">&times;</button>
+    </div>
+  `;
+  
+  // Agregar estilos
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: ${getNotificationColor(type)};
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 10000;
+    max-width: 400px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  `;
+  
+  // Agregar al DOM
+  document.body.appendChild(notification);
+  
+  // Mostrar notificación
+  setTimeout(() => {
+    notification.style.transform = 'translateX(0)';
+  }, 100);
+  
+  // Configurar cierre
+  const closeBtn = notification.querySelector('.notification-close');
+  closeBtn.addEventListener('click', () => {
+    hideNotification(notification);
+  });
+  
+  // Auto-ocultar después de 5 segundos
+  setTimeout(() => {
+    hideNotification(notification);
+  }, 5000);
+}
+
+function hideNotification(notification) {
+  notification.style.transform = 'translateX(100%)';
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  }, 300);
+}
+
+function getNotificationIcon(type) {
+  const icons = {
+    success: 'check-circle',
+    error: 'exclamation-circle',
+    warning: 'exclamation-triangle',
+    info: 'info-circle'
+  };
+  return icons[type] || 'info-circle';
+}
+
+function getNotificationColor(type) {
+  const colors = {
+    success: '#10b981',
+    error: '#ef4444',
+    warning: '#f59e0b',
+    info: '#3b82f6'
+  };
+  return colors[type] || '#3b82f6';
+}
+
+// ===== FUNCIONALIDADES PARA PÁGINA BLOG =====
+
+// Cargar más artículos
+function initLoadMore() {
+  const loadMoreBtn = document.querySelector('.load-more .btn-secondary');
+  if (loadMoreBtn) {
+    loadMoreBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // Simular carga de más artículos
+      this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cargando...';
+      this.disabled = true;
+      
+      setTimeout(() => {
+        this.innerHTML = '<i class="fas fa-plus"></i> Cargar Más Artículos';
+        this.disabled = false;
+        showNotification('No hay más artículos disponibles por el momento', 'info');
+      }, 2000);
+    });
+  }
+}
+
+// ===== FUNCIONALIDADES PARA PÁGINA SERVICIOS =====
+
+// Cotización de servicios
+function initServiceQuotes() {
+  const quoteButtons = document.querySelectorAll('a[href="#cotizar"]');
+  
+  quoteButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // Redirigir a la página de contacto
+      window.location.href = './contacto.html#formulario-contacto';
+    });
+  });
+}
+
+// ===== FUNCIONALIDADES PARA PÁGINA CARRERAS =====
+
+// Aplicar a trabajos
+function initJobApplications() {
+  const applyButtons = document.querySelectorAll('a[href="#enviar-cv"]');
+  
+  applyButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // Hacer scroll suave a la sección de CV
+      const cvSection = document.getElementById('enviar-cv');
+      if (cvSection) {
+        cvSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+}
+
+// ===== FUNCIONALIDADES PARA PÁGINA PRENSA =====
+
+// Descargar recursos
+function initResourceDownloads() {
+  const downloadButtons = document.querySelectorAll('.download-link');
+  
+  downloadButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const resourceType = this.textContent.toLowerCase();
+      showNotification(`Descargando ${resourceType}...`, 'info');
+      
+      // Simular descarga
+      setTimeout(() => {
+        showNotification(`${resourceType} descargado exitosamente`, 'success');
+      }, 1500);
+    });
+  });
+}
+
+// ===== FUNCIONALIDADES PARA PÁGINA NOSOTROS =====
+
+// Animación de timeline
+function initTimelineAnimation() {
+  const timelineItems = document.querySelectorAll('.timeline-item');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateX(0)';
+      }
+    });
+  }, { threshold: 0.5 });
+  
+  timelineItems.forEach(item => {
+    item.style.opacity = '0';
+    item.style.transform = 'translateX(-20px)';
+    item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(item);
+  });
+}
+
+// ===== FUNCIONALIDADES PARA PÁGINA CONTACTO =====
+
+// Validación de teléfono
+function initPhoneValidation() {
+  const phoneInputs = document.querySelectorAll('input[type="tel"]');
+  
+  phoneInputs.forEach(input => {
+    input.addEventListener('input', function(e) {
+      // Solo permitir números, espacios, paréntesis y guiones
+      this.value = this.value.replace(/[^\d\s\(\)\-]/g, '');
+    });
+  });
+}
+
+// ===== INICIALIZACIÓN GENERAL =====
+
+// Función para inicializar todas las funcionalidades
+function initAllFunctionalities() {
+  // Funcionalidades existentes
+  initMobileMenu();
+  initScrollEffects();
+  initCarousel();
+  initSpinner();
+  
+  // Nuevas funcionalidades
+  initFAQ();
+  initContactForm();
+  initCVForm();
+  initPressForm();
+  initSubscribeForm();
+  initLoadMore();
+  initServiceQuotes();
+  initJobApplications();
+  initResourceDownloads();
+  initTimelineAnimation();
+  initPhoneValidation();
+  
+  // Configurar navegación activa
+  setActiveNavigation();
+}
+
+// Configurar navegación activa basada en la página actual
+function setActiveNavigation() {
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  const navLinks = document.querySelectorAll('.nav-link');
+  
+  navLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    if (href === `./${currentPage}` || (currentPage === 'index.html' && href === './index.html')) {
+      link.classList.add('active');
+    } else {
+      link.classList.remove('active');
+    }
+  });
+}
+
+// ===== EVENT LISTENERS =====
+
+// Inicializar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+  initAllFunctionalities();
+  
+  // Agregar estilos CSS para notificaciones
+  addNotificationStyles();
+});
+
+// Agregar estilos CSS para notificaciones
+function addNotificationStyles() {
+  const style = document.createElement('style');
+  style.textContent = `
+    .notification-content {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .notification-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.25rem;
+      cursor: pointer;
+      margin-left: auto;
+      opacity: 0.7;
+      transition: opacity 0.2s ease;
+    }
+    
+    .notification-close:hover {
+      opacity: 1;
+    }
+    
+    .notification i {
+      font-size: 1.125rem;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+// ===== FUNCIONALIDADES ADICIONALES =====
+
+// Lazy loading para imágenes
+function initLazyLoading() {
+  const images = document.querySelectorAll('img[data-src]');
+  
+  const imageObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        img.src = img.dataset.src;
+        img.classList.remove('lazy');
+        imageObserver.unobserve(img);
+      }
+    });
+  });
+  
+  images.forEach(img => imageObserver.observe(img));
+}
+
+// Smooth scroll para enlaces internos
+function initSmoothScroll() {
+  const internalLinks = document.querySelectorAll('a[href^="#"]');
+  
+  internalLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const targetId = this.getAttribute('href');
+      const targetElement = document.querySelector(targetId);
+      
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+}
+
+// Inicializar funcionalidades adicionales
+document.addEventListener('DOMContentLoaded', function() {
+  initLazyLoading();
+  initSmoothScroll();
+});

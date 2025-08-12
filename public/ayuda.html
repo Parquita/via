@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Centro de Ayuda - VIA</title>
+  <link rel="stylesheet" href="./style/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+  <!-- Header/Navigation -->
+  <header class="header">
+    <div class="header-container">
+      <div class="logo">
+        <div class="logo-circle">
+          <div class="logo-v">
+            <div class="logo-v-left"></div>
+            <div class="logo-v-right"></div>
+          </div>
+        </div>
+        <span class="logo-text">VIA</span>
+      </div>
+      <nav class="nav">
+        <a href="./index.html" class="nav-link">Inicio</a>
+        <a href="./nosotros.html" class="nav-link">Nosotros</a>
+        <a href="./servicios.html" class="nav-link">Servicios</a>
+        <a href="./ayuda.html" class="nav-link active">Ayuda</a>
+        <button class="btn-secondary" id="btn-login">Iniciar Sesión</button>
+        <button class="btn-primary" id="btn-registrarse">Registrarse</button>
+      </nav>
+      <div class="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="inicio">
+    <div class="hero-container">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          Centro de <span class="highlight">Ayuda</span>
+        </h1>
+        <p class="hero-subtitle">
+          Encuentra respuestas rápidas a tus preguntas y obtén el soporte que necesitas para usar VIA
+        </p>
+        <div class="hero-buttons">
+          <a href="#preguntas-frecuentes" class="btn-primary btn-large">
+            <i class="fas fa-question-circle"></i>
+            Ver FAQ
+          </a>
+          <a href="#contactar-soporte" class="btn-secondary btn-large">
+            <i class="fas fa-headset"></i>
+            Contactar Soporte
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Preguntas Frecuentes Section -->
+  <section class="faq" id="preguntas-frecuentes">
+    <div class="container">
+      <div class="section-header">
+        <h2>Preguntas Frecuentes</h2>
+        <p>Las dudas más comunes de nuestros usuarios</p>
+      </div>
+      <div class="faq-container">
+        <div class="faq-item">
+          <div class="faq-question">
+            <h3>¿Cómo funciona VIA?</h3>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>VIA es una plataforma que conecta conductores verificados con pasajeros. Simplemente descarga la app, crea tu cuenta, ingresa tu destino y un conductor te recogerá en minutos.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <h3>¿Es seguro usar VIA?</h3>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Absolutamente. Todos nuestros conductores pasan por verificaciones de antecedentes, verificamos sus documentos y vehículos, y cada viaje es rastreado en tiempo real.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <h3>¿Cuánto cuesta un viaje?</h3>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Los precios varían según la distancia, el tipo de servicio y la demanda. Puedes ver el precio exacto antes de confirmar tu viaje en la app.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <h3>¿Puedo cancelar un viaje?</h3>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Sí, puedes cancelar un viaje sin costo hasta 2 minutos después de que el conductor confirme. Después de ese tiempo, puede aplicarse una tarifa de cancelación.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <h3>¿Qué métodos de pago aceptan?</h3>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Aceptamos tarjetas de crédito/débito, transferencias bancarias y pagos en efectivo. También puedes agregar múltiples métodos de pago a tu cuenta.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <h3>¿Cómo reporto un problema?</h3>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Puedes reportar cualquier problema directamente desde la app en la sección "Ayuda" o contactarnos a través de nuestro centro de soporte 24/7.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Canales de Ayuda Section -->
+  <section class="help-channels" id="contactar-soporte">
+    <div class="container">
+      <div class="section-header">
+        <h2>Canales de Ayuda</h2>
+        <p>Estamos aquí para ayudarte cuando lo necesites</p>
+      </div>
+      <div class="channels-grid">
+        <div class="channel-card">
+          <div class="channel-icon">
+            <i class="fas fa-comments"></i>
+          </div>
+          <h3>Chat en Vivo</h3>
+          <p>Conecta con nuestro equipo de soporte en tiempo real para obtener ayuda inmediata</p>
+          <div class="channel-availability">
+            <span class="availability-badge">Disponible 24/7</span>
+          </div>
+          <a href="#" class="btn-primary">Iniciar Chat</a>
+        </div>
+        <div class="channel-card">
+          <div class="channel-icon">
+            <i class="fas fa-phone"></i>
+          </div>
+          <h3>Línea Telefónica</h3>
+          <p>Llámanos directamente para hablar con un representante de soporte</p>
+          <div class="channel-availability">
+            <span class="availability-badge">Lun-Vie 8AM-8PM</span>
+          </div>
+          <a href="tel:+573001234567" class="btn-primary">Llamar Ahora</a>
+        </div>
+        <div class="channel-card">
+          <div class="channel-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <h3>Correo Electrónico</h3>
+          <p>Envíanos un mensaje detallado y te responderemos en menos de 24 horas</p>
+          <div class="channel-availability">
+            <span class="availability-badge">Respuesta en 24h</span>
+          </div>
+          <a href="mailto:soporte@via.com.co" class="btn-primary">Enviar Email</a>
+        </div>
+        <div class="channel-card">
+          <div class="channel-icon">
+            <i class="fas fa-headset"></i>
+          </div>
+          <h3>Soporte en App</h3>
+          <p>Accede a ayuda y soporte directamente desde la aplicación móvil</p>
+          <div class="channel-availability">
+            <span class="availability-badge">Siempre Disponible</span>
+          </div>
+          <a href="#" class="btn-primary">Abrir App</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Base de Conocimientos Section -->
+  <section class="knowledge-base">
+    <div class="container">
+      <div class="section-header">
+        <h2>Base de Conocimientos</h2>
+        <p>Artículos y guías para resolver problemas comunes</p>
+      </div>
+      <div class="knowledge-grid">
+        <div class="knowledge-category">
+          <div class="category-header">
+            <i class="fas fa-user-plus"></i>
+            <h3>Primeros Pasos</h3>
+          </div>
+          <ul class="knowledge-links">
+            <li><a href="#">Cómo crear tu cuenta</a></li>
+            <li><a href="#">Configurar tu perfil</a></li>
+            <li><a href="#">Agregar métodos de pago</a></li>
+            <li><a href="#">Configurar ubicaciones favoritas</a></li>
+          </ul>
+        </div>
+        <div class="knowledge-category">
+          <div class="category-header">
+            <i class="fas fa-car"></i>
+            <h3>Realizar Viajes</h3>
+          </div>
+          <ul class="knowledge-links">
+            <li><a href="#">Solicitar un viaje</a></li>
+            <li><a href="#">Entender las tarifas</a></li>
+            <li><a href="#">Cancelar un viaje</a></li>
+            <li><a href="#">Calificar al conductor</a></li>
+          </ul>
+        </div>
+        <div class="knowledge-category">
+          <div class="category-header">
+            <i class="fas fa-shield-alt"></i>
+            <h3>Seguridad</h3>
+          </div>
+          <ul class="knowledge-links">
+            <li><a href="#">Verificar conductor</a></li>
+            <li><a href="#">Compartir viaje</a></li>
+            <li><a href="#">Reportar problemas</a></li>
+            <li><a href="#">Políticas de seguridad</a></li>
+          </ul>
+        </div>
+        <div class="knowledge-category">
+          <div class="category-header">
+            <i class="fas fa-credit-card"></i>
+            <h3>Pagos y Facturación</h3>
+          </div>
+          <ul class="knowledge-links">
+            <li><a href="#">Métodos de pago</a></li>
+            <li><a href="#">Ver historial de pagos</a></li>
+            <li><a href="#">Solicitar factura</a></li>
+            <li><a href="#">Problemas con pagos</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <div class="cta-content">
+        <h2>¿No encontraste lo que buscabas?</h2>
+        <p>Nuestro equipo de soporte está listo para ayudarte con cualquier consulta específica</p>
+        <div class="cta-buttons">
+          <a href="./contacto.html" class="btn-primary btn-large">
+            <i class="fas fa-envelope"></i>
+            Contactar Soporte
+          </a>
+          <a href="#" class="btn-secondary btn-large">
+            <i class="fas fa-download"></i>
+            Descargar App
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <div class="logo-circle">
+              <div class="logo-v">
+                <div class="logo-v-left"></div>
+                <div class="logo-v-right"></div>
+              </div>
+            </div>
+            <span class="logo-text">VIA</span>
+          </div>
+          <p>Transformando la movilidad urbana con tecnología e innovación.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h4>Servicios</h4>
+          <ul>
+            <li><a href="./servicios.html">Transporte Ejecutivo</a></li>
+            <li><a href="./servicios.html">Transporte Compartido</a></li>
+            <li><a href="./servicios.html">Entrega Express</a></li>
+            <li><a href="./servicios.html">Mensajería</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Empresa</h4>
+          <ul>
+            <li><a href="./nosotros.html">Nosotros</a></li>
+            <li><a href="./carreras.html">Carreras</a></li>
+            <li><a href="./prensa.html">Prensa</a></li>
+            <li><a href="./blog.html">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Soporte</h4>
+          <ul>
+            <li><a href="./ayuda.html">Centro de Ayuda</a></li>
+            <li><a href="./terminos.html">Términos de Servicio</a></li>
+            <li><a href="./privacidad.html">Política de Privacidad</a></li>
+            <li><a href="./contacto.html">Contacto</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 VIA. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal de Registro -->
+  <div id="modal-registro" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Crear Cuenta</h2>
+        <span class="close" id="cerrar-modal">&times;</span>
+      </div>
+      <form id="form-registro" class="modal-form">
+        <div class="form-group">
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" name="nombre" required>
+        </div>
+        <div class="form-group">
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" name="correo" required>
+        </div>
+        <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <input type="tel" id="telefono" name="telefono" required>
+        </div>
+        <div class="form-group">
+          <label for="direccion">Dirección</label>
+          <input type="text" id="direccion" name="direccion" required>
+        </div>
+        <div class="form-group">
+          <label for="contrasena">Contraseña</label>
+          <input type="password" id="contrasena" name="contrasena" required>
+        </div>
+        <button type="submit" class="btn-primary btn-full">
+          <i class="fas fa-user-plus"></i>
+          Crear Cuenta
+        </button>
+      </form>
+      <div class="modal-footer">
+        <p>¿Ya tienes cuenta? <a href="#" id="switch-to-login">Iniciar Sesión</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Inicio de Sesión -->
+  <div id="modal-login" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Iniciar Sesión</h2>
+        <span class="close" id="cerrar-modal-login">&times;</span>
+      </div>
+      <form id="form-login" class="modal-form">
+        <div class="form-group">
+          <label for="login-correo">Correo electrónico</label>
+          <input type="email" id="login-correo" name="login-correo" required>
+        </div>
+        <div class="form-group">
+          <label for="login-contrasena">Contraseña</label>
+          <input type="password" id="login-contrasena" name="login-contrasena" required>
+        </div>
+        <div class="form-options">
+          <label class="checkbox-label">
+            <input type="checkbox" id="remember-me">
+            <span>Recordarme</span>
+          </label>
+          <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+        </div>
+        <button type="submit" class="btn-primary btn-full">
+          <i class="fas fa-sign-in-alt"></i>
+          Iniciar Sesión
+        </button>
+      </form>
+      <div class="modal-footer">
+        <p>¿No tienes cuenta? <a href="#" id="switch-to-register">Registrarse</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="./script/index.js"></script>
+</body>
+
+</html>

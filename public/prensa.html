@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prensa - VIA</title>
+  <link rel="stylesheet" href="./style/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+  <!-- Header/Navigation -->
+  <header class="header">
+    <div class="header-container">
+      <div class="logo">
+        <div class="logo-circle">
+          <div class="logo-v">
+            <div class="logo-v-left"></div>
+            <div class="logo-v-right"></div>
+          </div>
+        </div>
+        <span class="logo-text">VIA</span>
+      </div>
+      <nav class="nav">
+        <a href="./index.html" class="nav-link">Inicio</a>
+        <a href="./nosotros.html" class="nav-link">Nosotros</a>
+        <a href="./servicios.html" class="nav-link">Servicios</a>
+        <a href="./ayuda.html" class="nav-link">Ayuda</a>
+        <button class="btn-secondary" id="btn-login">Iniciar Sesión</button>
+        <button class="btn-primary" id="btn-registrarse">Registrarse</button>
+      </nav>
+      <div class="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="inicio">
+    <div class="hero-container">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          Sala de <span class="highlight">Prensa</span>
+        </h1>
+        <p class="hero-subtitle">
+          Encuentra las últimas noticias, comunicados oficiales y recursos para medios sobre VIA y la transformación de la movilidad urbana en Colombia
+        </p>
+        <div class="hero-buttons">
+          <a href="#comunicados-oficiales" class="btn-primary btn-large">
+            <i class="fas fa-newspaper"></i>
+            Ver Comunicados
+          </a>
+          <a href="#recursos-medios" class="btn-secondary btn-large">
+            <i class="fas fa-download"></i>
+            Recursos para Medios
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comunicados Oficiales Section -->
+  <section class="press-releases" id="comunicados-oficiales">
+    <div class="container">
+      <div class="section-header">
+        <h2>Comunicados Oficiales</h2>
+        <p>Las últimas noticias y anuncios oficiales de VIA</p>
+      </div>
+      <div class="releases-grid">
+        <div class="release-card">
+          <div class="release-date">
+            <span class="day">15</span>
+            <span class="month">Dic</span>
+            <span class="year">2024</span>
+          </div>
+          <div class="release-content">
+            <h3>VIA Lanza Servicio de Transporte Ejecutivo en Bogotá</h3>
+            <p>La startup colombiana expande su portafolio con un servicio premium dirigido a ejecutivos y eventos corporativos, marcando un nuevo hito en la movilidad urbana del país.</p>
+            <div class="release-tags">
+              <span class="tag">Nuevo Servicio</span>
+              <span class="tag">Bogotá</span>
+              <span class="tag">Transporte Ejecutivo</span>
+            </div>
+            <a href="#" class="btn-secondary">Leer Más</a>
+          </div>
+        </div>
+        <div class="release-card">
+          <div class="release-date">
+            <span class="day">28</span>
+            <span class="month">Nov</span>
+            <span class="year">2024</span>
+          </div>
+          <div class="release-content">
+            <h3>VIA Alcanza 100,000 Usuarios Registrados</h3>
+            <p>La plataforma de movilidad urbana celebra un hito importante al superar los 100,000 usuarios registrados, consolidando su posición como una de las startups más prometedoras del sector.</p>
+            <div class="release-tags">
+              <span class="tag">Hito</span>
+              <span class="tag">Crecimiento</span>
+              <span class="tag">Usuarios</span>
+            </div>
+            <a href="#" class="btn-secondary">Leer Más</a>
+          </div>
+        </div>
+        <div class="release-card">
+          <div class="release-date">
+            <span class="day">10</span>
+            <span class="month">Nov</span>
+            <span class="year">2024</span>
+          </div>
+          <div class="release-content">
+            <h3>VIA Anuncia Expansión a Medellín</h3>
+            <p>La startup anuncia su expansión a Medellín, la segunda ciudad más grande de Colombia, como parte de su estrategia de crecimiento nacional.</p>
+            <div class="release-tags">
+              <span class="tag">Expansión</span>
+              <span class="tag">Medellín</span>
+              <span class="tag">Crecimiento</span>
+            </div>
+            <a href="#" class="btn-secondary">Leer Más</a>
+          </div>
+        </div>
+        <div class="release-card">
+          <div class="release-date">
+            <span class="day">25</span>
+            <span class="month">Oct</span>
+            <span class="year">2024</span>
+          </div>
+          <div class="release-content">
+            <h3>VIA Recibe Reconocimiento por Innovación Tecnológica</h3>
+            <p>La startup es reconocida por su innovación tecnológica en el sector de la movilidad urbana durante la conferencia anual de tecnología de Colombia.</p>
+            <div class="release-tags">
+              <span class="tag">Reconocimiento</span>
+              <span class="tag">Innovación</span>
+              <span class="tag">Tecnología</span>
+            </div>
+            <a href="#" class="btn-secondary">Leer Más</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recursos para Medios Section -->
+  <section class="media-resources" id="recursos-medios">
+    <div class="container">
+      <div class="section-header">
+        <h2>Recursos para Medios</h2>
+        <p>Materiales y recursos para periodistas y medios de comunicación</p>
+      </div>
+      <div class="resources-grid">
+        <div class="resource-card">
+          <div class="resource-icon">
+            <i class="fas fa-images"></i>
+          </div>
+          <h3>Kit de Prensa</h3>
+          <p>Logos en alta resolución, imágenes de la plataforma y material visual para uso en medios</p>
+          <div class="resource-downloads">
+            <a href="#" class="btn-primary">Descargar Kit Completo</a>
+            <div class="download-options">
+              <a href="#" class="download-link">Logos</a>
+              <a href="#" class="download-link">Imágenes</a>
+              <a href="#" class="download-link">Banners</a>
+            </div>
+          </div>
+        </div>
+        <div class="resource-card">
+          <div class="resource-icon">
+            <i class="fas fa-file-alt"></i>
+          </div>
+          <h3>Ficha Técnica</h3>
+          <p>Información detallada sobre la empresa, estadísticas y datos clave para reportajes</p>
+          <div class="resource-downloads">
+            <a href="#" class="btn-primary">Descargar Ficha</a>
+            <div class="download-options">
+              <a href="#" class="download-link">PDF</a>
+              <a href="#" class="download-link">Word</a>
+            </div>
+          </div>
+        </div>
+        <div class="resource-card">
+          <div class="resource-icon">
+            <i class="fas fa-video"></i>
+          </div>
+          <h3>Material Audiovisual</h3>
+          <p>Videos promocionales, entrevistas y contenido multimedia para uso editorial</p>
+          <div class="resource-downloads">
+            <a href="#" class="btn-primary">Acceder a Videos</a>
+            <div class="download-options">
+              <a href="#" class="download-link">HD</a>
+              <a href="#" class="download-link">4K</a>
+              <a href="#" class="download-link">Web</a>
+            </div>
+          </div>
+        </div>
+        <div class="resource-card">
+          <div class="resource-icon">
+            <i class="fas fa-user-tie"></i>
+          </div>
+          <h3>Contactos de Prensa</h3>
+          <p>Información de contacto directo para solicitudes de entrevistas y consultas de medios</p>
+          <div class="resource-downloads">
+            <a href="#" class="btn-primary">Ver Contactos</a>
+            <div class="download-options">
+              <a href="#" class="download-link">Directorio</a>
+              <a href="#" class="download-link">Agenda</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacto Prensa Section -->
+  <section class="press-contact">
+    <div class="container">
+      <div class="contact-container">
+        <div class="contact-header">
+          <h2>Contacto para Medios</h2>
+          <p>¿Eres periodista o representante de medios? Estamos aquí para ayudarte con tus consultas y solicitudes</p>
+        </div>
+        <form class="press-form" id="pressForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="mediaName">Nombre del Medio *</label>
+              <input type="text" id="mediaName" name="mediaName" required>
+            </div>
+            <div class="form-group">
+              <label for="contactPerson">Nombre del Contacto *</label>
+              <input type="text" id="contactPerson" name="contactPerson" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Correo Electrónico *</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+              <label for="phone">Teléfono</label>
+              <input type="tel" id="phone" name="phone">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="requestType">Tipo de Solicitud *</label>
+            <select id="requestType" name="requestType" required>
+              <option value="">Selecciona el tipo de solicitud</option>
+              <option value="interview">Entrevista</option>
+              <option value="press-release">Comunicado de Prensa</option>
+              <option value="resources">Recursos para Medios</option>
+              <option value="event">Cobertura de Evento</option>
+              <option value="expert-comment">Comentario de Experto</option>
+              <option value="other">Otro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="deadline">Fecha Límite (si aplica)</label>
+            <input type="date" id="deadline" name="deadline">
+          </div>
+          <div class="form-group">
+            <label for="message">Detalles de la Solicitud *</label>
+            <textarea id="message" name="message" rows="5" placeholder="Describe tu solicitud, incluyendo el tema, el formato deseado y cualquier información adicional relevante..." required></textarea>
+          </div>
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="newsletter" name="newsletter">
+              <span class="checkmark"></span>
+              Quiero recibir comunicados de prensa y actualizaciones de VIA
+            </label>
+          </div>
+          <button type="submit" class="btn-primary btn-large">
+            <i class="fas fa-paper-plane"></i>
+            Enviar Solicitud
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <div class="cta-content">
+        <h2>¿Necesitas Información Adicional?</h2>
+        <p>Nuestro equipo de relaciones públicas está disponible para asistirte con cualquier consulta de medios</p>
+        <div class="cta-buttons">
+          <a href="mailto:prensa@via.com.co" class="btn-primary btn-large">
+            <i class="fas fa-envelope"></i>
+            Contactar Prensa
+          </a>
+          <a href="tel:+573001234567" class="btn-secondary btn-large">
+            <i class="fas fa-phone"></i>
+            Llamar Directamente
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <div class="logo-circle">
+              <div class="logo-v">
+                <div class="logo-v-left"></div>
+                <div class="logo-v-right"></div>
+              </div>
+            </div>
+            <span class="logo-text">VIA</span>
+          </div>
+          <p>Transformando la movilidad urbana con tecnología e innovación.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h4>Servicios</h4>
+          <ul>
+            <li><a href="./servicios.html">Transporte Ejecutivo</a></li>
+            <li><a href="./servicios.html">Transporte Compartido</a></li>
+            <li><a href="./servicios.html">Entrega Express</a></li>
+            <li><a href="./servicios.html">Mensajería</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Empresa</h4>
+          <ul>
+            <li><a href="./nosotros.html">Nosotros</a></li>
+            <li><a href="./carreras.html">Carreras</a></li>
+            <li><a href="./prensa.html">Prensa</a></li>
+            <li><a href="./blog.html">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Soporte</h4>
+          <ul>
+            <li><a href="./ayuda.html">Centro de Ayuda</a></li>
+            <li><a href="./terminos.html">Términos de Servicio</a></li>
+            <li><a href="./privacidad.html">Política de Privacidad</a></li>
+            <li><a href="./contacto.html">Contacto</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 VIA. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal de Registro -->
+  <div id="modal-registro" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Crear Cuenta</h2>
+        <span class="close" id="cerrar-modal">&times;</span>
+      </div>
+      <form id="form-registro" class="modal-form">
+        <div class="form-group">
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" name="nombre" required>
+        </div>
+        <div class="form-group">
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" name="correo" required>
+        </div>
+        <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <input type="tel" id="telefono" name="telefono" required>
+        </div>
+        <div class="form-group">
+          <label for="direccion">Dirección</label>
+          <input type="text" id="direccion" name="direccion" required>
+        </div>
+        <div class="form-group">
+          <label for="contrasena">Contraseña</label>
+          <input type="password" id="contrasena" name="contrasena" required>
+        </div>
+        <button type="submit" class="btn-primary btn-full">
+          <i class="fas fa-user-plus"></i>
+          Crear Cuenta
+        </button>
+      </form>
+      <div class="modal-footer">
+        <p>¿Ya tienes cuenta? <a href="#" id="switch-to-login">Iniciar Sesión</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Inicio de Sesión -->
+  <div id="modal-login" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Iniciar Sesión</h2>
+        <span class="close" id="cerrar-modal-login">&times;</span>
+      </div>
+      <form id="form-login" class="modal-form">
+        <div class="form-group">
+          <label for="login-correo">Correo electrónico</label>
+          <input type="email" id="login-correo" name="login-correo" required>
+        </div>
+        <div class="form-group">
+          <label for="login-contrasena">Contraseña</label>
+          <input type="password" id="login-contrasena" name="login-contrasena" required>
+        </div>
+        <div class="form-options">
+          <label class="checkbox-label">
+            <input type="checkbox" id="remember-me">
+            <span>Recordarme</span>
+          </label>
+          <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+        </div>
+        <button type="submit" class="btn-primary btn-full">
+          <i class="fas fa-sign-in-alt"></i>
+          Iniciar Sesión
+        </button>
+      </form>
+      <div class="modal-footer">
+        <p>¿No tienes cuenta? <a href="#" id="switch-to-register">Registrarse</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="./script/index.js"></script>
+</body>
+
+</html>

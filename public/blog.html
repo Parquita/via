@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blog - VIA</title>
+  <link rel="stylesheet" href="./style/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+  <!-- Header/Navigation -->
+  <header class="header">
+    <div class="header-container">
+      <div class="logo">
+        <div class="logo-circle">
+          <div class="logo-v">
+            <div class="logo-v-left"></div>
+            <div class="logo-v-right"></div>
+          </div>
+        </div>
+        <span class="logo-text">VIA</span>
+      </div>
+      <nav class="nav">
+        <a href="./index.html" class="nav-link">Inicio</a>
+        <a href="./nosotros.html" class="nav-link">Nosotros</a>
+        <a href="./servicios.html" class="nav-link">Servicios</a>
+        <a href="./ayuda.html" class="nav-link">Ayuda</a>
+        <button class="btn-secondary" id="btn-login">Iniciar Sesión</button>
+        <button class="btn-primary" id="btn-registrarse">Registrarse</button>
+      </nav>
+      <div class="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="inicio">
+    <div class="hero-container">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          Blog de <span class="highlight">VIA</span>
+        </h1>
+        <p class="hero-subtitle">
+          Descubre historias inspiradoras, consejos de movilidad urbana y las últimas tendencias en tecnología de transporte
+        </p>
+        <div class="hero-buttons">
+          <a href="#articulos-recientes" class="btn-primary btn-large">
+            <i class="fas fa-newspaper"></i>
+            Leer Artículos
+          </a>
+          <a href="#suscribirse" class="btn-secondary btn-large">
+            <i class="fas fa-envelope"></i>
+            Suscribirse
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Artículos Recientes Section -->
+  <section class="recent-articles" id="articulos-recientes">
+    <div class="container">
+      <div class="section-header">
+        <h2>Artículos Recientes</h2>
+        <p>Las últimas publicaciones de nuestro equipo y colaboradores</p>
+      </div>
+      <div class="articles-grid">
+        <article class="article-card featured">
+          <div class="article-image">
+            <img src="./style/image/seguridad.jpg" alt="Seguridad en VIA">
+            <div class="article-category">Seguridad</div>
+          </div>
+          <div class="article-content">
+            <div class="article-meta">
+              <span class="article-date"><i class="fas fa-calendar"></i> 20 Diciembre 2024</span>
+              <span class="article-author"><i class="fas fa-user"></i> Equipo VIA</span>
+            </div>
+            <h3>5 Consejos de Seguridad para Viajes Nocturnos</h3>
+            <p>Descubre las mejores prácticas para mantenerte seguro durante tus viajes nocturnos con VIA, incluyendo verificación de conductor y seguimiento en tiempo real.</p>
+            <div class="article-tags">
+              <span class="tag">Seguridad</span>
+              <span class="tag">Viajes Nocturnos</span>
+              <span class="tag">Consejos</span>
+            </div>
+            <a href="#" class="btn-primary">Leer Artículo Completo</a>
+          </div>
+        </article>
+        <article class="article-card">
+          <div class="article-image">
+            <img src="./style/image/mapa.jpg" alt="Cobertura VIA">
+            <div class="article-category">Expansión</div>
+          </div>
+          <div class="article-content">
+            <div class="article-meta">
+              <span class="article-date"><i class="fas fa-calendar"></i> 15 Diciembre 2024</span>
+              <span class="article-author"><i class="fas fa-user"></i> Carlos Rodríguez</span>
+            </div>
+            <h3>VIA Expande su Cobertura a 5 Nuevas Ciudades</h3>
+            <p>Conoce los detalles de nuestra expansión nacional y cómo estamos llevando la movilidad urbana de calidad a más colombianos.</p>
+            <div class="article-tags">
+              <span class="tag">Expansión</span>
+              <span class="tag">Cobertura</span>
+              <span class="tag">Nacional</span>
+            </div>
+            <a href="#" class="btn-secondary">Leer Más</a>
+          </div>
+        </article>
+        <article class="article-card">
+          <div class="article-image">
+            <img src="./style/image/vehiculo-multiple.jpg" alt="Sostenibilidad">
+            <div class="article-category">Sostenibilidad</div>
+          </div>
+          <div class="article-content">
+            <div class="article-meta">
+              <span class="article-date"><i class="fas fa-calendar"></i> 10 Diciembre 2024</span>
+              <span class="article-author"><i class="fas fa-user"></i> Ana Martínez</span>
+            </div>
+            <h3>El Impacto Ambiental del Transporte Compartido</h3>
+            <p>Analizamos cómo el transporte compartido está reduciendo la huella de carbono en las ciudades colombianas y contribuyendo a un futuro más sostenible.</p>
+            <div class="article-tags">
+              <span class="tag">Sostenibilidad</span>
+              <span class="tag">Medio Ambiente</span>
+              <span class="tag">Transporte Compartido</span>
+            </div>
+            <a href="#" class="btn-secondary">Leer Más</a>
+          </div>
+        </article>
+        <article class="article-card">
+          <div class="article-image">
+            <img src="./style/image/ofrecer-carro.jpg" alt="Tecnología">
+            <div class="article-category">Tecnología</div>
+          </div>
+          <div class="article-content">
+            <div class="article-meta">
+              <span class="article-date"><i class="fas fa-calendar"></i> 5 Diciembre 2024</span>
+              <span class="article-author"><i class="fas fa-user"></i> Luis González</span>
+            </div>
+            <h3>Inteligencia Artificial en la Movilidad Urbana</h3>
+            <p>Explora cómo estamos utilizando IA para optimizar rutas, mejorar la experiencia del usuario y predecir la demanda de transporte en tiempo real.</p>
+            <div class="article-tags">
+              <span class="tag">Tecnología</span>
+              <span class="tag">IA</span>
+              <span class="tag">Innovación</span>
+            </div>
+            <a href="#" class="btn-secondary">Leer Más</a>
+          </div>
+        </article>
+        <article class="article-card">
+          <div class="article-image">
+            <img src="./style/image/man-hablando.jpg" alt="Experiencia Usuario">
+            <div class="article-category">UX</div>
+          </div>
+          <div class="article-content">
+            <div class="article-meta">
+              <span class="article-date"><i class="fas fa-calendar"></i> 1 Diciembre 2024</span>
+              <span class="article-author"><i class="fas fa-user"></i> María López</span>
+            </div>
+            <h3>Diseñando la Experiencia Perfecta del Usuario</h3>
+            <p>Descubre el proceso detrás del diseño de la interfaz de VIA y cómo cada elemento está pensado para maximizar la satisfacción del usuario.</p>
+            <div class="article-tags">
+              <span class="tag">UX</span>
+              <span class="tag">Diseño</span>
+              <span class="tag">Experiencia</span>
+            </div>
+            <a href="#" class="btn-secondary">Leer Más</a>
+          </div>
+        </article>
+        <article class="article-card">
+          <div class="article-image">
+            <img src="./style/image/carro-mano.jpg" alt="Conductores">
+            <div class="article-category">Conductores</div>
+          </div>
+          <div class="article-content">
+            <div class="article-meta">
+              <span class="article-date"><i class="fas fa-calendar"></i> 25 Noviembre 2024</span>
+              <span class="article-author"><i class="fas fa-user"></i> Equipo VIA</span>
+            </div>
+            <h3>Historias de Éxito: Conductores VIA</h3>
+            <p>Conoce las historias inspiradoras de nuestros conductores y cómo VIA está transformando sus vidas y la movilidad urbana en Colombia.</p>
+            <div class="article-tags">
+              <span class="tag">Conductores</span>
+              <span class="tag">Historias</span>
+              <span class="tag">Éxito</span>
+            </div>
+            <a href="#" class="btn-secondary">Leer Más</a>
+          </div>
+        </article>
+      </div>
+      <div class="load-more">
+        <a href="#" class="btn-secondary btn-large">
+          <i class="fas fa-plus"></i>
+          Cargar Más Artículos
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categorías Section -->
+  <section class="categories">
+    <div class="container">
+      <div class="section-header">
+        <h2>Explorar por Categoría</h2>
+        <p>Encuentra contenido específico según tus intereses</p>
+      </div>
+      <div class="categories-grid">
+        <div class="category-card">
+          <div class="category-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3>Seguridad</h3>
+          <p>Artículos sobre seguridad, protocolos y mejores prácticas para viajes seguros</p>
+          <span class="article-count">12 artículos</span>
+          <a href="#" class="btn-secondary">Explorar</a>
+        </div>
+        <div class="category-card">
+          <div class="category-icon">
+            <i class="fas fa-leaf"></i>
+          </div>
+          <h3>Sostenibilidad</h3>
+          <p>Contenido sobre impacto ambiental y soluciones sostenibles de movilidad</p>
+          <span class="article-count">8 artículos</span>
+          <a href="#" class="btn-secondary">Explorar</a>
+        </div>
+        <div class="category-card">
+          <div class="category-icon">
+            <i class="fas fa-rocket"></i>
+          </div>
+          <h3>Tecnología</h3>
+          <p>Las últimas innovaciones tecnológicas en el sector de la movilidad urbana</p>
+          <span class="article-count">15 artículos</span>
+          <a href="#" class="btn-secondary">Explorar</a>
+        </div>
+        <div class="category-card">
+          <div class="category-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3>Comunidad</h3>
+          <p>Historias de usuarios, conductores y la comunidad VIA</p>
+          <span class="article-count">10 artículos</span>
+          <a href="#" class="btn-secondary">Explorar</a>
+        </div>
+        <div class="category-card">
+          <div class="category-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3>Análisis</h3>
+          <p>Análisis de datos, tendencias y estadísticas del sector transporte</p>
+          <span class="article-count">6 artículos</span>
+          <a href="#" class="btn-secondary">Explorar</a>
+        </div>
+        <div class="category-card">
+          <div class="category-icon">
+            <i class="fas fa-lightbulb"></i>
+          </div>
+          <h3>Consejos</h3>
+          <p>Consejos prácticos para optimizar tus viajes y experiencia con VIA</p>
+          <span class="article-count">20 artículos</span>
+          <a href="#" class="btn-secondary">Explorar</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Suscribirse Section -->
+  <section class="subscribe" id="suscribirse">
+    <div class="container">
+      <div class="subscribe-container">
+        <div class="subscribe-content">
+          <h2>Mantente Informado</h2>
+          <p>Suscríbete a nuestro newsletter para recibir los artículos más recientes, noticias exclusivas y consejos de movilidad urbana directamente en tu correo</p>
+          <div class="subscribe-benefits">
+            <div class="benefit">
+              <i class="fas fa-check"></i>
+              <span>Artículos semanales sobre movilidad urbana</span>
+            </div>
+            <div class="benefit">
+              <i class="fas fa-check"></i>
+              <span>Noticias exclusivas sobre VIA</span>
+            </div>
+            <div class="benefit">
+              <i class="fas fa-check"></i>
+              <span>Consejos y trucos para optimizar tus viajes</span>
+            </div>
+            <div class="benefit">
+              <i class="fas fa-check"></i>
+              <span>Sin spam, solo contenido valioso</span>
+            </div>
+          </div>
+        </div>
+        <div class="subscribe-form">
+          <form id="subscribeForm">
+            <div class="form-group">
+              <label for="subscribeName">Nombre</label>
+              <input type="text" id="subscribeName" name="subscribeName" placeholder="Tu nombre">
+            </div>
+            <div class="form-group">
+              <label for="subscribeEmail">Correo Electrónico *</label>
+              <input type="email" id="subscribeEmail" name="subscribeEmail" placeholder="tu@email.com" required>
+            </div>
+            <div class="form-group">
+              <label for="subscribeInterests">Intereses</label>
+              <select id="subscribeInterests" name="subscribeInterests">
+                <option value="">Selecciona tus intereses</option>
+                <option value="all">Todos los temas</option>
+                <option value="security">Seguridad</option>
+                <option value="sustainability">Sostenibilidad</option>
+                <option value="technology">Tecnología</option>
+                <option value="community">Comunidad</option>
+                <option value="tips">Consejos</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="subscribePrivacy" name="subscribePrivacy" required>
+                <span class="checkmark"></span>
+                Acepto la <a href="./privacidad.html">Política de Privacidad</a> *
+              </label>
+            </div>
+            <button type="submit" class="btn-primary btn-large">
+              <i class="fas fa-paper-plane"></i>
+              Suscribirse
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <div class="cta-content">
+        <h2>¿Te Gustó Nuestro Contenido?</h2>
+        <p>Comparte nuestros artículos y ayúdanos a difundir el conocimiento sobre movilidad urbana sostenible</p>
+        <div class="cta-buttons">
+          <a href="#" class="btn-primary btn-large">
+            <i class="fas fa-share"></i>
+            Compartir en Redes
+          </a>
+          <a href="./contacto.html" class="btn-secondary btn-large">
+            <i class="fas fa-envelope"></i>
+            Sugerir Tema
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <div class="logo-circle">
+              <div class="logo-v">
+                <div class="logo-v-left"></div>
+                <div class="logo-v-right"></div>
+              </div>
+            </div>
+            <span class="logo-text">VIA</span>
+          </div>
+          <p>Transformando la movilidad urbana con tecnología e innovación.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h4>Servicios</h4>
+          <ul>
+            <li><a href="./servicios.html">Transporte Ejecutivo</a></li>
+            <li><a href="./servicios.html">Transporte Compartido</a></li>
+            <li><a href="./servicios.html">Entrega Express</a></li>
+            <li><a href="./servicios.html">Mensajería</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Empresa</h4>
+          <ul>
+            <li><a href="./nosotros.html">Nosotros</a></li>
+            <li><a href="./carreras.html">Carreras</a></li>
+            <li><a href="./prensa.html">Prensa</a></li>
+            <li><a href="./blog.html">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Soporte</h4>
+          <ul>
+            <li><a href="./ayuda.html">Centro de Ayuda</a></li>
+            <li><a href="./terminos.html">Términos de Servicio</a></li>
+            <li><a href="./privacidad.html">Política de Privacidad</a></li>
+            <li><a href="./contacto.html">Contacto</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 VIA. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal de Registro -->
+  <div id="modal-registro" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Crear Cuenta</h2>
+        <span class="close" id="cerrar-modal">&times;</span>
+      </div>
+      <form id="form-registro" class="modal-form">
+        <div class="form-group">
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" name="nombre" required>
+        </div>
+        <div class="form-group">
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" name="correo" required>
+        </div>
+        <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <input type="tel" id="telefono" name="telefono" required>
+        </div>
+        <div class="form-group">
+          <label for="direccion">Dirección</label>
+          <input type="text" id="direccion" name="direccion" required>
+        </div>
+        <div class="form-group">
+          <label for="contrasena">Contraseña</label>
+          <input type="password" id="contrasena" name="contrasena" required>
+        </div>
+        <button type="submit" class="btn-primary btn-full">
+          <i class="fas fa-user-plus"></i>
+          Crear Cuenta
+        </button>
+      </form>
+      <div class="modal-footer">
+        <p>¿Ya tienes cuenta? <a href="#" id="switch-to-login">Iniciar Sesión</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Inicio de Sesión -->
+  <div id="modal-login" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Iniciar Sesión</h2>
+        <span class="close" id="cerrar-modal-login">&times;</span>
+      </div>
+      <form id="form-login" class="modal-form">
+        <div class="form-group">
+          <label for="login-correo">Correo electrónico</label>
+          <input type="email" id="login-correo" name="login-correo" required>
+        </div>
+        <div class="form-group">
+          <label for="login-contrasena">Contraseña</label>
+          <input type="password" id="login-contrasena" name="login-contrasena" required>
+        </div>
+        <div class="form-options">
+          <label class="checkbox-label">
+            <input type="checkbox" id="remember-me">
+            <span>Recordarme</span>
+          </label>
+          <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+        </div>
+        <button type="submit" class="btn-primary btn-full">
+          <i class="fas fa-sign-in-alt"></i>
+          Iniciar Sesión
+        </button>
+      </form>
+      <div class="modal-footer">
+        <p>¿No tienes cuenta? <a href="#" id="switch-to-register">Registrarse</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="./script/index.js"></script>
+</body>
+
+</html>

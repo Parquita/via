@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VIA - Dashboard</title>
+  <link rel="stylesheet" href="./style/style.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Información del usuario -->
+    <div class="dashboard-card" id="info-usuario">
+      <h3>Información</h3>
+      <div><strong>Nombre:</strong> <span id="nombre-usuario">-</span></div>
+      <div><strong>Correo:</strong> <span id="correo-usuario">-</span></div>
+    </div>
+    <!-- Puntuación en estrellas -->
+    <div class="dashboard-card">
+      <h3>Puntuación</h3>
+      <div class="stars" id="puntuacion-estrellas">★★★★★</div>
+      <div><span id="valor-puntuacion">5.0</span> / 5</div>
+    </div>
+    <!-- Número de viajes -->
+    <div class="dashboard-card">
+      <h3># de viajes</h3>
+      <div class="viajes-num" id="num-viajes">0</div>
+      <div>Viajes realizados</div>
+    </div>
+  </div>
+  <script src="./script/dashboard.js"></script>
+</body>
+</html>

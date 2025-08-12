@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Servicios - VIA</title>
+  <link rel="stylesheet" href="./style/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+  <!-- Header/Navigation -->
+  <header class="header">
+    <div class="header-container">
+      <div class="logo">
+        <div class="logo-circle">
+          <div class="logo-v">
+            <div class="logo-v-left"></div>
+            <div class="logo-v-right"></div>
+          </div>
+        </div>
+        <span class="logo-text">VIA</span>
+      </div>
+      <nav class="nav">
+        <a href="./index.html" class="nav-link">Inicio</a>
+        <a href="./nosotros.html" class="nav-link">Nosotros</a>
+        <a href="./servicios.html" class="nav-link active">Servicios</a>
+        <a href="./ayuda.html" class="nav-link">Ayuda</a>
+        <button class="btn-secondary" id="btn-login">Iniciar Sesión</button>
+        <button class="btn-primary" id="btn-registrarse">Registrarse</button>
+      </nav>
+      <div class="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="inicio">
+    <div class="hero-container">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          Soluciones de <span class="highlight">Movilidad</span>
+        </h1>
+        <p class="hero-subtitle">
+          Desde viajes diarios hasta eventos especiales, VIA tiene la solución perfecta para cada necesidad de transporte
+        </p>
+        <div class="hero-buttons">
+          <a href="#servicios-principales" class="btn-primary btn-large">
+            <i class="fas fa-list"></i>
+            Explorar Servicios
+          </a>
+          <a href="#cotizar" class="btn-secondary btn-large">
+            <i class="fas fa-calculator"></i>
+            Obtener Cotización
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Servicios Principales Section -->
+  <section class="services" id="servicios-principales">
+    <div class="container">
+      <div class="section-header">
+        <h2>Servicios Principales</h2>
+        <p>Descubre nuestra gama completa de soluciones de movilidad urbana</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="fas fa-user-tie"></i>
+          </div>
+          <h3>Transporte Ejecutivo</h3>
+          <p>Servicio premium para viajes de negocios con vehículos de alta gama, conductores 
+             profesionales y atención personalizada.</p>
+          <div class="service-features">
+            <span><i class="fas fa-check"></i> Vehículos de lujo</span>
+            <span><i class="fas fa-check"></i> Conductores certificados</span>
+            <span><i class="fas fa-check"></i> Reservas anticipadas</span>
+            <span><i class="fas fa-check"></i> WiFi gratuito</span>
+          </div>
+          <div class="service-price">
+            <span class="price-label">Desde</span>
+            <span class="price-amount">$25.000</span>
+            <span class="price-unit">/viaje</span>
+          </div>
+          <a href="#cotizar" class="btn-primary btn-small">Cotizar Ahora</a>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3>Transporte Compartido</h3>
+          <p>Opción económica para compartir viajes con otros pasajeros. Reduce costos mientras 
+             contribuyes a la sostenibilidad ambiental.</p>
+          <div class="service-features">
+            <span><i class="fas fa-check"></i> Precios reducidos</span>
+            <span><i class="fas fa-check"></i> Rutas optimizadas</span>
+            <span><i class="fas fa-check"></i> Amigable con el medio ambiente</span>
+            <span><i class="fas fa-check"></i> Horarios flexibles</span>
+          </div>
+          <div class="service-price">
+            <span class="price-label">Desde</span>
+            <span class="price-amount">$8.000</span>
+            <span class="price-unit">/viaje</span>
+          </div>
+          <a href="#cotizar" class="btn-primary btn-small">Cotizar Ahora</a>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="fas fa-car"></i>
+          </div>
+          <h3>Transporte Estándar</h3>
+          <p>Nuestro servicio más popular, perfecto para viajes diarios, citas médicas, 
+             compras y cualquier desplazamiento urbano.</p>
+          <div class="service-features">
+            <span><i class="fas fa-check"></i> Vehículos confiables</span>
+            <span><i class="fas fa-check"></i> Conductores verificados</span>
+            <span><i class="fas fa-check"></i> Precios transparentes</span>
+            <span><i class="fas fa-check"></i> Disponibilidad 24/7</span>
+          </div>
+          <div class="service-price">
+            <span class="price-label">Desde</span>
+            <span class="price-amount">$12.000</span>
+            <span class="price-unit">/viaje</span>
+          </div>
+          <a href="#cotizar" class="btn-primary btn-small">Cotizar Ahora</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Servicios Especializados Section -->
+  <section class="specialized-services">
+    <div class="container">
+      <div class="section-header">
+        <h2>Servicios Especializados</h2>
+        <p>Soluciones personalizadas para necesidades específicas</p>
+      </div>
+      <div class="specialized-grid">
+        <div class="specialized-card">
+          <div class="card-image">
+            <img src="./style/image/vehiculo-multiple.jpg" alt="Transporte de Grupos">
+          </div>
+          <div class="card-content">
+            <h3>Transporte de Grupos</h3>
+            <p>Ideal para eventos corporativos, fiestas, viajes familiares o cualquier ocasión que requiera transportar múltiples personas.</p>
+            <ul class="service-benefits">
+              <li><i class="fas fa-check"></i> Capacidad hasta 15 pasajeros</li>
+              <li><i class="fas fa-check"></i> Coordinación de horarios</li>
+              <li><i class="fas fa-check"></i> Precios por grupo</li>
+            </ul>
+            <a href="#cotizar" class="btn-secondary">Solicitar Cotización</a>
+          </div>
+        </div>
+        <div class="specialized-card">
+          <div class="card-image">
+            <img src="./style/image/ofrecer-carro.jpg" alt="Transporte Nocturno">
+          </div>
+          <div class="card-content">
+            <h3>Transporte Nocturno</h3>
+            <p>Servicio especializado para viajes nocturnos con conductores experimentados y protocolos de seguridad adicionales.</p>
+            <ul class="service-benefits">
+              <li><i class="fas fa-check"></i> Conductores nocturnos certificados</li>
+              <li><i class="fas fa-check"></i> Verificación de identidad</li>
+              <li><i class="fas fa-check"></i> Seguimiento en tiempo real</li>
+            </ul>
+            <a href="#cotizar" class="btn-secondary">Solicitar Cotización</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cobertura y Zonas Section -->
+  <section class="coverage">
+    <div class="container">
+      <div class="section-header">
+        <h2>Cobertura y Zonas</h2>
+        <p>Estamos presentes en las principales ciudades y regiones de Colombia</p>
+      </div>
+      <div class="coverage-content">
+        <div class="coverage-map">
+          <img src="./style/image/mapa.jpg" alt="Mapa de Cobertura VIA">
+        </div>
+        <div class="coverage-list">
+          <div class="coverage-item">
+            <div class="coverage-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="coverage-info">
+              <h3>Bogotá</h3>
+              <p>Cobertura completa en toda la ciudad y municipios aledaños</p>
+            </div>
+          </div>
+          <div class="coverage-item">
+            <div class="coverage-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="coverage-info">
+              <h3>Medellín</h3>
+              <p>Servicio disponible en el Valle de Aburrá</p>
+            </div>
+          </div>
+          <div class="coverage-item">
+            <div class="coverage-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="coverage-info">
+              <h3>Cali</h3>
+              <p>Cobertura en la ciudad y alrededores</p>
+            </div>
+          </div>
+          <div class="coverage-item">
+            <div class="coverage-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="coverage-info">
+              <h3>Barranquilla</h3>
+              <p>Servicio en la ciudad y zona metropolitana</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta" id="cotizar">
+    <div class="container">
+      <div class="cta-content">
+        <h2>¿Necesitas un servicio personalizado?</h2>
+        <p>Nuestro equipo está listo para ayudarte a encontrar la solución perfecta para tus necesidades de transporte</p>
+        <div class="cta-buttons">
+          <a href="./contacto.html" class="btn-primary btn-large">
+            <i class="fas fa-phone"></i>
+            Contactar Asesor
+          </a>
+          <a href="#" class="btn-secondary btn-large">
+            <i class="fas fa-download"></i>
+            Descargar App
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <div class="logo-circle">
+              <div class="logo-v">
+                <div class="logo-v-left"></div>
+                <div class="logo-v-right"></div>
+              </div>
+            </div>
+            <span class="logo-text">VIA</span>
+          </div>
+          <p>Transformando la movilidad urbana con tecnología e innovación.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h4>Servicios</h4>
+          <ul>
+            <li><a href="./servicios.html">Transporte Ejecutivo</a></li>
+            <li><a href="./servicios.html">Transporte Compartido</a></li>
+            <li><a href="./servicios.html">Entrega Express</a></li>
+            <li><a href="./servicios.html">Mensajería</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Empresa</h4>
+          <ul>
+            <li><a href="./nosotros.html">Nosotros</a></li>
+            <li><a href="./carreras.html">Carreras</a></li>
+            <li><a href="./prensa.html">Prensa</a></li>
+            <li><a href="./blog.html">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Soporte</h4>
+          <ul>
+            <li><a href="./ayuda.html">Centro de Ayuda</a></li>
+            <li><a href="./terminos.html">Términos de Servicio</a></li>
+            <li><a href="./privacidad.html">Política de Privacidad</a></li>
+            <li><a href="./contacto.html">Contacto</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 VIA. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal de Registro -->
+  <div id="modal-registro" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Crear Cuenta</h2>
+        <span class="close" id="cerrar-modal">&times;</span>
+      </div>
+      <form id="form-registro" class="modal-form">
+        <div class="form-group">
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" name="nombre" required>
+        </div>
+        <div class="form-group">
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" name="correo" required>
+        </div>
+        <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <input type="tel" id="telefono" name="telefono" required>
+        </div>
+        <div class="form-group">
+          <label for="direccion">Dirección</label>
+          <input type="text" id="direccion" name="direccion" required>
+        </div>
+        <div class="form-group">
+          <label for="contrasena">Contraseña</label>
+          <input type="password" id="contrasena" name="contrasena" required>
+        </div>
+        <button type="submit" class="btn-primary btn-full">
+          <i class="fas fa-user-plus"></i>
+          Crear Cuenta
+        </button>
+      </form>
+      <div class="modal-footer">
+        <p>¿Ya tienes cuenta? <a href="#" id="switch-to-login">Iniciar Sesión</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Inicio de Sesión -->
+  <div id="modal-login" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Iniciar Sesión</h2>
+        <span class="close" id="cerrar-modal-login">&times;</span>
+      </div>
+      <form id="form-login" class="modal-form">
+        <div class="form-group">
+          <label for="login-correo">Correo electrónico</label>
+          <input type="email" id="login-correo" name="login-correo" required>
+        </div>
+        <div class="form-group">
+          <label for="login-contrasena">Contraseña</label>
+          <input type="password" id="login-contrasena" name="login-contrasena" required>
+        </div>
+        <div class="form-options">
+          <label class="checkbox-label">
+            <input type="checkbox" id="remember-me">
+            <span>Recordarme</span>
+          </label>
+          <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+        </div>
+        <button type="submit" class="btn-primary btn-full">
+          <i class="fas fa-sign-in-alt"></i>
+          Iniciar Sesión
+        </button>
+      </form>
+      <div class="modal-footer">
+        <p>¿No tienes cuenta? <a href="#" id="switch-to-register">Registrarse</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="./script/index.js"></script>
+</body>
+
+</html>

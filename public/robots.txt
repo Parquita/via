@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://via.com.co/sitemap.xml
+
+# Disallow admin areas
+Disallow: /dashboard/
+Disallow: /admin/
+
+# Allow important pages
+Allow: /nosotros
+Allow: /servicios
+Allow: /ayuda
+Allow: /contacto
+Allow: /carreras
+Allow: /prensa
+Allow: /blog
+Allow: /terminos
+Allow: /privacidad
+
+# Crawl delay (opcional)
+Crawl-delay: 1

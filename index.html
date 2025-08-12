@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VIA - Inicio</title>
+  <link rel="stylesheet" href="./style/style.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">    
+      <div class="logo">VIA</div>
+      <div class="nav">
+        <a href="#inicio">INICIO</a>
+        <a href="#" id="btn-registrarse">REGISTRASE</a>
+        <a href="#" id="btn-login">INICIAR SESIÓN</a>
+        <a href="#nosotros">NOSOTROS</a>
+        <a href="#acerca">ACERCA DE</a>
+        <a href="#ayuda">AYUDA</a>
+      </div>
+    </div>
+
+    <div class="content" id="inicio">
+      <div class="text-content">
+        <h1>Bienvenidos a VIA, viaje inteligente y accesible, para tu tranquilidad</h1>
+        <p>
+          Este sitio fue creado con el fin de cuidarte 24/7 en tus viajes. Disfruta de nuestros diferentes tipos de
+          transporte. Viaja seguro con nuestro servicio y de la comodidad mientras viajas.
+        </p>
+        <div class="buttons">
+          <button class="btn-info">MÁS INFORMACIÓN</button>
+          <button class="btn-join" onclick="window.location.href='./register.html'">ÚNETE AHORA</button>
+        </div>
+      </div>
+
+      <div class="image-content">
+        <img src="./style/image/ofrecer-carro.jpg"alt="Carro ilustrado">
+      </div>
+    </div>
+    <br><br>
+    <div class="content" id="nosotros">
+      <div class="text-content">
+        <h2>Nosotros</h2>
+        <p>Somos un grupo de estudiantes visionarios que buscan mejorar la movilidad urbana.</p>
+      </div>
+      <div class="image-content">
+        <img src="./style/image/seguridad.jpg" alt="Carro ilustrado">
+      </div>
+    </div>
+    <br><br>
+    <div class="content" id="acerca">
+      <div class="text-content">
+        <h2>Acerca de </h2>
+        <p>Somos una app de movilidad donde priorizamos a nuestros usuarios al momento de viajar con nosotros.</p>
+      </div>
+      <div class="image-content">
+        <img src="./style/image/cosa.jpg" alt="Carro ilustrado">
+      </div>
+    </div>
+    <br><br>
+    <div class="content" id="ayuda">
+      <div class="text-content">
+        <h2>Ayuda</h2>
+        <p>Puedes acceder a nuestro centro de ayuda desde la app</p>
+      </div>
+      <div class="image-content">
+        <img src="./style/image/carro-mano.jpg" alt="Carro ilustrado">
+      </div>
+    </div>
+  </div>
+
+<!-- Modal de Registro -->
+<div id="modal-registro" class="modal">
+  <div class="modal-content">
+    <span class="close" id="cerrar-modal">&times;</span>
+    <h2>Registro</h2>
+    <form id="form-registro">
+      <label for="nombre">Nombre:</label>
+      <input type="text" id="nombre" name="nombre" required>
+      <label for="correo">Correo electrónico:</label>
+      <input type="email" id="correo" name="correo" required>
+      <label for="contrasena">Contraseña:</label>
+      <input type="password" id="contrasena" name="contrasena" required>
+      <button type="submit">Registrarse</button>
+    </form>
+  </div>
+</div>
+
+<!-- Modal de Inicio de Sesión -->
+<div id="modal-login" class="modal">
+  <div class="modal-content">
+    <span class="close" id="cerrar-modal-login">&times;</span>
+    <h2>Iniciar Sesión</h2>
+    <form id="form-login">
+      <label for="login-correo">Correo electrónico:</label>
+      <input type="email" id="login-correo" name="login-correo" required>
+      <label for="login-contrasena">Contraseña:</label>
+      <input type="password" id="login-contrasena" name="login-contrasena" required>
+      <button type="submit">Iniciar Sesión</button>
+    </form>
+  </div>
+</div>
+<script src="./script/index.js"></script>
+</body>
+
+</html>

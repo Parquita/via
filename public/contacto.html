@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contacto - VIA</title>
+  <link rel="stylesheet" href="./style/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+  <!-- Header/Navigation -->
+  <header class="header">
+    <div class="header-container">
+      <div class="logo">
+        <div class="logo-circle">
+          <div class="logo-v">
+            <div class="logo-v-left"></div>
+            <div class="logo-v-right"></div>
+          </div>
+        </div>
+        <span class="logo-text">VIA</span>
+      </div>
+      <nav class="nav">
+        <a href="./index.html" class="nav-link">Inicio</a>
+        <a href="./nosotros.html" class="nav-link">Nosotros</a>
+        <a href="./servicios.html" class="nav-link">Servicios</a>
+        <a href="./ayuda.html" class="nav-link">Ayuda</a>
+        <button class="btn-secondary" id="btn-login">Iniciar Sesión</button>
+        <button class="btn-primary" id="btn-registrarse">Registrarse</button>
+      </nav>
+      <div class="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="inicio">
+    <div class="hero-container">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          Contáctanos <span class="highlight">Hoy</span>
+        </h1>
+        <p class="hero-subtitle">
+          Estamos aquí para ayudarte. Encuentra la forma más conveniente de contactarnos y obtén respuestas rápidas
+        </p>
+        <div class="hero-buttons">
+          <a href="#informacion-contacto" class="btn-primary btn-large">
+            <i class="fas fa-info-circle"></i>
+            Información de Contacto
+          </a>
+          <a href="#formulario-contacto" class="btn-secondary btn-large">
+            <i class="fas fa-envelope"></i>
+            Enviar Mensaje
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Información de Contacto Section -->
+  <section class="contact-info" id="informacion-contacto">
+    <div class="container">
+      <div class="section-header">
+        <h2>Información de Contacto</h2>
+        <p>Múltiples formas de ponerte en contacto con nuestro equipo</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="contact-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <h3>Oficina Principal</h3>
+          <p>Calle 123 #45-67<br>Bogotá, Colombia</p>
+          <div class="contact-details">
+            <span class="detail-label">Horarios:</span>
+            <span class="detail-value">Lun-Vie 8:00 AM - 6:00 PM</span>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">
+            <i class="fas fa-phone"></i>
+          </div>
+          <h3>Teléfono</h3>
+          <p>+57 (1) 300 123 4567</p>
+          <div class="contact-details">
+            <span class="detail-label">Atención:</span>
+            <span class="detail-value">24/7 para emergencias</span>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <h3>Correo Electrónico</h3>
+          <p>info@via.com.co</p>
+          <div class="contact-details">
+            <span class="detail-label">Respuesta:</span>
+            <span class="detail-value">En menos de 24 horas</span>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <h3>Soporte Técnico</h3>
+          <p>soporte@via.com.co</p>
+          <div class="contact-details">
+            <span class="detail-label">Disponibilidad:</span>
+            <span class="detail-value">24/7</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Formulario de Contacto Section -->
+  <section class="contact-form" id="formulario-contacto">
+    <div class="container">
+      <div class="form-container">
+        <div class="form-header">
+          <h2>Envíanos un Mensaje</h2>
+          <p>Completa el formulario y te responderemos lo antes posible</p>
+        </div>
+        <form class="contact-form-element" id="contactForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">Nombre *</label>
+              <input type="text" id="firstName" name="firstName" required>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Apellido *</label>
+              <input type="text" id="lastName" name="lastName" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Correo Electrónico *</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+              <label for="phone">Teléfono</label>
+              <input type="tel" id="phone" name="phone">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="subject">Asunto *</label>
+            <select id="subject" name="subject" required>
+              <option value="">Selecciona un asunto</option>
+              <option value="general">Consulta General</option>
+              <option value="support">Soporte Técnico</option>
+              <option value="business">Oportunidades de Negocio</option>
+              <option value="partnership">Alianzas Estratégicas</option>
+              <option value="feedback">Comentarios y Sugerencias</option>
+              <option value="other">Otro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Mensaje *</label>
+            <textarea id="message" name="message" rows="6" placeholder="Describe tu consulta o mensaje aquí..." required></textarea>
+          </div>
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="newsletter" name="newsletter">
+              <span class="checkmark"></span>
+              Quiero recibir noticias y actualizaciones de VIA
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="privacy" name="privacy" required>
+              <span class="checkmark"></span>
+              Acepto la <a href="./privacidad.html">Política de Privacidad</a> *
+            </label>
+          </div>
+          <button type="submit" class="btn-primary btn-large">
+            <i class="fas fa-paper-plane"></i>
+            Enviar Mensaje
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Redes Sociales Section -->
+  <section class="social-media">
+    <div class="container">
+      <div class="section-header">
+        <h2>Síguenos en Redes Sociales</h2>
+        <p>Mantente conectado con VIA y entérate de las últimas novedades</p>
+      </div>
+      <div class="social-grid">
+        <div class="social-card">
+          <div class="social-icon">
+            <i class="fab fa-facebook"></i>
+          </div>
+          <h3>Facebook</h3>
+          <p>Síguenos para noticias, promociones y contenido exclusivo</p>
+          <a href="#" class="btn-secondary">Seguir en Facebook</a>
+        </div>
+        <div class="social-card">
+          <div class="social-icon">
+            <i class="fab fa-instagram"></i>
+          </div>
+          <h3>Instagram</h3>
+          <p>Descubre historias inspiradoras y momentos especiales</p>
+          <a href="#" class="btn-secondary">Seguir en Instagram</a>
+        </div>
+        <div class="social-card">
+          <div class="social-icon">
+            <i class="fab fa-twitter"></i>
+          </div>
+          <h3>Twitter</h3>
+          <p>Mantente al día con las últimas noticias y actualizaciones</p>
+          <a href="#" class="btn-secondary">Seguir en Twitter</a>
+        </div>
+        <div class="social-card">
+          <div class="social-icon">
+            <i class="fab fa-linkedin"></i>
+          </div>
+          <h3>LinkedIn</h3>
+          <p>Conecta con nosotros profesionalmente</p>
+          <a href="#" class="btn-secondary">Seguir en LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <div class="cta-content">
+        <h2>¿Necesitas ayuda inmediata?</h2>
+        <p>Nuestro equipo de soporte está disponible 24/7 para asistirte</p>
+        <div class="cta-buttons">
+          <a href="tel:+573001234567" class="btn-primary btn-large">
+            <i class="fas fa-phone"></i>
+            Llamar Ahora
+          </a>
+          <a href="#" class="btn-secondary btn-large">
+            <i class="fas fa-comments"></i>
+            Chat en Vivo
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <div class="logo-circle">
+              <div class="logo-v">
+                <div class="logo-v-left"></div>
+                <div class="logo-v-right"></div>
+              </div>
+            </div>
+            <span class="logo-text">VIA</span>
+          </div>
+          <p>Transformando la movilidad urbana con tecnología e innovación.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h4>Servicios</h4>
+          <ul>
+            <li><a href="./servicios.html">Transporte Ejecutivo</a></li>
+            <li><a href="./servicios.html">Transporte Compartido</a></li>
+            <li><a href="./servicios.html">Entrega Express</a></li>
+            <li><a href="./servicios.html">Mensajería</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Empresa</h4>
+          <ul>
+            <li><a href="./nosotros.html">Nosotros</a></li>
+            <li><a href="./carreras.html">Carreras</a></li>
+            <li><a href="./prensa.html">Prensa</a></li>
+            <li><a href="./blog.html">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Soporte</h4>
+          <ul>
+            <li><a href="./ayuda.html">Centro de Ayuda</a></li>
+            <li><a href="./terminos.html">Términos de Servicio</a></li>
+            <li><a href="./privacidad.html">Política de Privacidad</a></li>
+            <li><a href="./contacto.html">Contacto</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 VIA. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal de Registro -->
+  <div id="modal-registro" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Crear Cuenta</h2>
+        <span class="close" id="cerrar-modal">&times;</span>
+      </div>
+      <form id="form-registro" class="modal-form">
+        <div class="form-group">
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" name="nombre" required>
+        </div>
+        <div class="form-group">
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" name="correo" required>
+        </div>
+        <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <input type="tel" id="telefono" name="telefono" required>
+        </div>
+        <div class="form-group">
+          <label for="direccion">Dirección</label>
+          <input type="text" id="direccion" name="direccion" required>
+        </div>
+        <div class="form-group">
+          <label for="contrasena">Contraseña</label>
+          <input type="password" id="contrasena" name="contrasena" required>
+        </div>
+        <button type="submit" class="btn-primary btn-full">
+          <i class="fas fa-user-plus"></i>
+          Crear Cuenta
+        </button>
+      </form>
+      <div class="modal-footer">
+        <p>¿Ya tienes cuenta? <a href="#" id="switch-to-login">Iniciar Sesión</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Inicio de Sesión -->
+  <div id="modal-login" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Iniciar Sesión</h2>
+        <span class="close" id="cerrar-modal-login">&times;</span>
+      </div>
+      <form id="form-login" class="modal-form">
+        <div class="form-group">
+          <label for="login-correo">Correo electrónico</label>
+          <input type="email" id="login-correo" name="login-correo" required>
+        </div>
+        <div class="form-group">
+          <label for="login-contrasena">Contraseña</label>
+          <input type="password" id="login-contrasena" name="login-contrasena" required>
+        </div>
+        <div class="form-options">
+          <label class="checkbox-label">
+            <input type="checkbox" id="remember-me">
+            <span>Recordarme</span>
+          </label>
+          <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+        </div>
+        <button type="submit" class="btn-primary btn-full">
+          <i class="fas fa-sign-in-alt"></i>
+          Iniciar Sesión
+        </button>
+      </form>
+      <div class="modal-footer">
+        <p>¿No tienes cuenta? <a href="#" id="switch-to-register">Registrarse</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="./script/index.js"></script>
+</body>
+
+</html>
