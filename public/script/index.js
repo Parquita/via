@@ -228,9 +228,26 @@ document.addEventListener('DOMContentLoaded', function() {
   localStorage.setItem('usuarioLogueado', JSON.stringify(usuario));
   setTimeout(() => {
     mensajeLogin.textContent = '';
-    modalLogin.style.display = 'none';
-    // Redirigir al dashboard
-    window.location.href = 'dashboard.html';
+    // Redirigir al dashboard según el tipo de usuario
+    const tipoUsuario = usuario.tipoUsuario;
+    let dashboardUrl = '';
+    
+    switch(tipoUsuario) {
+      case 'admin':
+        dashboardUrl = 'dashboard/admin.html';
+        break;
+      case 'conductor':
+        dashboardUrl = 'dashboard/conductor.html';
+        break;
+      case 'pasajero':
+        dashboardUrl = 'dashboard/pasajero.html';
+        break;
+      default:
+        dashboardUrl = 'dashboard/pasajero.html'; // Por defecto redirige a pasajero
+        break;
+    }
+    
+    window.location.href = dashboardUrl;
   }, 1200);
     });
   }
