@@ -3124,12 +3124,26 @@ p {
 /* Estilos para el dashboard */
 .dashboard-container {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 60px;
+  margin-left: 250px;
+  gap: 30px;
+}
+
+.dashboard-cards {
+  display: flex;
   justify-content: center;
   align-items: flex-start;
   gap: 30px;
-  margin-top: 60px;
   flex-wrap: wrap;
-  margin-left: 250px;
+}
+
+.Boton-viaje {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
 }
 .dashboard-card {
   background: #fff;
@@ -3155,6 +3169,290 @@ p {
   font-size: 2.2em;
   color: #007bff;
   margin-bottom: 8px;
+}
+
+/* ===== VIAJES PENDIENTES ===== */
+.viajes-pendientes {
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 2rem;
+  margin-top: 2rem;
+  max-width: 800px;
+  width: 100%;
+}
+
+.viajes-pendientes h3 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.lista-viajes {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.viaje-item {
+  background: var(--gray-50);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  border-left: 4px solid var(--primary-color);
+  transition: var(--transition);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.viaje-item:hover {
+  background: var(--gray-100);
+  transform: translateX(5px);
+  box-shadow: var(--shadow-md);
+}
+
+.info-pasajero {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nombre-pasajero {
+  font-weight: 600;
+  color: var(--gray-900);
+  font-size: 1.1rem;
+}
+
+.puntuacion-pasajero {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.puntuacion-estrellas {
+  color: #FFD700;
+  font-size: 1rem;
+}
+
+.valor-puntuacion {
+  color: var(--gray-600);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.acciones-viaje {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-aceptar {
+  background: var(--accent-color);
+  color: var(--white);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-aceptar:hover {
+  background: var(--accent-dark);
+  transform: translateY(-1px);
+}
+
+.btn-rechazar {
+  background: var(--gray-300);
+  color: var(--gray-700);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-rechazar:hover {
+  background: var(--gray-400);
+  transform: translateY(-1px);
+}
+
+.estado-viaje {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--border-radius);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.estado-pendiente {
+  background: var(--secondary-color);
+  color: var(--white);
+}
+
+.estado-aceptado {
+  background: var(--accent-color);
+  color: var(--white);
+}
+
+.estado-rechazado {
+  background: var(--gray-500);
+  color: var(--white);
+}
+
+/* Estado vacío */
+.viajes-vacios {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: var(--gray-500);
+}
+
+.viajes-vacios i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--gray-300);
+}
+
+.viajes-vacios h4 {
+  color: var(--gray-600);
+  margin-bottom: 0.5rem;
+}
+
+.viajes-vacios p {
+  color: var(--gray-500);
+  font-size: 0.9rem;
+}
+
+/* ===== VIAJES ACTIVOS ===== */
+.viajes-activos {
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 2rem;
+  margin-top: 2rem;
+  max-width: 800px;
+  width: 100%;
+}
+
+.viajes-activos h3 {
+  color: var(--accent-color);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.lista-viajes-activos {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.viaje-activo-item {
+  background: var(--gray-50);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  border-left: 4px solid var(--accent-color);
+  transition: var(--transition);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.viaje-activo-item:hover {
+  background: var(--gray-100);
+  transform: translateX(5px);
+  box-shadow: var(--shadow-md);
+}
+
+.info-viaje-activo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.nombre-viaje-activo {
+  font-weight: 600;
+  color: var(--gray-900);
+  font-size: 1.1rem;
+}
+
+.detalles-viaje {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+  color: var(--gray-600);
+}
+
+.detalle-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.detalle-item i {
+  color: var(--accent-color);
+  width: 16px;
+}
+
+.estado-activo {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--border-radius);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--accent-color);
+  color: var(--white);
+}
+
+.acciones-viaje-activo {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.btn-completar {
+  background: var(--accent-color);
+  color: var(--white);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-completar:hover {
+  background: var(--accent-dark);
+  transform: translateY(-1px);
+}
+
+.btn-cancelar {
+  background: var(--gray-300);
+  color: var(--gray-700);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-cancelar:hover {
+  background: var(--gray-400);
+  transform: translateY(-1px);
+}
+
+.tiempo-transcurrido {
+  font-size: 0.8rem;
+  color: var(--gray-500);
+  font-style: italic;
 }
 
 
