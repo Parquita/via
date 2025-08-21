@@ -4,39 +4,342 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>VIA - Dashboard</title>
+  <title>VIA - Dashboard Administrador</title>
   <link rel="stylesheet" href="../style/style.css">
+  <link rel="stylesheet" href="../style/dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body style="background-image: url(../style/image/mapa.jpg); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
-  <aside>
-    <!-- Información del usuario -->
-    <img src="../style/image/cosa.jpg" alt="Logo VIA">
-    <h3>INFORMACION</h3>
-    <div><strong>Nombre:</strong> <span id="nombre-usuario">-</span></div>
-    <div><strong>Correo:</strong> <span id="correo-usuario">-</span></div>
-    <div><strong>Telefono:</strong> <span id="telefono-usuario">-</span></div>
-    <div><strong>Direccion:</strong> <span id="direccion-usuario">-</span></div>
+<body>
+  <!-- Sidebar de navegación -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <div class="logo-container">
+        <img src="../style/image/via.jpg" alt="Logo VIA" class="logo-img">
+        <span class="logo-text">VIA Admin</span>
+      </div>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <a href="#dashboard" class="nav-item active" data-section="dashboard">
+        <i class="fas fa-tachometer-alt"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="#usuarios" class="nav-item" data-section="usuarios">
+        <i class="fas fa-users"></i>
+        <span>Usuarios</span>
+      </a>
+      <a href="#viajes" class="nav-item" data-section="viajes">
+        <i class="fas fa-route"></i>
+        <span>Viajes</span>
+      </a>
+      <a href="#reportes" class="nav-item" data-section="reportes">
+        <i class="fas fa-chart-bar"></i>
+        <span>Reportes</span>
+      </a>
+      <a href="#configuracion" class="nav-item" data-section="configuracion">
+        <i class="fas fa-cog"></i>
+        <span>Configuración</span>
+      </a>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <div class="admin-info">
+        <img src="../style/image/cosa.jpg" alt="Admin" class="admin-avatar">
+        <div class="admin-details">
+          <div class="admin-name" id="admin-nombre">Administrador</div>
+          <div class="admin-role">Super Admin</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="cerrarSesion()">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+    </div>
   </aside>
 
-
-  <div class="dashboard-container">
-    <div class="dashboard-cards">
-      <!-- Puntuación en estrellas -->
-      <div class="dashboard-card">
-        <h3>Puntuación</h3>
-        <div class="stars" id="puntuacion-estrellas">★★★★★</div>
-        <div><span id="valor-puntuacion">5.0</span> / 5</div>
+  <!-- Contenido principal -->
+  <main class="admin-main">
+    <!-- Header superior -->
+    <header class="admin-header">
+      <div class="header-left">
+        <h1 id="header-title">Dashboard General</h1>
+        <p class="header-subtitle">Resumen de la plataforma VIA</p>
       </div>
-      <!-- Número de viajes -->
-      <div class="dashboard-card">
-        <h3># de viajes</h3>
-        <div class="viajes-num" id="num-viajes">0</div>
-        <div>Viajes realizados</div>
+      <div class="header-right">
+        <div class="header-actions">
+          <button class="btn-notification" onclick="toggleNotificaciones()">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge" id="notification-count">3</span>
+          </button>
+          <div class="date-time">
+            <div class="current-date" id="current-date">Lunes, 15 Enero 2024</div>
+            <div class="current-time" id="current-time">14:30:25</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Contenido del dashboard -->
+    <div class="admin-content">
+      <!-- Sección Dashboard -->
+      <section id="dashboard-section" class="content-section active">
+        <!-- Métricas principales -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="metric-content">
+              <div class="metric-value" id="total-usuarios">2,847</div>
+              <div class="metric-label">Usuarios Totales</div>
+              <div class="metric-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+12.5%</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="metric-card">
+            <div class="metric-icon">
+              <i class="fas fa-route"></i>
+            </div>
+            <div class="metric-content">
+              <div class="metric-value" id="viajes-hoy">156</div>
+              <div class="metric-label">Viajes Hoy</div>
+              <div class="metric-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+8.3%</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="metric-card">
+            <div class="metric-icon">
+              <i class="fas fa-dollar-sign"></i>
+            </div>
+            <div class="metric-content">
+              <div class="metric-value" id="ingresos-hoy">$2,847</div>
+              <div class="metric-label">Ingresos Hoy</div>
+              <div class="metric-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+15.2%</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="metric-card">
+            <div class="metric-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <div class="metric-content">
+              <div class="metric-value" id="rating-promedio">4.8</div>
+              <div class="metric-label">Rating Promedio</div>
+              <div class="metric-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+0.2</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gráficos y estadísticas -->
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>Viajes por Día (Última Semana)</h3>
+              <div class="chart-actions">
+                <button class="btn-chart-period active" data-period="week">Semana</button>
+                <button class="btn-chart-period" data-period="month">Mes</button>
+              </div>
+            </div>
+            <canvas id="viajesChart" width="400" height="200"></canvas>
+          </div>
+          
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>Distribución de Usuarios</h3>
+            </div>
+            <canvas id="usuariosChart" width="400" height="200"></canvas>
+          </div>
+        </div>
+
+        <!-- Actividad reciente -->
+        <div class="activity-section">
+          <div class="section-header">
+            <h3>Actividad Reciente</h3>
+            <button class="btn-view-all">Ver Todo</button>
+          </div>
+          <div class="activity-list" id="activity-list">
+            <!-- Las actividades se cargarán dinámicamente -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección Usuarios -->
+      <section id="usuarios-section" class="content-section">
+        <div class="section-header">
+          <h2>Gestión de Usuarios</h2>
+          <div class="header-actions">
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input type="text" placeholder="Buscar usuarios..." id="search-usuarios">
+            </div>
+            <button class="btn-primary" onclick="exportarUsuarios()">
+              <i class="fas fa-download"></i>
+              Exportar
+            </button>
+          </div>
+        </div>
+        
+        <div class="users-table-container">
+          <table class="users-table">
+            <thead>
+              <tr>
+                <th>Usuario</th>
+                <th>Tipo</th>
+                <th>Estado</th>
+                <th>Último Acceso</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="users-table-body">
+              <!-- Los usuarios se cargarán dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Sección Viajes -->
+      <section id="viajes-section" class="content-section">
+        <div class="section-header">
+          <h2>Gestión de Viajes</h2>
+          <div class="header-actions">
+            <select id="filter-estado" class="filter-select">
+              <option value="">Todos los estados</option>
+              <option value="pendiente">Pendiente</option>
+              <option value="activo">Activo</option>
+              <option value="completado">Completado</option>
+              <option value="cancelado">Cancelado</option>
+            </select>
+            <button class="btn-primary" onclick="generarReporteViajes()">
+              <i class="fas fa-file-alt"></i>
+              Reporte
+            </button>
+          </div>
+        </div>
+        
+        <div class="trips-table-container">
+          <table class="trips-table">
+            <thead>
+              <tr>
+                <th>ID Viaje</th>
+                <th>Conductor</th>
+                <th>Pasajero</th>
+                <th>Estado</th>
+                <th>Distancia</th>
+                <th>Precio</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="trips-table-body">
+              <!-- Los viajes se cargarán dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Sección Reportes -->
+      <section id="reportes-section" class="content-section">
+        <div class="section-header">
+          <h2>Reportes y Analytics</h2>
+          <div class="header-actions">
+            <button class="btn-primary" onclick="generarReporteCompleto()">
+              <i class="fas fa-chart-line"></i>
+              Generar Reporte
+            </button>
+          </div>
+        </div>
+        
+        <div class="reports-grid">
+          <div class="report-card">
+            <h3>Reporte de Ingresos</h3>
+            <canvas id="ingresosChart" width="400" height="200"></canvas>
+          </div>
+          
+          <div class="report-card">
+            <h3>Top Conductores</h3>
+            <div class="top-drivers-list" id="top-drivers">
+              <!-- Lista de conductores top -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección Configuración -->
+      <section id="configuracion-section" class="content-section">
+        <div class="section-header">
+          <h2>Configuración del Sistema</h2>
+        </div>
+        
+        <div class="config-grid">
+          <div class="config-card">
+            <h3>Configuración General</h3>
+            <form class="config-form">
+              <div class="form-group">
+                <label>Nombre de la Plataforma</label>
+                <input type="text" value="VIA" id="platform-name">
+              </div>
+              <div class="form-group">
+                <label>Comisión por Viaje (%)</label>
+                <input type="number" value="15" id="commission-rate" min="0" max="50">
+              </div>
+              <div class="form-group">
+                <label>Radio de Búsqueda (km)</label>
+                <input type="number" value="5" id="search-radius" min="1" max="20">
+              </div>
+              <button type="submit" class="btn-primary">Guardar Cambios</button>
+            </form>
+          </div>
+          
+          <div class="config-card">
+            <h3>Notificaciones</h3>
+            <div class="notification-settings">
+              <label class="checkbox-label">
+                <input type="checkbox" checked id="email-notifications">
+                <span>Notificaciones por Email</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" checked id="push-notifications">
+                <span>Notificaciones Push</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" id="sms-notifications">
+                <span>Notificaciones SMS</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Modal de notificaciones -->
+  <div id="notifications-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Notificaciones</h3>
+        <span class="close" onclick="closeNotificationsModal()">&times;</span>
+      </div>
+      <div class="modal-body" id="notifications-list">
+        <!-- Las notificaciones se cargarán aquí -->
       </div>
     </div>
   </div>
+
   <script src="../script/dashboard.js"></script>
+  <script src="../script/admin-dashboard.js"></script>
 </body>
 
 </html>

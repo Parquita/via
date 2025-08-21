@@ -4,46 +4,531 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>VIA - Dashboard</title>
+  <title>VIA - Dashboard Pasajero</title>
   <link rel="stylesheet" href="../style/style.css">
+  <link rel="stylesheet" href="../style/dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body style="background-image: url(../style/image/mapa.jpg); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
-  <aside>
-    <!-- Información del usuario -->
-    <img src="../style/image/cosa.jpg" alt="Logo VIA">
-    <h3>INFORMACION</h3>
-    <div><strong>Nombre:</strong> <span id="nombre-usuario">-</span></div>
-    <div><strong>Correo:</strong> <span id="correo-usuario">-</span></div>
-    <div><strong>Telefono:</strong> <span id="telefono-usuario">-</span></div>
-    <div><strong>Direccion:</strong> <span id="direccion-usuario">-</span></div>
-  </aside>
-
-
-  <div class="dashboard-container">
-    <div class="dashboard-cards">
-      <!-- Puntuación en estrellas -->
-      <div class="dashboard-card">
-        <h3>Puntuación</h3>
-        <div class="stars" id="puntuacion-estrellas">★★★★★</div>
-        <div><span id="valor-puntuacion">5.0</span> / 5</div>
-      </div>
-      <!-- Número de viajes -->
-      <div class="dashboard-card">
-        <h3># de viajes</h3>
-        <div class="viajes-num" id="num-viajes">0</div>
-        <div>Viajes realizados</div>
+<body>
+  <!-- Sidebar de navegación -->
+  <aside class="passenger-sidebar">
+    <div class="sidebar-header">
+      <div class="logo-container">
+        <img src="../style/image/via.jpg" alt="Logo VIA" class="logo-img">
+        <span class="logo-text">VIA Passenger</span>
       </div>
     </div>
-
-    <div class="Boton-viaje">
-      <button class="btn-primary btn-large" id="btn-pedir-viaje">
-        <i class="fas fa-car"></i>
-        Pedir Viaje
+    
+    <nav class="sidebar-nav">
+      <a href="#dashboard" class="nav-item active" data-section="dashboard">
+        <i class="fas fa-home"></i>
+        <span>Inicio</span>
+      </a>
+      <a href="#viajes" class="nav-item" data-section="viajes">
+        <i class="fas fa-route"></i>
+        <span>Mis Viajes</span>
+      </a>
+      <a href="#pagos" class="nav-item" data-section="pagos">
+        <i class="fas fa-credit-card"></i>
+        <span>Pagos</span>
+      </a>
+      <a href="#favoritos" class="nav-item" data-section="favoritos">
+        <i class="fas fa-heart"></i>
+        <span>Favoritos</span>
+      </a>
+      <a href="#perfil" class="nav-item" data-section="perfil">
+        <i class="fas fa-user"></i>
+        <span>Mi Perfil</span>
+      </a>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <div class="passenger-info">
+        <img src="../style/image/cosa.jpg" alt="Pasajero" class="passenger-avatar">
+        <div class="passenger-details">
+          <div class="passenger-name" id="passenger-nombre">Pasajero</div>
+          <div class="passenger-level">
+            <span class="level-badge gold" id="level-badge">Gold</span>
+            <span id="level-text">Miembro Gold</span>
+          </div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="cerrarSesion()">
+        <i class="fas fa-sign-out-alt"></i>
       </button>
     </div>
+  </aside>
+
+  <!-- Contenido principal -->
+  <main class="passenger-main">
+    <!-- Header superior -->
+    <header class="passenger-header">
+      <div class="header-left">
+        <h1 id="header-title">¡Hola! ¿A dónde vamos?</h1>
+        <p class="header-subtitle">Solicita tu viaje de forma rápida y segura</p>
+      </div>
+      <div class="header-right">
+        <div class="header-actions">
+          <button class="btn-notification" onclick="toggleNotificaciones()">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge" id="notification-count">1</span>
+          </button>
+          <div class="current-time" id="current-time">14:30:25</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Contenido del dashboard -->
+    <div class="passenger-content">
+      <!-- Sección Dashboard -->
+      <section id="dashboard-section" class="content-section active">
+        <!-- Solicitud de viaje principal -->
+        <div class="trip-request-container">
+          <div class="trip-form">
+            <div class="form-header">
+              <h2>Solicitar Viaje</h2>
+              <div class="trip-type-selector">
+                <button class="trip-type-btn active" data-type="standard">
+                  <i class="fas fa-car"></i>
+                  <span>Estándar</span>
+                </button>
+                <button class="trip-type-btn" data-type="premium">
+                  <i class="fas fa-car-side"></i>
+                  <span>Premium</span>
+                </button>
+                <button class="trip-type-btn" data-type="pool">
+                  <i class="fas fa-users"></i>
+                  <span>Compartido</span>
+                </button>
+              </div>
+            </div>
+            
+            <div class="location-inputs">
+              <div class="input-group">
+                <i class="fas fa-map-marker-alt origin-icon"></i>
+                <input type="text" placeholder="¿Dónde estás?" id="origin-input" class="location-input">
+                <button class="btn-current-location" onclick="usarUbicacionActual()">
+                  <i class="fas fa-crosshairs"></i>
+                </button>
+              </div>
+              
+              <div class="input-group">
+                <i class="fas fa-map-marker-alt destination-icon"></i>
+                <input type="text" placeholder="¿A dónde vas?" id="destination-input" class="location-input">
+                <button class="btn-favorites" onclick="mostrarFavoritos()">
+                  <i class="fas fa-heart"></i>
+                </button>
+              </div>
+            </div>
+            
+            <div class="trip-options">
+              <div class="option-group">
+                <label>Fecha y Hora</label>
+                <div class="datetime-inputs">
+                  <input type="date" id="trip-date" value="">
+                  <input type="time" id="trip-time" value="">
+                </div>
+              </div>
+              
+              <div class="option-group">
+                <label>Número de Pasajeros</label>
+                <div class="passenger-count">
+                  <button class="btn-count" onclick="decrementarPasajeros()">-</button>
+                  <span id="passenger-count">1</span>
+                  <button class="btn-count" onclick="incrementarPasajeros()">+</button>
+                </div>
+              </div>
+            </div>
+            
+            <button class="btn-request-trip" onclick="solicitarViaje()" id="btn-request-trip">
+              <i class="fas fa-search"></i>
+              Buscar Conductor
+            </button>
+          </div>
+          
+          <div class="trip-preview">
+            <div class="preview-header">
+              <h3>Resumen del Viaje</h3>
+            </div>
+            <div class="preview-content" id="trip-preview-content">
+              <div class="preview-placeholder">
+                <i class="fas fa-route"></i>
+                <p>Ingresa origen y destino para ver el resumen</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Métricas del usuario -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-icon">
+              <i class="fas fa-route"></i>
+            </div>
+            <div class="metric-content">
+              <div class="metric-value" id="viajes-totales">47</div>
+              <div class="metric-label">Viajes Totales</div>
+              <div class="metric-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+3</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="metric-card">
+            <div class="metric-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <div class="metric-content">
+              <div class="metric-value" id="rating-promedio">4.8</div>
+              <div class="metric-label">Rating Promedio</div>
+              <div class="metric-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+0.2</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="metric-card">
+            <div class="metric-icon">
+              <i class="fas fa-dollar-sign"></i>
+            </div>
+            <div class="metric-content">
+              <div class="metric-value" id="gasto-total">$247.50</div>
+              <div class="metric-label">Gasto Total</div>
+              <div class="metric-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+$45.80</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="metric-card">
+            <div class="metric-icon">
+              <i class="fas fa-calendar"></i>
+            </div>
+            <div class="metric-content">
+              <div class="metric-value" id="dias-activo">23</div>
+              <div class="metric-label">Días Activo</div>
+              <div class="metric-change neutral">
+                <i class="fas fa-minus"></i>
+                <span>0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Viajes recientes -->
+        <div class="recent-trips-section">
+          <div class="section-header">
+            <h3>Viajes Recientes</h3>
+            <button class="btn-view-all" onclick="verTodosLosViajes()">Ver Todos</button>
+          </div>
+          <div class="recent-trips-grid" id="recent-trips-grid">
+            <!-- Los viajes recientes se cargarán aquí -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección Viajes -->
+      <section id="viajes-section" class="content-section">
+        <div class="section-header">
+          <h2>Historial de Viajes</h2>
+          <div class="header-actions">
+            <select id="filter-status" class="filter-select">
+              <option value="">Todos los estados</option>
+              <option value="completado">Completados</option>
+              <option value="cancelado">Cancelados</option>
+              <option value="en_curso">En Curso</option>
+            </select>
+            <button class="btn-primary" onclick="exportarHistorial()">
+              <i class="fas fa-download"></i>
+              Exportar
+            </button>
+          </div>
+        </div>
+        
+        <div class="trips-table-container">
+          <table class="trips-table">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Conductor</th>
+                <th>Origen</th>
+                <th>Destino</th>
+                <th>Precio</th>
+                <th>Estado</th>
+                <th>Rating</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="trips-table-body">
+              <!-- Los viajes se cargarán dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Sección Pagos -->
+      <section id="pagos-section" class="content-section">
+        <div class="section-header">
+          <h2>Métodos de Pago</h2>
+          <button class="btn-primary" onclick="agregarMetodoPago()">
+            <i class="fas fa-plus"></i>
+            Agregar Método
+          </button>
+        </div>
+        
+        <div class="payment-methods-grid">
+          <div class="payment-method-card active" data-method="card-1">
+            <div class="method-info">
+              <div class="card-icon">
+                <i class="fab fa-cc-visa"></i>
+              </div>
+              <div class="card-details">
+                <div class="card-number">•••• •••• •••• 1234</div>
+                <div class="card-name">Juan Pérez</div>
+                <div class="card-expiry">Expira 12/25</div>
+              </div>
+            </div>
+            <div class="method-actions">
+              <button class="btn-edit-method" onclick="editarMetodoPago('card-1')">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn-remove-method" onclick="eliminarMetodoPago('card-1')">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="payment-method-card" data-method="card-2">
+            <div class="method-info">
+              <div class="card-icon">
+                <i class="fab fa-cc-mastercard"></i>
+              </div>
+              <div class="card-details">
+                <div class="card-number">•••• •••• •••• 5678</div>
+                <div class="card-name">Juan Pérez</div>
+                <div class="card-expiry">Expira 08/26</div>
+              </div>
+            </div>
+            <div class="method-actions">
+              <button class="btn-edit-method" onclick="editarMetodoPago('card-2')">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn-remove-method" onclick="eliminarMetodoPago('card-2')">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="add-payment-method">
+            <i class="fas fa-plus"></i>
+            <span>Agregar Método de Pago</span>
+          </div>
+        </div>
+        
+        <div class="payment-history">
+          <h3>Historial de Pagos</h3>
+          <div class="payment-history-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Descripción</th>
+                  <th>Método</th>
+                  <th>Monto</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody id="payment-history-body">
+                <!-- El historial de pagos se cargará aquí -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección Favoritos -->
+      <section id="favoritos-section" class="content-section">
+        <div class="section-header">
+          <h2>Lugares Favoritos</h2>
+          <button class="btn-primary" onclick="agregarFavorito()">
+            <i class="fas fa-plus"></i>
+            Agregar Favorito
+          </button>
+        </div>
+        
+        <div class="favorites-grid" id="favorites-grid">
+          <!-- Los lugares favoritos se cargarán aquí -->
+        </div>
+      </section>
+
+      <!-- Sección Perfil -->
+      <section id="perfil-section" class="content-section">
+        <div class="section-header">
+          <h2>Mi Perfil</h2>
+          <button class="btn-primary" onclick="editarPerfil()">
+            <i class="fas fa-edit"></i>
+            Editar Perfil
+          </button>
+        </div>
+        
+        <div class="profile-grid">
+          <div class="profile-info">
+            <div class="profile-avatar">
+              <img src="../style/image/cosa.jpg" alt="Foto de Perfil" id="profile-avatar">
+              <button class="btn-change-avatar">
+                <i class="fas fa-camera"></i>
+              </button>
+            </div>
+            
+            <div class="profile-details">
+              <h3 id="profile-nombre">Nombre del Pasajero</h3>
+              <p class="profile-email" id="profile-email">pasajero@via.com</p>
+              <p class="profile-phone" id="profile-phone">+57 300 123 4567</p>
+              
+              <div class="profile-stats">
+                <div class="stat-item">
+                  <span class="stat-label">Viajes Completados</span>
+                  <span class="stat-value" id="total-viajes">47</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Rating Promedio</span>
+                  <span class="stat-value" id="total-rating">4.8</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Miembro Desde</span>
+                  <span class="stat-value" id="fecha-registro">Enero 2024</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="profile-preferences">
+            <h3>Preferencias de Viaje</h3>
+            <div class="preferences-list">
+              <div class="preference-item">
+                <label class="checkbox-label">
+                  <input type="checkbox" checked id="pref-music">
+                  <span>Música en el viaje</span>
+                </label>
+              </div>
+              <div class="preference-item">
+                <label class="checkbox-label">
+                  <input type="checkbox" checked id="pref-conversation">
+                  <span>Conversación amigable</span>
+                </label>
+              </div>
+              <div class="preference-item">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="pref-quiet">
+                  <span>Viaje silencioso</span>
+                </label>
+              </div>
+              <div class="preference-item">
+                <label class="checkbox-label">
+                  <input type="checkbox" checked id="pref-ac">
+                  <span>Aire acondicionado</span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="emergency-contact">
+              <h4>Contacto de Emergencia</h4>
+              <div class="emergency-info">
+                <strong>Nombre:</strong> <span id="emergency-name">María Pérez</span><br>
+                <strong>Teléfono:</strong> <span id="emergency-phone">+57 300 987 6543</span><br>
+                <strong>Relación:</strong> <span id="emergency-relation">Familiar</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Modal de notificaciones -->
+  <div id="notifications-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Notificaciones</h3>
+        <span class="close" onclick="closeNotificationsModal()">&times;</span>
+      </div>
+      <div class="modal-body" id="notifications-list">
+        <!-- Las notificaciones se cargarán aquí -->
+      </div>
+    </div>
   </div>
+
+  <!-- Modal de confirmación de viaje -->
+  <div id="trip-confirmation-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>¡Conductor Encontrado!</h3>
+        <span class="close" onclick="closeTripConfirmationModal()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="driver-info">
+          <img src="../style/image/cosa.jpg" alt="Conductor" class="driver-avatar">
+          <div class="driver-details">
+            <h4 id="modal-driver-name">Carlos Rodríguez</h4>
+            <div class="driver-rating">
+              <span class="stars">★★★★★</span>
+              <span id="modal-driver-rating">4.9</span>
+            </div>
+            <div class="driver-vehicle">
+              <span id="modal-vehicle-info">Toyota Corolla - ABC123</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="trip-details">
+          <div class="trip-route">
+            <div class="route-point">
+              <i class="fas fa-map-marker-alt origin"></i>
+              <span id="modal-trip-origin">Origen del viaje</span>
+            </div>
+            <div class="route-point">
+              <i class="fas fa-map-marker-alt destination"></i>
+              <span id="modal-trip-destination">Destino del viaje</span>
+            </div>
+          </div>
+          
+          <div class="trip-metrics">
+            <div class="metric">
+              <i class="fas fa-route"></i>
+              <span id="modal-trip-distance">2.5 km</span>
+            </div>
+            <div class="metric">
+              <i class="fas fa-dollar-sign"></i>
+              <span id="modal-trip-price">$8.50</span>
+            </div>
+            <div class="metric">
+              <i class="fas fa-clock"></i>
+              <span id="modal-trip-duration">8 min</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="trip-actions">
+          <button class="btn-confirm-trip" onclick="confirmarViaje()">
+            <i class="fas fa-check"></i>
+            Confirmar Viaje
+          </button>
+          <button class="btn-cancel-trip" onclick="cancelarViaje()">
+            <i class="fas fa-times"></i>
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="../script/dashboard.js"></script>
+  <script src="../script/pasajero-dashboard.js"></script>
 </body>
 
 </html>

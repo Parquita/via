@@ -4,63 +4,469 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>VIA - Dashboard</title>
+  <title>VIA - Dashboard Conductor</title>
   <link rel="stylesheet" href="../style/style.css">
+  <link rel="stylesheet" href="../style/dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body style="background-image: url(../style/image/mapa.jpg); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
-  <aside>
-    <!-- Información del usuario -->
-    <img src="../style/image/cosa.jpg" alt="Logo VIA">
-    <h3>INFORMACION</h3>
-    <div><strong>Nombre:</strong> <span id="nombre-usuario">-</span></div>
-    <div><strong>Correo:</strong> <span id="correo-usuario">-</span></div>
-    <div><strong>Telefono:</strong> <span id="telefono-usuario">-</span></div>
-    <div><strong>Direccion:</strong> <span id="direccion-usuario">-</span></div>
-  </aside>
-
-
-  <div class="dashboard-container">
-    <div class="dashboard-cards">
-      <!-- Puntuación en estrellas -->
-      <div class="dashboard-card">
-        <h3>Puntuación</h3>
-        <div class="stars" id="puntuacion-estrellas">★★★★★</div>
-        <div><span id="valor-puntuacion">5.0</span> / 5</div>
-      </div>
-      <!-- Número de viajes -->
-      <div class="dashboard-card">
-        <h3># de viajes</h3>
-        <div class="viajes-num" id="num-viajes">0</div>
-        <div>Viajes realizados</div>
-      </div>
-    </div>
-
-    <div class="Boton-viaje">
-      <button class="btn-primary btn-large">
-        <i class="fas fa-star"></i>
-        Buscar Viajes
-      </button>
-    </div>
-
-    <!-- Sección de Viajes Pendientes -->
-    <div class="viajes-pendientes">
-      <h3><i class="fas fa-clock"></i> Viajes Pendientes</h3>
-      <div class="lista-viajes" id="lista-viajes-pendientes">
-        <!-- Los viajes pendientes se cargarán dinámicamente aquí -->
-      </div>
-    </div>
-
-    <!-- Sección de Viajes Activos -->
-    <div class="viajes-activos">
-      <h3><i class="fas fa-car"></i> Viajes Activos</h3>
-      <div class="lista-viajes-activos" id="lista-viajes-activos">
-        <!-- Los viajes activos se cargarán dinámicamente aquí -->
+<body>
+  <!-- Sidebar de navegación -->
+  <aside class="driver-sidebar">
+    <div class="sidebar-header">
+      <div class="logo-container">
+        <img src="../style/image/via.jpg" alt="Logo VIA" class="logo-img">
+        <span class="logo-text">VIA Driver</span>
       </div>
     </div>
     
+    <nav class="sidebar-nav">
+      <a href="#dashboard" class="nav-item active" data-section="dashboard">
+        <i class="fas fa-tachometer-alt"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="#viajes" class="nav-item" data-section="viajes">
+        <i class="fas fa-route"></i>
+        <span>Mis Viajes</span>
+      </a>
+      <a href="#ganancias" class="nav-item" data-section="ganancias">
+        <i class="fas fa-dollar-sign"></i>
+        <span>Ganancias</span>
+      </a>
+      <a href="#perfil" class="nav-item" data-section="perfil">
+        <i class="fas fa-user"></i>
+        <span>Mi Perfil</span>
+      </a>
+      <a href="#configuracion" class="nav-item" data-section="configuracion">
+        <i class="fas fa-cog"></i>
+        <span>Configuración</span>
+      </a>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <div class="driver-info">
+        <img src="../style/image/cosa.jpg" alt="Conductor" class="driver-avatar">
+        <div class="driver-details">
+          <div class="driver-name" id="driver-nombre">Conductor</div>
+          <div class="driver-status">
+            <span class="status-indicator online" id="status-indicator"></span>
+            <span id="status-text">En Línea</span>
+          </div>
+        </div>
+      </div>
+      <button class="btn-toggle-status" onclick="toggleStatus()" id="btn-toggle-status">
+        <i class="fas fa-power-off"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Contenido principal -->
+  <main class="driver-main">
+    <!-- Header superior -->
+    <header class="driver-header">
+      <div class="header-left">
+        <h1 id="header-title">Dashboard del Conductor</h1>
+        <p class="header-subtitle">Gestiona tus viajes y ganancias</p>
+      </div>
+      <div class="header-right">
+        <div class="header-actions">
+          <button class="btn-notification" onclick="toggleNotificaciones()">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge" id="notification-count">2</span>
+          </button>
+          <div class="current-time" id="current-time">14:30:25</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Contenido del dashboard -->
+    <div class="driver-content">
+      <!-- Sección Dashboard -->
+      <section id="dashboard-section" class="content-section active">
+        <!-- Métricas principales -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-icon">
+              <i class="fas fa-route"></i>
+            </div>
+            <div class="metric-content">
+              <div class="metric-value" id="viajes-hoy">8</div>
+              <div class="metric-label">Viajes Hoy</div>
+              <div class="metric-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+2</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="metric-card">
+            <div class="metric-icon">
+              <i class="fas fa-dollar-sign"></i>
+            </div>
+            <div class="metric-content">
+              <div class="metric-value" id="ganancias-hoy">$45.80</div>
+              <div class="metric-label">Ganancias Hoy</div>
+              <div class="metric-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+$12.50</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="metric-card">
+            <div class="metric-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <div class="metric-content">
+              <div class="metric-value" id="rating-promedio">4.9</div>
+              <div class="metric-label">Rating Promedio</div>
+              <div class="metric-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+0.1</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="metric-card">
+            <div class="metric-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="metric-content">
+              <div class="metric-value" id="tiempo-online">6h 23m</div>
+              <div class="metric-label">Tiempo Online</div>
+              <div class="metric-change neutral">
+                <i class="fas fa-minus"></i>
+                <span>0m</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mapa y viajes activos -->
+        <div class="map-trips-grid">
+          <div class="map-container">
+            <div class="map-header">
+              <h3>Mapa de Viajes</h3>
+              <div class="map-controls">
+                <button class="btn-map-control active" data-view="heatmap">
+                  <i class="fas fa-fire"></i>
+                  Mapa de Calor
+                </button>
+                <button class="btn-map-control" data-view="traffic">
+                  <i class="fas fa-car"></i>
+                  Tráfico
+                </button>
+              </div>
+            </div>
+            <div class="map-placeholder" id="map-container">
+              <div class="map-overlay">
+                <i class="fas fa-map-marked-alt"></i>
+                <p>Mapa interactivo de viajes</p>
+                <small>Mostrando zonas de alta demanda</small>
+              </div>
+            </div>
+          </div>
+          
+          <div class="active-trips">
+            <h3>Viajes Activos</h3>
+            <div class="trips-list" id="active-trips-list">
+              <!-- Los viajes activos se cargarán aquí -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Gráfico de ganancias -->
+        <div class="earnings-chart-container">
+          <div class="chart-header">
+            <h3>Ganancias de la Semana</h3>
+            <div class="chart-actions">
+              <button class="btn-chart-period active" data-period="week">Semana</button>
+              <button class="btn-chart-period" data-period="month">Mes</button>
+            </div>
+          </div>
+          <canvas id="earningsChart" width="800" height="300"></canvas>
+        </div>
+      </section>
+
+      <!-- Sección Viajes -->
+      <section id="viajes-section" class="content-section">
+        <div class="section-header">
+          <h2>Historial de Viajes</h2>
+          <div class="header-actions">
+            <select id="filter-period" class="filter-select">
+              <option value="today">Hoy</option>
+              <option value="week">Esta Semana</option>
+              <option value="month">Este Mes</option>
+              <option value="all">Todos</option>
+            </select>
+            <button class="btn-primary" onclick="exportarViajes()">
+              <i class="fas fa-download"></i>
+              Exportar
+            </button>
+          </div>
+        </div>
+        
+        <div class="trips-table-container">
+          <table class="trips-table">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Pasajero</th>
+                <th>Origen</th>
+                <th>Destino</th>
+                <th>Distancia</th>
+                <th>Ganancia</th>
+                <th>Rating</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="trips-table-body">
+              <!-- Los viajes se cargarán dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Sección Ganancias -->
+      <section id="ganancias-section" class="content-section">
+        <div class="section-header">
+          <h2>Análisis de Ganancias</h2>
+          <div class="header-actions">
+            <button class="btn-primary" onclick="generarReporteGanancias()">
+              <i class="fas fa-chart-line"></i>
+              Reporte Detallado
+            </button>
+          </div>
+        </div>
+        
+        <div class="earnings-grid">
+          <div class="earnings-summary">
+            <div class="summary-card">
+              <h3>Ganancias Totales</h3>
+              <div class="summary-value" id="ganancias-totales">$1,247.80</div>
+              <div class="summary-period">Este mes</div>
+            </div>
+            
+            <div class="summary-card">
+              <h3>Promedio por Viaje</h3>
+              <div class="summary-value" id="promedio-viaje">$8.45</div>
+              <div class="summary-period">Últimos 30 días</div>
+            </div>
+            
+            <div class="summary-card">
+              <h3>Horas Trabajadas</h3>
+              <div class="summary-value" id="horas-trabajadas">147h 32m</div>
+              <div class="summary-period">Este mes</div>
+            </div>
+          </div>
+          
+          <div class="earnings-breakdown">
+            <h3>Desglose por Día</h3>
+            <canvas id="earningsBreakdownChart" width="400" height="200"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección Perfil -->
+      <section id="perfil-section" class="content-section">
+        <div class="section-header">
+          <h2>Mi Perfil de Conductor</h2>
+          <button class="btn-primary" onclick="editarPerfil()">
+            <i class="fas fa-edit"></i>
+            Editar Perfil
+          </button>
+        </div>
+        
+        <div class="profile-grid">
+          <div class="profile-info">
+            <div class="profile-avatar">
+              <img src="../style/image/cosa.jpg" alt="Foto de Perfil" id="profile-avatar">
+              <button class="btn-change-avatar">
+                <i class="fas fa-camera"></i>
+              </button>
+            </div>
+            
+            <div class="profile-details">
+              <h3 id="profile-nombre">Nombre del Conductor</h3>
+              <p class="profile-email" id="profile-email">conductor@via.com</p>
+              <p class="profile-phone" id="profile-phone">+57 300 123 4567</p>
+              
+              <div class="profile-stats">
+                <div class="stat-item">
+                  <span class="stat-label">Viajes Completados</span>
+                  <span class="stat-value" id="total-viajes">247</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Rating Promedio</span>
+                  <span class="stat-value" id="total-rating">4.9</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Miembro Desde</span>
+                  <span class="stat-value" id="fecha-registro">Enero 2024</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="profile-vehicle">
+            <h3>Información del Vehículo</h3>
+            <div class="vehicle-details">
+              <div class="vehicle-info">
+                <strong>Marca:</strong> <span id="vehicle-brand">Toyota</span>
+              </div>
+              <div class="vehicle-info">
+                <strong>Modelo:</strong> <span id="vehicle-model">Corolla 2022</span>
+              </div>
+              <div class="vehicle-info">
+                <strong>Color:</strong> <span id="vehicle-color">Blanco</span>
+              </div>
+              <div class="vehicle-info">
+                <strong>Placa:</strong> <span id="vehicle-plate">ABC123</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección Configuración -->
+      <section id="configuracion-section" class="content-section">
+        <div class="section-header">
+          <h2>Configuración del Conductor</h2>
+        </div>
+        
+        <div class="config-grid">
+          <div class="config-card">
+            <h3>Preferencias de Viaje</h3>
+            <form class="config-form">
+              <div class="form-group">
+                <label>Radio de Búsqueda (km)</label>
+                <input type="range" min="1" max="20" value="5" id="search-radius">
+                <span class="range-value" id="radius-value">5 km</span>
+              </div>
+              
+              <div class="form-group">
+                <label>Tarifa Mínima por Viaje</label>
+                <input type="number" value="5" id="min-fare" min="1" max="50">
+              </div>
+              
+              <div class="form-group">
+                <label>Horarios de Trabajo</label>
+                <div class="time-range">
+                  <input type="time" value="08:00" id="start-time">
+                  <span>a</span>
+                  <input type="time" value="18:00" id="end-time">
+                </div>
+              </div>
+              
+              <button type="submit" class="btn-primary">Guardar Cambios</button>
+            </form>
+          </div>
+          
+          <div class="config-card">
+            <h3>Notificaciones</h3>
+            <div class="notification-settings">
+              <label class="checkbox-label">
+                <input type="checkbox" checked id="new-trip-notifications">
+                <span>Nuevos viajes disponibles</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" checked id="payment-notifications">
+                <span>Confirmaciones de pago</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" checked id="rating-notifications">
+                <span>Nuevas calificaciones</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" id="promo-notifications">
+                <span>Promociones y bonos</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Modal de notificaciones -->
+  <div id="notifications-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Notificaciones</h3>
+        <span class="close" onclick="closeNotificationsModal()">&times;</span>
+      </div>
+      <div class="modal-body" id="notifications-list">
+        <!-- Las notificaciones se cargarán aquí -->
+      </div>
+    </div>
   </div>
+
+  <!-- Modal de nuevo viaje -->
+  <div id="new-trip-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>¡Nuevo Viaje Disponible!</h3>
+        <span class="close" onclick="closeNewTripModal()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="trip-details">
+          <div class="trip-info">
+            <div class="passenger-info">
+              <img src="../style/image/cosa.jpg" alt="Pasajero" class="passenger-avatar">
+              <div>
+                <h4 id="modal-passenger-name">Nombre del Pasajero</h4>
+                <div class="passenger-rating">
+                  <span class="stars">★★★★★</span>
+                  <span id="modal-passenger-rating">4.8</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="trip-route">
+              <div class="route-point">
+                <i class="fas fa-map-marker-alt origin"></i>
+                <span id="modal-origin">Origen del viaje</span>
+              </div>
+              <div class="route-point">
+                <i class="fas fa-map-marker-alt destination"></i>
+                <span id="modal-destination">Destino del viaje</span>
+              </div>
+            </div>
+            
+            <div class="trip-metrics">
+              <div class="metric">
+                <i class="fas fa-route"></i>
+                <span id="modal-distance">2.5 km</span>
+              </div>
+              <div class="metric">
+                <i class="fas fa-dollar-sign"></i>
+                <span id="modal-fare">$8.50</span>
+              </div>
+              <div class="metric">
+                <i class="fas fa-clock"></i>
+                <span id="modal-duration">8 min</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="trip-actions">
+          <button class="btn-accept-trip" onclick="aceptarViajeModal()">
+            <i class="fas fa-check"></i>
+            Aceptar Viaje
+          </button>
+          <button class="btn-reject-trip" onclick="rechazarViajeModal()">
+            <i class="fas fa-times"></i>
+            Rechazar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="../script/dashboard.js"></script>
+  <script src="../script/conductor-dashboard.js"></script>
 </body>
 
 </html>
