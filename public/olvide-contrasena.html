@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- SEO Meta Tags -->
+    <title>Recuperar Contraseña - VIA Colombia | Recupera tu Acceso</title>
+    <meta name="description"
+        content="Recupera tu contraseña de VIA Colombia de forma segura. Ingresa tu correo electrónico y te enviaremos las instrucciones para restablecer tu contraseña.">
+    <meta name="keywords"
+        content="VIA Colombia, recuperar contraseña, olvidé contraseña, restablecer contraseña, acceso VIA">
+    <meta name="author" content="VIA Colombia">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://via.com.co/olvide-contrasena">
+    <meta property="og:title" content="Recuperar Contraseña - VIA Colombia">
+    <meta property="og:description" content="Recupera tu contraseña de VIA Colombia de forma segura.">
+    <meta property="og:image" content="https://via.com.co/style/image/logo-via.jpg">
+    <meta property="og:site_name" content="VIA Colombia">
+    <meta property="og:locale" content="es_CO">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://via.com.co/olvide-contrasena">
+    <meta property="twitter:title" content="Recuperar Contraseña - VIA Colombia">
+    <meta property="twitter:description" content="Recupera tu contraseña de VIA Colombia de forma segura.">
+    <meta property="twitter:image" content="https://via.com.co/style/image/logo-via.jpg">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://via.com.co/olvide-contrasena">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./style/image/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="./style/image/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./style/image/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./style/image/favicon-16x16.png">
+
+    <!-- Preconnect para mejorar rendimiento -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <!-- CSS y Fuentes -->
+    <link rel="stylesheet" href="./style/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Structured Data / Schema.org -->
+    <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Recuperar Contraseña - VIA Colombia",
+    "description": "Página para recuperar contraseña de VIA Colombia",
+    "url": "https://via.com.co/olvide-contrasena",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "VIA Colombia",
+      "url": "https://via.com.co"
+    }
+  }
+  </script>
+</head>
+
+<body>
+    <!-- Header/Navigation -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <div class="logo-circle">
+                    <div class="logo-v">
+                        <img src="./style/image/via.jpg" alt="Logo VIA" style="width: 80px;">
+                    </div>
+                </div>
+                <span class="logo-text">VIA</span>
+            </div>
+            <nav class="nav">
+                <a href="./index.html" class="nav-link">Inicio</a>
+                <a href="./nosotros.html" class="nav-link">Nosotros</a>
+                <a href="./servicios.html" class="nav-link">Servicios</a>
+                <a href="./ayuda.html" class="nav-link">Ayuda</a>
+                <button class="btn-secondary" id="btn-login">Iniciar Sesión</button>
+                <button class="btn-primary" id="btn-registrarse">Registrarse</button>
+            </nav>
+            <div class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+<br><br><br>
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <!-- Formulario de Recuperación -->
+        <section class="forgot-password-section">
+            <div class="container">
+                <div class="forgot-password-container">
+                    <div class="forgot-password-card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-key"></i>
+                            </div>
+                            <h2>Recuperar Contraseña</h2>
+                            <p>Ingresa tu correo electrónico y te enviaremos las instrucciones para restablecer tu
+                                contraseña</p>
+                        </div>
+
+                        <form id="forgot-password-form" class="forgot-password-form">
+                            <div class="form-group">
+                                <label for="email">Correo electrónico</label>
+                                <div class="input-group">
+                                    <i class="fas fa-envelope input-icon"></i>
+                                    <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+                                </div>
+                                <small class="form-help">Ingresa el correo electrónico asociado a tu cuenta VIA</small>
+                            </div>
+
+                            <button type="submit" class="btn-primary btn-full btn-large">
+                                <i class="fas fa-paper-plane"></i>
+                                Enviar Instrucciones
+                            </button>
+                        </form>
+
+                        <div class="form-footer">
+                            <p>¿Recordaste tu contraseña? <a href="#" id="switch-to-login">Volver al inicio de sesión</a>
+                            </p>
+                            <p>¿No tienes cuenta? <a href="#" id="switch-to-register">Registrarse</a></p>
+                        </div>
+                    </div>
+
+                    <!-- Información de Seguridad -->
+                    <div class="security-info">
+                        <h3>Tu seguridad es nuestra prioridad</h3>
+                        <div class="security-features">
+                            <div class="security-feature">
+                                <i class="fas fa-shield-alt"></i>
+                                <div>
+                                    <h4>Encriptación SSL</h4>
+                                    <p>Todos los datos se transmiten de forma segura</p>
+                                </div>
+                            </div>
+                            <div class="security-feature">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <h4>Enlaces Temporales</h4>
+                                    <p>Los enlaces de recuperación expiran en 24 horas</p>
+                                </div>
+                            </div>
+                            <div class="security-feature">
+                                <i class="fas fa-user-secret"></i>
+                                <div>
+                                    <h4>Privacidad</h4>
+                                    <p>No compartimos tu información con terceros</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <!-- Pasos del Proceso -->
+    <section class="recovery-steps">
+        <div class="container">
+            <div class="section-header">
+                <h2>¿Cómo funciona?</h2>
+                <p>El proceso de recuperación es simple y seguro</p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Ingresa tu Email</h3>
+                        <p>Proporciona el correo electrónico asociado a tu cuenta VIA</p>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Revisa tu Correo</h3>
+                        <p>Te enviaremos un enlace seguro a tu bandeja de entrada</p>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Restablece tu Contraseña</h3>
+                        <p>Sigue las instrucciones para crear una nueva contraseña segura</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Preguntas Frecuentes</h2>
+                <p>Resolvemos las dudas más comunes sobre la recuperación de contraseña</p>
+            </div>
+
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>¿Cuánto tiempo tarda en llegar el correo?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>El correo de recuperación suele llegar en menos de 5 minutos. Si no lo ves, revisa tu carpeta
+                            de spam o correo no deseado.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>¿Por cuánto tiempo es válido el enlace?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>El enlace de recuperación es válido por 24 horas por motivos de seguridad. Si expira, puedes
+                            solicitar uno nuevo.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>¿Qué hago si no recibo el correo?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Verifica que el correo esté correcto, revisa tu carpeta de spam, y si el problema persiste,
+                            contacta a nuestro soporte técnico.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>¿Puedo usar el mismo enlace varias veces?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>No, cada enlace de recuperación solo puede usarse una vez. Si necesitas restablecer tu
+                            contraseña nuevamente, solicita un nuevo enlace.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-circle">
+                            <div class="logo-v">
+                                <img src="./style/image/via.jpg" alt="Logo VIA" style="width: 80px;">
+                            </div>
+                        </div>
+                        <span class="logo-text">VIA</span>
+                    </div>
+                    <p>Transformando la movilidad urbana con tecnología e innovación.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Servicios</h4>
+                    <ul>
+                        <li><a href="./servicios.html">Transporte Ejecutivo</a></li>
+                        <li><a href="./servicios.html">Transporte Compartido</a></li>
+                        <li><a href="./servicios.html">Entrega Express</a></li>
+                        <li><a href="./servicios.html">Mensajería</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Empresa</h4>
+                    <ul>
+                        <li><a href="./nosotros.html">Nosotros</a></li>
+                        <li><a href="./carreras.html">Carreras</a></li>
+                        <li><a href="./prensa.html">Prensa</a></li>
+                        <li><a href="./blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Soporte</h4>
+                    <ul>
+                        <li><a href="./ayuda.html">Centro de Ayuda</a></li>
+                        <li><a href="./terminos.html">Términos de Servicio</a></li>
+                        <li><a href="./privacidad.html">Política de Privacidad</a></li>
+                        <li><a href="./contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 VIA. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal de Éxito -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-check-circle" style="color: var(--accent-color);"></i> Correo Enviado</h2>
+                <span class="close" id="close-success">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Hemos enviado las instrucciones para recuperar tu contraseña a tu correo electrónico.</p>
+                <p><strong>Próximos pasos:</strong></p>
+                <ul>
+                    <li>Revisa tu bandeja de entrada</li>
+                    <li>Si no ves el correo, revisa tu carpeta de spam</li>
+                    <li>Haz clic en el enlace del correo</li>
+                    <li>Sigue las instrucciones para crear una nueva contraseña</li>
+                </ul>
+                <div class="modal-actions">
+                    <button class="btn-primary" id="close-success-btn">Entendido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Error -->
+    <div id="error-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-exclamation-triangle" style="color: #ef4444;"></i> Error</h2>
+                <span class="close" id="close-error">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="error-message">Ha ocurrido un error. Por favor, inténtalo de nuevo.</p>
+                <div class="modal-actions">
+                    <button class="btn-primary" id="close-error-btn">Intentar de Nuevo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./script/index.js"></script>
+    <script>
+        // Funcionalidad específica para la página de recuperación de contraseña
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('forgot-password-form');
+            const successModal = document.getElementById('success-modal');
+            const errorModal = document.getElementById('error-modal');
+            const errorMessage = document.getElementById('error-message');
+
+            // Manejar envío del formulario
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const email = document.getElementById('email').value;
+
+                // Simular envío (aquí iría la lógica real)
+                if (email) {
+                    // Simular delay de red
+                    setTimeout(() => {
+                        showSuccessModal();
+                    }, 1000);
+                } else {
+                    showErrorModal('Por favor, ingresa un correo electrónico válido.');
+                }
+            });
+
+            // Mostrar modal de éxito
+            function showSuccessModal() {
+                successModal.style.display = 'block';
+                successModal.classList.add('show');
+            }
+
+            // Mostrar modal de error
+            function showErrorModal(message) {
+                errorMessage.textContent = message;
+                errorModal.style.display = 'block';
+                errorModal.classList.add('show');
+            }
+
+            // Cerrar modales
+            function closeModal(modal) {
+                modal.style.display = 'none';
+                modal.classList.remove('show');
+            }
+
+            // Event listeners para cerrar modales
+            document.getElementById('close-success').addEventListener('click', () => closeModal(successModal));
+            document.getElementById('close-success-btn').addEventListener('click', () => closeModal(successModal));
+            document.getElementById('close-error').addEventListener('click', () => closeModal(errorModal));
+            document.getElementById('close-error-btn').addEventListener('click', () => closeModal(errorModal));
+
+            // Cerrar modal al hacer clic fuera
+            window.addEventListener('click', function (e) {
+                if (e.target === successModal) closeModal(successModal);
+                if (e.target === errorModal) closeModal(errorModal);
+            });
+
+            // Navegación
+            document.getElementById('back-to-login').addEventListener('click', function (e) {
+                e.preventDefault();
+                // Aquí iría la lógica para mostrar el modal de login
+                console.log('Volver al login');
+            });
+
+            document.getElementById('go-to-register').addEventListener('click', function (e) {
+                e.preventDefault();
+                // Aquí iría la lógica para mostrar el modal de registro
+                console.log('Ir a registro');
+            });
+
+            // FAQ Accordion
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                const answer = item.querySelector('.faq-answer');
+                const icon = question.querySelector('i');
+
+                question.addEventListener('click', () => {
+                    const isOpen = answer.style.display === 'block';
+
+                    // Cerrar todos los otros items
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.querySelector('.faq-answer').style.display = 'none';
+                            otherItem.querySelector('.faq-question i').style.transform = 'rotate(0deg)';
+                        }
+                    });
+
+                    // Toggle current item
+                    if (isOpen) {
+                        answer.style.display = 'none';
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        answer.style.display = 'block';
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+        });
+    </script>
+      <!-- Modal de Registro -->
+  <div id="modal-registro" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Crear Cuenta</h2>
+        <span class="close" id="cerrar-modal">&times;</span>
+      </div>
+      <form id="form-registro" class="modal-form">
+        <div class="form-group">
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" name="nombre" required>
+        </div>
+        <div class="form-group">
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" name="correo" required>
+        </div>
+        <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <input type="tel" id="telefono" name="telefono" required>
+        </div>
+        <div class="form-group">
+          <label for="direccion">Dirección</label>
+          <input type="text" id="direccion" name="direccion" required>
+        </div>
+        <div class="form-group">
+          <label for="contrasena">Contraseña</label>
+          <input type="password" id="contrasena" name="contrasena" required>
+        </div>
+        <div class="form-group">
+          <label for="confirmar-contrasena">Confirmar Contraseña</label>
+          <input type="password" id="confirmar-contrasena" name="confirmar-contrasena" required>
+        </div>
+        <div class="form-group">
+          <label for="fecha-nacimiento">Fecha de Nacimiento</label>
+          <input type="date" id="fecha-nacimiento" name="fecha-nacimiento" required>
+        </div>
+        <div class="form-group">
+          <label for="tipo-usuario">Tipo de Usuario</label>
+          <select id="tipo-usuario" name="tipo-usuario" required>
+            <option value="">Selecciona tu tipo de usuario</option>
+            <option value="pasajero">Pasajero</option>
+            <option value="conductor">Conductor</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="ciudad">Ciudad</label>
+          <input type="text" id="ciudad" name="ciudad" required>
+        </div>
+        <div class="form-group">
+          <label for="codigo-postal">Código Postal</label>
+          <input type="text" id="codigo-postal" name="codigo-postal" required>
+        </div>
+        <div class="form-group">
+          <label for="documento">Número de Documento</label>
+          <input type="text" id="documento" name="documento" required>
+        </div>
+        <div class="form-group">
+          <label for="emergencia">Teléfono de Emergencia</label>
+          <input type="tel" id="emergencia" name="emergencia" required>
+        </div>
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="terminos" name="terminos" required>
+            <span>Acepto los <a href="#" class="link-primary">Términos y Condiciones</a></span>
+          </label>
+        </div>
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="privacidad" name="privacidad" required>
+            <span>Acepto la <a href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNVwiH3SEtHkbLSj6PxgjkVsAth-nwdBgvuw&s" class="link-primary">Política de Privacidad</a></span>
+          </label>
+        </div>
+        <button type="submit" class="btn-primary btn-full">
+          <i class="fas fa-user-plus"></i>
+          Crear Cuenta
+        </button>
+      </form>
+      <div class="modal-footer">
+        <p>¿Ya tienes cuenta? <a href="#" id="switch-to-login">Iniciar Sesión</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Inicio de Sesión -->
+  <div id="modal-login" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Iniciar Sesión</h2>
+        <span class="close" id="cerrar-modal-login">&times;</span>
+      </div>
+      <form id="form-login" class="modal-form">
+        <div class="form-group">
+          <label for="login-correo">Correo electrónico</label>
+          <input type="email" id="login-correo" name="login-correo" required>
+        </div>
+        <div class="form-group">
+          <label for="login-contrasena">Contraseña</label>
+          <input type="password" id="login-contrasena" name="login-contrasena" required>
+        </div>
+        <div class="form-options">
+          <label class="checkbox-label">
+            <input type="checkbox" id="remember-me">
+            <span>Recordarme</span>
+          </label>
+          <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+        </div>
+        <button type="submit" class="btn-primary btn-full">
+          <i class="fas fa-sign-in-alt"></i>
+          Iniciar Sesión
+        </button>
+      </form>
+      <div class="modal-footer">
+        <p>¿No tienes cuenta? <a href="#" id="switch-to-register">Registrarse</a></p>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

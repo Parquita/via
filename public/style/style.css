@@ -2627,6 +2627,7 @@ p {
   box-shadow: var(--shadow-lg);
   overflow: hidden;
   transition: var(--transition);
+  padding: 10px;
 }
 
 .job-card:hover {
@@ -2641,6 +2642,7 @@ p {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--gray-200);
+  border-radius: 15px;
 }
 
 .job-type {
@@ -3055,6 +3057,411 @@ p {
   background: var(--gray-50);
   padding: 2rem;
   border-radius: var(--border-radius-lg);
+}
+
+/* ===== ESTILOS PARA PÁGINA OLVIDÉ CONTRASEÑA ===== */
+
+/* Sección principal de recuperación */
+.forgot-password-section {
+  padding: 4rem 0;
+  min-height: 60vh;
+}
+
+.forgot-password-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.forgot-password-card {
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-xl);
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.forgot-password-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+}
+
+.card-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.card-icon {
+  width: 4rem;
+  height: 4rem;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  color: var(--white);
+  font-size: 1.5rem;
+}
+
+.card-header h2 {
+  color: var(--gray-900);
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
+}
+
+.card-header p {
+  color: var(--gray-600);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.forgot-password-form {
+  margin-bottom: 2rem;
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  color: var(--gray-400);
+  z-index: 2;
+  font-size: 1rem;
+}
+
+.input-group input {
+  padding-left: 3rem;
+  width: 100%;
+  padding: 0.875rem 1rem 0.875rem 3rem;
+  border: 2px solid var(--gray-200);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  transition: var(--transition);
+  background: var(--white);
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(200, 26, 101, 0.1);
+}
+
+.input-group input:focus + .input-icon {
+  color: var(--primary-color);
+}
+
+.form-help {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--gray-500);
+  font-size: 0.875rem;
+}
+
+.form-footer {
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--gray-200);
+}
+
+.form-footer p {
+  margin-bottom: 0.75rem;
+  color: var(--gray-600);
+}
+
+.form-footer a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.form-footer a:hover {
+  text-decoration: underline;
+  color: var(--primary-dark);
+}
+
+/* Información de seguridad */
+.security-info {
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 2.5rem;
+  height: fit-content;
+}
+
+.security-info h3 {
+  color: var(--gray-900);
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.security-features {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.security-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--gray-50);
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.security-feature:hover {
+  background: var(--gray-100);
+  transform: translateX(5px);
+}
+
+.security-feature i {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  margin-top: 0.25rem;
+  flex-shrink: 0;
+}
+
+.security-feature h4 {
+  color: var(--gray-900);
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.security-feature p {
+  color: var(--gray-600);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Pasos del proceso */
+.recovery-steps {
+  padding: 4rem 0;
+  background: var(--white);
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.step-card {
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+  text-align: center;
+  transition: var(--transition);
+  position: relative;
+  border: 2px solid transparent;
+}
+
+.step-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--primary-color);
+}
+
+.step-number {
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: var(--white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 auto 1.5rem;
+  position: relative;
+}
+
+.step-number::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 2rem;
+  height: 2px;
+  background: var(--gray-200);
+  transform: translateY(-50%);
+}
+
+.step-card:last-child .step-number::after {
+  display: none;
+}
+
+.step-content h3 {
+  color: var(--gray-900);
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.step-content p {
+  color: var(--gray-600);
+  line-height: 1.6;
+}
+
+/* FAQ Section */
+.faq-section {
+  padding: 4rem 0;
+  background: var(--gray-50);
+}
+
+.faq-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  margin-bottom: 1rem;
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.faq-item:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.faq-question {
+  padding: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--gray-50);
+  transition: var(--transition);
+}
+
+.faq-question:hover {
+  background: var(--gray-100);
+}
+
+.faq-question h3 {
+  margin: 0;
+  color: var(--gray-800);
+  font-size: 1.1rem;
+}
+
+.faq-question i {
+  color: var(--primary-color);
+  transition: var(--transition);
+  font-size: 1rem;
+}
+
+.faq-answer {
+  padding: 0 1.5rem 1.5rem;
+  color: var(--gray-600);
+  line-height: 1.6;
+  display: flex;
+}
+
+/* Modales específicos */
+.modal-body {
+  padding: 2rem;
+}
+
+.modal-body ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.modal-body li {
+  padding: 0.5rem 0;
+  color: var(--gray-600);
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.modal-body li::before {
+  content: '✓';
+  color: var(--accent-color);
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+
+.modal-actions {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+/* Responsive para olvidé contraseña */
+@media (max-width: 768px) {
+  .forgot-password-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .forgot-password-card {
+    padding: 2rem;
+  }
+  
+  .security-info {
+    padding: 2rem;
+  }
+  
+  .steps-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .step-number::after {
+    display: none;
+  }
+  
+  .security-feature {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .security-feature:hover {
+    transform: translateY(-2px);
+  }
+}
+
+@media (max-width: 480px) {
+  .forgot-password-section {
+    padding: 2rem 0;
+  }
+  
+  .forgot-password-card {
+    padding: 1.5rem;
+  }
+  
+  .card-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .security-info {
+    padding: 1.5rem;
+  }
+  
+  .step-card {
+    padding: 1.5rem;
+  }
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
