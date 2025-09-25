@@ -1,4 +1,4 @@
-
+import {supabase} from '../../src/db/db.js'
 // ===== MODAL DE REGISTRO =====
 document.addEventListener('DOMContentLoaded', function() {
   const btnRegistrarse = document.getElementById('btn-registrarse');
@@ -138,6 +138,8 @@ document.addEventListener('DOMContentLoaded', function() {
     documento,
     emergencia
   });
+
+  
   localStorage.setItem('usuarios', JSON.stringify(usuarios));
 
   mensajeRegistro.style.color = 'green';

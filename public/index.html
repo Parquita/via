@@ -4,6 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
   
   <!-- SEO Meta Tags -->
   <title>VIA - Plataforma de Movilidad Urbana en Colombia | Transporte Seguro y Confiable</title>
@@ -429,7 +431,7 @@
         <h2>Crear Cuenta</h2>
         <span class="close" id="cerrar-modal">&times;</span>
       </div>
-      <form id="form-registro" class="modal-form">
+      <form id="form-registro" class="modal-form" method="post">
         <div class="form-group">
           <label for="nombre">Nombre completo</label>
           <input type="text" id="nombre" name="nombre" required>
