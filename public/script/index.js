@@ -1,4 +1,3 @@
-import {supabase} from '../../src/db/db.js'
 // ===== MODAL DE REGISTRO =====
 document.addEventListener('DOMContentLoaded', function() {
   const btnRegistrarse = document.getElementById('btn-registrarse');
@@ -297,7 +296,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Ocultar completamente después de la transición
     setTimeout(() => {
       spinnerContainer.style.display = 'none';
-    }, 500);
+    }, 500);  
   }, 3000);
   
   // Función para mostrar spinner manualmente
