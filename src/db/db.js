@@ -9,7 +9,7 @@ const  supabase = createClient(supabaseUrl, supabaseKey);
 
 async function getData() {
     const { data, error } = await supabase
-      .from('pagos')
+      .from('usuarios')
       .select('*');
 
     if (error) {
@@ -21,4 +21,3 @@ async function getData() {
 
   getData();
 
-module.exports = supabase;

@@ -900,7 +900,7 @@ function configurarBusquedaUsuarios() {
 // ===== FUNCIONES DE CERRADO DE SESIÓN =====
 function cerrarSesion() {
   if (confirm('¿Estás seguro de cerrar sesión?')) {
-    localStorage.removeItem('usuarioLogueado');
+    sessionStorage.removeItem('usuarioLogueado');
     window.location.href = '../index.html';
   }
 }
@@ -916,7 +916,7 @@ function cargarFavoritosDelStorage() {
 }
 
 // ===== ESTILOS CSS DINÁMICOS =====
-const style = document.createElement('style');
+const dinamicstyle = document.createElement('style');
 style.textContent = `
   @keyframes slideInRight {
     from {
