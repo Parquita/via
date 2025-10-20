@@ -899,11 +899,21 @@ function configurarBusquedaUsuarios() {
 
 // ===== FUNCIONES DE CERRADO DE SESIÓN =====
 function cerrarSesion() {
-  if (confirm('¿Estás seguro de cerrar sesión?')) {
+    // Remover usuario de ambos storages
     sessionStorage.removeItem('usuarioLogueado');
+    localStorage.removeItem('usuarioLogueado');
+    // Redirigir a la página principal
     window.location.href = '../index.html';
-  }
+  
 }
+
+// Agregar event listener al botón de logout
+document.addEventListener('DOMContentLoaded', function() {
+  const btnLogout = document.querySelector('.btn-logout');
+  if (btnLogout) {
+    btnLogout.addEventListener('click', cerrarSesion);
+  }
+});
 
 // ===== FUNCIONES DE FAVORITOS =====
 function cargarFavoritosDelStorage() {
@@ -917,7 +927,7 @@ function cargarFavoritosDelStorage() {
 
 // ===== ESTILOS CSS DINÁMICOS =====
 const dinamicstyle = document.createElement('style');
-style.textContent = `
+dinamicstyle.textContent = `
   @keyframes slideInRight {
     from {
       transform: translateX(100%);

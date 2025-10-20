@@ -3,25 +3,31 @@
 document.addEventListener('DOMContentLoaded', function() {
   // Inicializar dashboard
   inicializarDashboardConductor();
-  
+
   // Configurar navegación
   configurarNavegacion();
-  
+
   // Configurar gráficos
   inicializarGraficos();
-  
+
   // Cargar datos iniciales
   cargarDatosDashboard();
-  
+
   // Actualizar tiempo en tiempo real
   actualizarTiempoOnline();
   setInterval(actualizarTiempoOnline, 60000); // Cada minuto
-  
+
   // Simular notificaciones de nuevos viajes
   simularNotificacionesViajes();
-  
+
   // Configurar controles del mapa
   configurarControlesMapa();
+
+  // Agregar event listener al botón de toggle status
+  const btnToggleStatus = document.getElementById('btn-toggle-status');
+  if (btnToggleStatus) {
+    btnToggleStatus.addEventListener('click', toggleStatus);
+  }
 });
 
 // ===== INICIALIZACIÓN =====
@@ -454,6 +460,18 @@ function simularNotificacionesViajes() {
   }, 30000);
 }
 
+function ocultarNotificacionesViajes() {
+  // Detener las notificaciones de viajes cuando el conductor está offline
+  // Aquí se implementaría la lógica para detener las notificaciones
+  console.log('Notificaciones de viajes ocultas');
+}
+
+function mostrarNotificacionesViajes() {
+  // Reanudar las notificaciones de viajes cuando el conductor está online
+  // Aquí se implementaría la lógica para mostrar las notificaciones
+  console.log('Notificaciones de viajes mostradas');
+}
+
 function mostrarNotificacionViaje() {
   const modal = document.getElementById('new-trip-modal');
   if (modal) {
@@ -629,10 +647,12 @@ function cambiarVistaMapa(vista) {
 
 // ===== FUNCIONES DE CERRADO DE SESIÓN =====
 function cerrarSesion() {
-  if (confirm('¿Estás seguro de cerrar sesión?')) {
+    // Remover usuario de ambos storages
+    sessionStorage.removeItem('usuarioLogueado');
     localStorage.removeItem('usuarioLogueado');
+    // Redirigir a la página principal
     window.location.href = '../index.html';
-  }
+  
 }
 
 // ===== EVENTOS DE PERIODO DE GRÁFICOS =====

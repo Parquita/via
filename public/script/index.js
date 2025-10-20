@@ -252,12 +252,17 @@ document.addEventListener('DOMContentLoaded', function () {
         mensajeLogin.textContent = '¡Inicio de sesión exitoso!';
         formLogin.reset();
 
-        // Guardar temporalmente en sessionStorage
+        // Agregar campo tipoUsuario basado en rol_id para compatibilidad con el dashboard
+        usuario.tipoUsuario = usuario.rol_id === 1 ? 'admin' : usuario.rol_id === 2 ? 'conductor' : 'pasajero';
+
+        // Guardar en sessionStorage y localStorage
         sessionStorage.setItem('usuarioLogueado', JSON.stringify(usuario));
+        localStorage.setItem('usuarioLogueado', JSON.stringify(usuario));
 
         setTimeout(() => {
           mensajeLogin.textContent = '';
-          const tipoUsuario = usuario.rol_id === 1 ? 'admin' : usuario.rol_id === 2 ? 'conductor' : 'pasajero';
+          // Redirigir al dashboard según el tipo de usuario
+          const tipoUsuario = usuario.tipoUsuario;
           let dashboardUrl = `dashboard/${tipoUsuario}.html`;
           window.location.href = dashboardUrl;
         }, 1200);
@@ -265,35 +270,6 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('Error al iniciar sesión:', error);
         mensajeLogin.textContent = 'Error de conexión con el servidor.';
       }
-
-      mensajeLogin.style.color = 'green';
-      mensajeLogin.textContent = '¡Inicio de sesión exitoso!';
-      formLogin.reset();
-      // Guardar usuario logueado (opcional)
-      localStorage.setItem('usuarioLogueado', JSON.stringify(usuario));
-      setTimeout(() => {
-        mensajeLogin.textContent = '';
-        // Redirigir al dashboard según el tipo de usuario
-        const tipoUsuario = usuario.tipoUsuario;
-        let dashboardUrl = '';
-
-        switch (tipoUsuario) {
-          case 'admin':
-            dashboardUrl = 'dashboard/admin.html';
-            break;
-          case 'conductor':
-            dashboardUrl = 'dashboard/conductor.html';
-            break;
-          case 'pasajero':
-            dashboardUrl = 'dashboard/pasajero.html';
-            break;
-          default:
-            dashboardUrl = 'dashboard/pasajero.html'; // Por defecto redirige a pasajero
-            break;
-        }
-
-        window.location.href = dashboardUrl;
-      }, 1200);
     });
   }
 });
