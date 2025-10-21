@@ -20,4 +20,40 @@ async function getData() {
   }
 
   getData();
+/*
+router.delete('/usuarios/delete/:id', async (req, res) => {
+  const id = 34; // ID del usuario a eliminar
 
+  const { data, error } = await supabase
+    .from('usuarios')
+    .delete(id)
+    .eq('id', id)
+    .select('id');
+
+  if (error) {
+    console.error('❌ Error al eliminar usuario:', error.message);
+    return res.status(500).json({ error: 'Error al eliminar el usuario.', details: error.message });
+  }
+
+  if (!data || data.length === 0) {
+    return res.status(404).json({ error: 'Usuario no encontrado.' });
+  }
+
+  res.json({ message: '✅ Usuario eliminado con éxito.', id: data[0].id });
+});
+
+async function getData() {
+    const { data, error } = await supabase
+    .from('usuarios')
+    .delete(34)
+    .eq('id', 34)
+    .select('id');
+
+    if (error) {
+      console.error('Error al obtener datos:', error);
+    } else {
+      console.log(data);
+    }
+  }
+
+  getData()*/
