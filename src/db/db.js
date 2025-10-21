@@ -9,7 +9,7 @@ const  supabase = createClient(supabaseUrl, supabaseKey);
 
 async function getData() {
     const { data, error } = await supabase
-      .from('usuarios')
+      .from('viajes')
       .select('*');
 
     if (error) {

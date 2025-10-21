@@ -4,11 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy"
+    content="script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; script-src-attr 'unsafe-inline';">
   <title>VIA - Dashboard Conductor</title>
   <link rel="stylesheet" href="../style/style.css">
   <link rel="stylesheet" href="../style/dashboard.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../script/chart.js"></script>
+
 </head>
 
 <body>
@@ -20,7 +23,7 @@
         <span class="logo-text">VIA Driver</span>
       </div>
     </div>
-    
+
     <nav class="sidebar-nav">
       <a href="#dashboard" class="nav-item active" data-section="dashboard">
         <i class="fas fa-tachometer-alt"></i>
@@ -43,7 +46,7 @@
         <span>Configuración</span>
       </a>
     </nav>
-    
+
     <div class="sidebar-footer">
       <div class="driver-info">
         <img src="../style/image/cosa.jpg" alt="Conductor" class="driver-avatar">
@@ -55,9 +58,14 @@
           </div>
         </div>
       </div>
-      <button class="btn-toggle-status" id="btn-toggle-status">
-        <i class="fas fa-power-off"></i>
-      </button>
+      <div class="sidebar-actions">
+        <button class="btn-toggle-status" id="btn-toggle-status">
+          <i class="fas fa-power-off"></i>
+        </button>
+        <button class="btn-logout" id="btn-logout">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
     </div>
   </aside>
 
@@ -71,7 +79,7 @@
       </div>
       <div class="header-right">
         <div class="header-actions">
-          <button class="btn-notification" onclick="toggleNotificaciones()">
+          <button class="btn-notification" id="btn-toggle-notificaciones">
             <i class="fas fa-bell"></i>
             <span class="notification-badge" id="notification-count">2</span>
           </button>
@@ -99,7 +107,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="metric-card">
             <div class="metric-icon">
               <i class="fas fa-dollar-sign"></i>
@@ -113,7 +121,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="metric-card">
             <div class="metric-icon">
               <i class="fas fa-star"></i>
@@ -127,7 +135,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="metric-card">
             <div class="metric-icon">
               <i class="fas fa-clock"></i>
@@ -167,7 +175,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="active-trips">
             <h3>Viajes Activos</h3>
             <div class="trips-list" id="active-trips-list">
@@ -200,13 +208,13 @@
               <option value="month">Este Mes</option>
               <option value="all">Todos</option>
             </select>
-            <button class="btn-primary" onclick="exportarViajes()">
+            <button class="btn-primary" id="btn-exportar-viajes">
               <i class="fas fa-download"></i>
               Exportar
             </button>
           </div>
         </div>
-        
+
         <div class="trips-table-container">
           <table class="trips-table">
             <thead>
@@ -233,13 +241,13 @@
         <div class="section-header">
           <h2>Análisis de Ganancias</h2>
           <div class="header-actions">
-            <button class="btn-primary" onclick="generarReporteGanancias()">
+            <button class="btn-primary" id="btn-generar-reporte">
               <i class="fas fa-chart-line"></i>
               Reporte Detallado
             </button>
           </div>
         </div>
-        
+
         <div class="earnings-grid">
           <div class="earnings-summary">
             <div class="summary-card">
@@ -247,20 +255,20 @@
               <div class="summary-value" id="ganancias-totales">$1,247.80</div>
               <div class="summary-period">Este mes</div>
             </div>
-            
+
             <div class="summary-card">
               <h3>Promedio por Viaje</h3>
               <div class="summary-value" id="promedio-viaje">$8.45</div>
               <div class="summary-period">Últimos 30 días</div>
             </div>
-            
+
             <div class="summary-card">
               <h3>Horas Trabajadas</h3>
               <div class="summary-value" id="horas-trabajadas">147h 32m</div>
               <div class="summary-period">Este mes</div>
             </div>
           </div>
-          
+
           <div class="earnings-breakdown">
             <h3>Desglose por Día</h3>
             <canvas id="earningsBreakdownChart" width="400" height="200"></canvas>
@@ -272,12 +280,12 @@
       <section id="perfil-section" class="content-section">
         <div class="section-header">
           <h2>Mi Perfil de Conductor</h2>
-          <button class="btn-primary" onclick="editarPerfil()">
+          <button class="btn-primary" id="btn-editar-perfil">
             <i class="fas fa-edit"></i>
             Editar Perfil
           </button>
         </div>
-        
+
         <div class="profile-grid">
           <div class="profile-info">
             <div class="profile-avatar">
@@ -286,12 +294,12 @@
                 <i class="fas fa-camera"></i>
               </button>
             </div>
-            
+
             <div class="profile-details">
               <h3 id="profile-nombre">Nombre del Conductor</h3>
               <p class="profile-email" id="profile-email">conductor@via.com</p>
               <p class="profile-phone" id="profile-phone">+57 300 123 4567</p>
-              
+
               <div class="profile-stats">
                 <div class="stat-item">
                   <span class="stat-label">Viajes Completados</span>
@@ -308,7 +316,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="profile-vehicle">
             <h3>Información del Vehículo</h3>
             <div class="vehicle-details">
@@ -334,35 +342,37 @@
         <div class="section-header">
           <h2>Configuración del Conductor</h2>
         </div>
-        
+
         <div class="config-grid">
           <div class="config-card">
             <h3>Preferencias de Viaje</h3>
             <form class="config-form">
               <div class="form-group">
-                <label>Radio de Búsqueda (km)</label>
+                <label for="search-radius">Radio de Búsqueda (km)</label>
                 <input type="range" min="1" max="20" value="5" id="search-radius">
                 <span class="range-value" id="radius-value">5 km</span>
               </div>
-              
+
               <div class="form-group">
-                <label>Tarifa Mínima por Viaje</label>
+                <label for="min-fare">Tarifa Mínima por Viaje</label>
                 <input type="number" value="5" id="min-fare" min="1" max="50">
               </div>
-              
+
               <div class="form-group">
-                <label>Horarios de Trabajo</label>
+                <label for="start-time">Horarios de Trabajo</label>
                 <div class="time-range">
+                  <label for="start-time" class="sr-only">Hora de inicio</label>
                   <input type="time" value="08:00" id="start-time">
                   <span>a</span>
+                  <label for="end-time" class="sr-only">Hora de fin</label>
                   <input type="time" value="18:00" id="end-time">
                 </div>
               </div>
-              
+
               <button type="submit" class="btn-primary">Guardar Cambios</button>
             </form>
           </div>
-          
+
           <div class="config-card">
             <h3>Notificaciones</h3>
             <div class="notification-settings">
@@ -394,7 +404,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h3>Notificaciones</h3>
-        <span class="close" onclick="closeNotificationsModal()">&times;</span>
+        <span class="close" id="close-notifications-modal">&times;</span>
       </div>
       <div class="modal-body" id="notifications-list">
         <!-- Las notificaciones se cargarán aquí -->
@@ -407,7 +417,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h3>¡Nuevo Viaje Disponible!</h3>
-        <span class="close" onclick="closeNewTripModal()">&times;</span>
+        <span class="close" id="close-new-trip-modal">&times;</span>
       </div>
       <div class="modal-body">
         <div class="trip-details">
@@ -422,7 +432,7 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="trip-route">
               <div class="route-point">
                 <i class="fas fa-map-marker-alt origin"></i>
@@ -433,7 +443,7 @@
                 <span id="modal-destination">Destino del viaje</span>
               </div>
             </div>
-            
+
             <div class="trip-metrics">
               <div class="metric">
                 <i class="fas fa-route"></i>
@@ -450,13 +460,13 @@
             </div>
           </div>
         </div>
-        
+
         <div class="trip-actions">
-          <button class="btn-accept-trip" onclick="aceptarViajeModal()">
+          <button class="btn-accept-trip" id="btn-accept-trip" type="button">
             <i class="fas fa-check"></i>
             Aceptar Viaje
           </button>
-          <button class="btn-reject-trip" onclick="rechazarViajeModal()">
+          <button class="btn-reject-trip" id="btn-reject-trip" type="button">
             <i class="fas fa-times"></i>
             Rechazar
           </button>
@@ -465,6 +475,7 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="../script/dashboard.js"></script>
   <script src="../script/conductor-dashboard.js"></script>
 </body>

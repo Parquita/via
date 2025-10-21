@@ -8,15 +8,34 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const logger = require('./logger');
 const usuariosRoutes = require('./routes/rutas.js');
 
 app.use(express.json());
+
+// Middleware para logging de requests
+app.use((req, res, next) => {
+  logger.info(`Request: ${req.method} ${req.path}`);
+  next();
+});
+
 app.use('/api', usuariosRoutes);
 
 
 
 // Middleware de seguridad
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "https://cdn.jsdelivr.net"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'", "https://rjfsuxiaoovjyljaarhg.supabase.co"]
+    }
+  }
+}));
 
 // Configuración de CORS
 app.use(cors({

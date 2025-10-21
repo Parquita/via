@@ -8,7 +8,8 @@
   <link rel="stylesheet" href="../style/style.css">
   <link rel="stylesheet" href="../style/dashboard.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../script/chart.js"></script>
+
 </head>
 
 <body>
@@ -52,9 +53,11 @@
           <div class="admin-role">Super Admin</div>
         </div>
       </div>
-      <button class="btn-logout">
-        <i class="fas fa-sign-out-alt"></i>
-      </button>
+      <div class="sidebar-actions">
+        <button class="btn-logout">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
     </div>
   </aside>
 
@@ -68,7 +71,7 @@
       </div>
       <div class="header-right">
         <div class="header-actions">
-          <button class="btn-notification" onclick="toggleNotificaciones()">
+          <button class="btn-notification">
             <i class="fas fa-bell"></i>
             <span class="notification-badge" id="notification-count">3</span>
           </button>
@@ -185,7 +188,7 @@
               <i class="fas fa-search"></i>
               <input type="text" placeholder="Buscar usuarios..." id="search-usuarios">
             </div>
-            <button class="btn-primary" onclick="exportarUsuarios()">
+            <button class="btn-primary">
               <i class="fas fa-download"></i>
               Exportar
             </button>
@@ -222,7 +225,7 @@
               <option value="completado">Completado</option>
               <option value="cancelado">Cancelado</option>
             </select>
-            <button class="btn-primary" onclick="generarReporteViajes()">
+            <button class="btn-primary">
               <i class="fas fa-file-alt"></i>
               Reporte
             </button>
@@ -255,7 +258,7 @@
         <div class="section-header">
           <h2>Reportes y Analytics</h2>
           <div class="header-actions">
-            <button class="btn-primary" onclick="generarReporteCompleto()">
+            <button class="btn-primary">
               <i class="fas fa-chart-line"></i>
               Generar Reporte
             </button>
@@ -288,15 +291,15 @@
             <h3>Configuración General</h3>
             <form class="config-form">
               <div class="form-group">
-                <label>Nombre de la Plataforma</label>
+                <label for="platform-name">Nombre de la Plataforma</label>
                 <input type="text" value="VIA" id="platform-name">
               </div>
               <div class="form-group">
-                <label>Comisión por Viaje (%)</label>
+                <label for="commission-rate">Comisión por Viaje (%)</label>
                 <input type="number" value="15" id="commission-rate" min="0" max="50">
               </div>
               <div class="form-group">
-                <label>Radio de Búsqueda (km)</label>
+                <label for="search-radius">Radio de Búsqueda (km)</label>
                 <input type="number" value="5" id="search-radius" min="1" max="20">
               </div>
               <button type="submit" class="btn-primary">Guardar Cambios</button>
@@ -306,15 +309,15 @@
           <div class="config-card">
             <h3>Notificaciones</h3>
             <div class="notification-settings">
-              <label class="checkbox-label">
+              <label class="checkbox-label" for="email-notifications">
                 <input type="checkbox" checked id="email-notifications">
                 <span>Notificaciones por Email</span>
               </label>
-              <label class="checkbox-label">
+              <label class="checkbox-label" for="push-notifications">
                 <input type="checkbox" checked id="push-notifications">
                 <span>Notificaciones Push</span>
               </label>
-              <label class="checkbox-label">
+              <label class="checkbox-label" for="sms-notifications">
                 <input type="checkbox" id="sms-notifications">
                 <span>Notificaciones SMS</span>
               </label>
@@ -330,10 +333,90 @@
     <div class="modal-content">
       <div class="modal-header">
         <h3>Notificaciones</h3>
-        <span class="close" onclick="closeNotificationsModal()">&times;</span>
+        <span class="close">&times;</span>
       </div>
       <div class="modal-body" id="notifications-list">
         <!-- Las notificaciones se cargarán aquí -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de perfil de usuario -->
+  <div id="user-profile-modal" class="modal">
+    <div class="modal-content large-modal">
+      <div class="modal-header">
+        <h3>Perfil de Usuario</h3>
+        <span class="close">&times;</span>
+      </div>
+      <div class="modal-body" id="user-profile-content">
+        <!-- El contenido del perfil se cargará aquí -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de editar usuario -->
+  <div id="edit-user-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Editar Usuario</h3>
+        <span class="close">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="edit-user-form" class="config-form">
+          <input type="hidden" id="edit-user-id">
+          <div class="form-group">
+            <label for="edit-nombre">Nombre Completo</label>
+            <input type="text" id="edit-nombre" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-email">Correo Electrónico</label>
+            <input type="email" id="edit-email" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-telefono">Teléfono</label>
+            <input type="tel" id="edit-telefono" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-tipo">Tipo de Usuario</label>
+            <select id="edit-tipo" required>
+              <option value="pasajero">Pasajero</option>
+              <option value="conductor">Conductor</option>
+              <option value="admin">Administrador</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="edit-estado">Estado</label>
+            <select id="edit-estado" required>
+              <option value="activo">Activo</option>
+              <option value="inactivo">Inactivo</option>
+              <option value="suspendido">Suspendido</option>
+              <option value="verificado">Verificado</option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-secondary">Cancelar</button>
+            <button type="submit" class="btn-primary">Guardar Cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de aprobar/rechazar conductor -->
+  <div id="conductor-action-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="conductor-action-title">Acción del Conductor</h3>
+        <span class="close">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div id="conductor-action-content">
+          <!-- El contenido se cargará aquí -->
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-secondary">Cancelar</button>
+          <button type="button" class="btn-primary" id="btn-confirm-action">Confirmar</button>
+        </div>
       </div>
     </div>
   </div>

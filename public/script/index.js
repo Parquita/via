@@ -132,7 +132,8 @@ document.addEventListener('DOMContentLoaded', function () {
             contrasena,
             rol_id: tipoUsuario === 'conductor' ? 2 : tipoUsuario === 'admin' ? 1 : 3,
             verificacion_antecedentes: tipoUsuario === 'conductor' ? 'pendiente' : 'n/a',
-            estado: 'activo'
+            estado: 'activo',
+            contacto_emergencia: emergencia
           })
         });
 

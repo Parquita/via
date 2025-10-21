@@ -1,5 +1,15 @@
 // ===== DASHBOARD CONDUCTOR VIA =====
 
+// Supabase client setup
+// Using global Supabase from CDN
+
+const supabaseUrl = 'https://rjfsuxiaoovjyljaarhg.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqZnN1eGlhb292anlsamFhcmhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc0NDU1NzksImV4cCI6MjA3MzAyMTU3OX0.NtlbSC92JOLvG76OwggSNsHwYv-1ve9ebB_D4DXW9UE';
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Variable global para mantener los viajes activos
+let viajesActivosGlobal = [];
+
 document.addEventListener('DOMContentLoaded', function() {
   // Inicializar dashboard
   inicializarDashboardConductor();
@@ -28,13 +38,41 @@ document.addEventListener('DOMContentLoaded', function() {
   if (btnToggleStatus) {
     btnToggleStatus.addEventListener('click', toggleStatus);
   }
+
+  // Agregar event listener al botón de logout
+  const btnLogout = document.getElementById('btn-logout');
+  if (btnLogout) {
+    btnLogout.addEventListener('click', cerrarSesion);
+  }
+
+  // Agregar event listeners para modales
+  const closeNotificationsModalBtn = document.getElementById('close-notifications-modal');
+  if (closeNotificationsModalBtn) {
+    closeNotificationsModalBtn.addEventListener('click', closeNotificationsModal);
+  }
+
+  const closeNewTripModalBtn = document.getElementById('close-new-trip-modal');
+  if (closeNewTripModalBtn) {
+    closeNewTripModalBtn.addEventListener('click', closeNewTripModal);
+  }
+
+  const btnAcceptTrip = document.getElementById('btn-accept-trip');
+  if (btnAcceptTrip) {
+    btnAcceptTrip.addEventListener('click', aceptarViajeModal);
+  }
+
+  const btnRejectTrip = document.getElementById('btn-reject-trip');
+  if (btnRejectTrip) {
+    btnRejectTrip.addEventListener('click', rechazarViajeModal);
+  }
 });
 
 // ===== INICIALIZACIÓN =====
 function inicializarDashboardConductor() {
   const usuario = JSON.parse(localStorage.getItem('usuarioLogueado'));
   if (usuario && usuario.tipoUsuario === 'conductor') {
-    document.getElementById('driver-nombre').textContent = usuario.nombre;
+    const driverNombreElement = document.getElementById('driver-nombre');
+    if (driverNombreElement) driverNombreElement.textContent = usuario.nombre;
     actualizarEstadisticasUsuario();
   } else {
     // Redirigir si no es conductor
@@ -71,28 +109,30 @@ function configurarNavegacion() {
 function actualizarTituloHeader(titulo) {
   const headerTitle = document.getElementById('header-title');
   const headerSubtitle = document.querySelector('.header-subtitle');
-  
-  switch(titulo) {
-    case 'Dashboard':
-      headerTitle.textContent = 'Dashboard del Conductor';
-      headerSubtitle.textContent = 'Gestiona tus viajes y ganancias';
-      break;
-    case 'Mis Viajes':
-      headerTitle.textContent = 'Historial de Viajes';
-      headerSubtitle.textContent = 'Revisa todos tus viajes realizados';
-      break;
-    case 'Ganancias':
-      headerTitle.textContent = 'Análisis de Ganancias';
-      headerSubtitle.textContent = 'Monitorea tus ingresos y rendimiento';
-      break;
-    case 'Mi Perfil':
-      headerTitle.textContent = 'Mi Perfil de Conductor';
-      headerSubtitle.textContent = 'Gestiona tu información personal';
-      break;
-    case 'Configuración':
-      headerTitle.textContent = 'Configuración del Conductor';
-      headerSubtitle.textContent = 'Ajusta tus preferencias de trabajo';
-      break;
+
+  if (headerTitle && headerSubtitle) {
+    switch(titulo) {
+      case 'Dashboard':
+        headerTitle.textContent = 'Dashboard del Conductor';
+        headerSubtitle.textContent = 'Gestiona tus viajes y ganancias';
+        break;
+      case 'Mis Viajes':
+        headerTitle.textContent = 'Historial de Viajes';
+        headerSubtitle.textContent = 'Revisa todos tus viajes realizados';
+        break;
+      case 'Ganancias':
+        headerTitle.textContent = 'Análisis de Ganancias';
+        headerSubtitle.textContent = 'Monitorea tus ingresos y rendimiento';
+        break;
+      case 'Mi Perfil':
+        headerTitle.textContent = 'Mi Perfil de Conductor';
+        headerSubtitle.textContent = 'Gestiona tu información personal';
+        break;
+      case 'Configuración':
+        headerTitle.textContent = 'Configuración del Conductor';
+        headerSubtitle.textContent = 'Ajusta tus preferencias de trabajo';
+        break;
+    }
   }
 }
 
@@ -226,43 +266,70 @@ function cargarDatosDashboard() {
   cargarPerfilConductor();
 }
 
-function cargarMetricas() {
-  // Simular datos de métricas
-  const metricas = {
-    viajesHoy: 8,
-    gananciasHoy: 45.80,
-    ratingPromedio: 4.9,
-    tiempoOnline: '6h 23m'
-  };
-  
-  // Actualizar valores en el DOM
-  Object.keys(metricas).forEach(key => {
-    const element = document.getElementById(key.replace(/([A-Z])/g, '-$1').toLowerCase());
-    if (element) {
-      if (key === 'gananciasHoy') {
-        element.textContent = `$${metricas[key]}`;
-      } else {
-        element.textContent = metricas[key];
-      }
+async function cargarMetricas() {
+  const usuario = JSON.parse(localStorage.getItem('usuarioLogueado'));
+  if (!usuario) return;
+
+  try {
+    // Obtener viajes del conductor desde Supabase
+    const { data: viajes, error } = await supabase
+      .from('viajes')
+      .select('*')
+      .eq('conductor_id', usuario.id);
+
+    if (error) {
+      console.error('Error al cargar métricas:', error);
+      mostrarNotificacion('Error al cargar métricas', 'error');
+      return;
     }
-  });
+
+    // Calcular métricas reales
+    const hoy = new Date().toISOString().split('T')[0];
+    const viajesHoy = viajes.filter(v => v.fecha.startsWith(hoy)).length;
+
+    // Calcular ganancias de hoy
+    const gananciasHoy = viajes
+      .filter(v => v.fecha.startsWith(hoy) && v.estado === 'Completado')
+      .reduce((total, viaje) => {
+        const precio = parseFloat(viaje.precio.replace('$', ''));
+        return total + (isNaN(precio) ? 0 : precio);
+      }, 0);
+
+    // Calcular rating promedio
+    const ratings = viajes.filter(v => v.rating && v.estado === 'Completado').map(v => v.rating);
+    const ratingPromedio = ratings.length > 0 ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1) : 0;
+
+    // Simular tiempo online (esto podría venir de otra tabla)
+    const tiempoOnline = '6h 23m';
+
+    const metricas = {
+      viajesHoy: viajesHoy,
+      gananciasHoy: gananciasHoy.toFixed(2),
+      ratingPromedio: ratingPromedio,
+      tiempoOnline: tiempoOnline
+    };
+
+    // Actualizar valores en el DOM
+    Object.keys(metricas).forEach(key => {
+      const element = document.getElementById(key.replace(/([A-Z])/g, '-$1').toLowerCase());
+      if (element) {
+        if (key === 'gananciasHoy') {
+          element.textContent = `$${metricas[key]}`;
+        } else {
+          element.textContent = metricas[key];
+        }
+      }
+    });
+  } catch (err) {
+    console.error('Error inesperado al cargar métricas:', err);
+    mostrarNotificacion('Error al cargar métricas', 'error');
+  }
 }
 
 function cargarViajesActivos() {
-  const viajesActivos = [
-    {
-      id: 'TRP001',
-      pasajero: 'Juan Pérez',
-      origen: 'Centro Comercial',
-      destino: 'Zona Norte',
-      estado: 'En Curso',
-      tiempoEstimado: '8 min'
-    }
-  ];
-  
   const activeTripsList = document.getElementById('active-trips-list');
   if (activeTripsList) {
-    if (viajesActivos.length === 0) {
+    if (viajesActivosGlobal.length === 0) {
       activeTripsList.innerHTML = `
         <div class="no-active-trips">
           <i class="fas fa-car"></i>
@@ -271,8 +338,8 @@ function cargarViajesActivos() {
         </div>
       `;
     } else {
-      activeTripsList.innerHTML = viajesActivos.map(viaje => `
-        <div class="active-trip-item">
+      activeTripsList.innerHTML = viajesActivosGlobal.map(viaje => `
+        <div class="active-trip-item" data-viaje-id="${viaje.id}">
           <div class="trip-header">
             <h4>Viaje #${viaje.id}</h4>
             <span class="trip-status ${viaje.estado.toLowerCase().replace(' ', '-')}">${viaje.estado}</span>
@@ -293,11 +360,11 @@ function cargarViajesActivos() {
               </div>
             </div>
             <div class="trip-actions">
-              <button class="btn-complete-trip" onclick="completarViaje('${viaje.id}')">
+              <button class="btn-complete-trip" data-trip-id="${viaje.id}" type="button">
                 <i class="fas fa-check"></i>
                 Completar
               </button>
-              <button class="btn-cancel-trip" onclick="cancelarViaje('${viaje.id}')">
+              <button class="btn-cancel-trip" data-trip-id="${viaje.id}" type="button">
                 <i class="fas fa-times"></i>
                 Cancelar
               </button>
@@ -305,83 +372,137 @@ function cargarViajesActivos() {
           </div>
         </div>
       `).join('');
+
+      // Agregar event listeners a los botones de viaje
+      configurarEventosViajes();
     }
   }
 }
 
-function cargarHistorialViajes() {
-  const historialViajes = [
-    {
-      fecha: '15/01/2024',
-      pasajero: 'María González',
-      origen: 'Zona Sur',
-      destino: 'Centro',
-      distancia: '3.2 km',
-      ganancia: '$9.80',
-      rating: 5,
-      estado: 'Completado'
-    },
-    {
-      fecha: '14/01/2024',
-      pasajero: 'Carlos López',
-      origen: 'Este',
-      destino: 'Oeste',
-      distancia: '4.5 km',
-      ganancia: '$12.50',
-      rating: 4,
-      estado: 'Completado'
-    }
-  ];
-  
-  const tripsTableBody = document.getElementById('trips-table-body');
-  if (tripsTableBody) {
-    tripsTableBody.innerHTML = historialViajes.map(viaje => `
-      <tr>
-        <td>${viaje.fecha}</td>
-        <td>${viaje.pasajero}</td>
-        <td>${viaje.origen}</td>
-        <td>${viaje.destino}</td>
-        <td>${viaje.distancia}</td>
-        <td>${viaje.ganancia}</td>
-        <td>
-          <span class="rating-stars">
-            ${'★'.repeat(viaje.rating)}${'☆'.repeat(5 - viaje.rating)}
-          </span>
-          <span class="rating-value">${viaje.rating}.0</span>
-        </td>
-        <td><span class="trip-status ${viaje.estado.toLowerCase()}">${viaje.estado}</span></td>
-      </tr>
-    `).join('');
-  }
-}
+async function cargarHistorialViajes() {
+  const usuario = JSON.parse(localStorage.getItem('usuarioLogueado'));
+  if (!usuario) return;
 
-function cargarDatosGanancias() {
-  // Simular datos de ganancias
-  const ganancias = {
-    gananciasTotales: 1247.80,
-    promedioViaje: 8.45,
-    horasTrabajadas: '147h 32m'
-  };
-  
-  // Actualizar valores en el DOM
-  Object.keys(ganancias).forEach(key => {
-    const element = document.getElementById(key.replace(/([A-Z])/g, '-$1').toLowerCase());
-    if (element) {
-      if (key === 'gananciasTotales' || key === 'promedioViaje') {
-        element.textContent = `$${ganancias[key]}`;
+  try {
+    // Obtener viajes del conductor desde Supabase
+    const { data: viajes, error } = await supabase
+      .from('viajes')
+      .select('*')
+      .eq('conductor_id', usuario.id)
+      .order('hora_inicio', { ascending: false });
+
+    if (error) {
+      console.error('Error al cargar historial de viajes:', error);
+      mostrarNotificacion('Error al cargar historial de viajes', 'error');
+      return;
+    }
+
+    const tripsTableBody = document.getElementById('trips-table-body');
+    if (tripsTableBody) {
+      if (viajes.length === 0) {
+        tripsTableBody.innerHTML = `
+          <tr>
+            <td colspan="8" style="text-align: center; padding: 2rem;">
+              <i class="fas fa-car" style="font-size: 2rem; color: #ccc; margin-bottom: 1rem;"></i>
+              <br>
+              No tienes viajes realizados aún
+            </td>
+          </tr>
+        `;
       } else {
-        element.textContent = ganancias[key];
+        tripsTableBody.innerHTML = viajes.map(viaje => {
+          const fecha = new Date(viaje.fecha).toLocaleDateString('es-ES');
+          const rating = viaje.rating || 0;
+          return `
+            <tr>
+              <td>${fecha}</td>
+              <td>${viaje.pasajero || 'N/A'}</td>
+              <td>${viaje.origen}</td>
+              <td>${viaje.destino}</td>
+              <td>${viaje.distancia}</td>
+              <td>${viaje.precio}</td>
+              <td>
+                <span class="rating-stars">
+                  ${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}
+                </span>
+                <span class="rating-value">${rating}.0</span>
+              </td>
+              <td><span class="trip-status ${viaje.estado.toLowerCase()}">${viaje.estado}</span></td>
+            </tr>
+          `;
+        }).join('');
       }
     }
-  });
+  } catch (err) {
+    console.error('Error inesperado al cargar historial de viajes:', err);
+    mostrarNotificacion('Error al cargar historial de viajes', 'error');
+  }
+}
+
+async function cargarDatosGanancias() {
+  const usuario = JSON.parse(localStorage.getItem('usuarioLogueado'));
+  if (!usuario) return;
+
+  try {
+    // Obtener viajes completados del conductor desde Supabase
+    const { data: viajes, error } = await supabase
+      .from('viajes')
+      .select('*')
+      .eq('conductor_id', usuario.id)
+      .eq('estado', 'Completado');
+
+    if (error) {
+      console.error('Error al cargar datos de ganancias:', error);
+      mostrarNotificacion('Error al cargar datos de ganancias', 'error');
+      return;
+    }
+
+    // Calcular ganancias totales
+    const gananciasTotales = viajes.reduce((total, viaje) => {
+      const precio = parseFloat(viaje.precio.replace('$', ''));
+      return total + (isNaN(precio) ? 0 : precio);
+    }, 0);
+
+    // Calcular promedio por viaje
+    const promedioViaje = viajes.length > 0 ? (gananciasTotales / viajes.length).toFixed(2) : 0;
+
+    // Simular horas trabajadas (esto podría venir de otra tabla o cálculo)
+    const horasTrabajadas = '147h 32m';
+
+    const ganancias = {
+      gananciasTotales: gananciasTotales.toFixed(2),
+      promedioViaje: promedioViaje,
+      horasTrabajadas: horasTrabajadas
+    };
+
+    // Actualizar valores en el DOM
+    Object.keys(ganancias).forEach(key => {
+      const element = document.getElementById(key.replace(/([A-Z])/g, '-$1').toLowerCase());
+      if (element) {
+        if (key === 'gananciasTotales' || key === 'promedioViaje') {
+          element.textContent = `$${ganancias[key]}`;
+        } else {
+          element.textContent = ganancias[key];
+        }
+      }
+    });
+  } catch (err) {
+    console.error('Error inesperado al cargar datos de ganancias:', err);
+    mostrarNotificacion('Error al cargar datos de ganancias', 'error');
+  }
 }
 
 function cargarPerfilConductor() {
   const usuario = JSON.parse(localStorage.getItem('usuarioLogueado'));
   if (usuario) {
-    document.getElementById('profile-nombre').textContent = usuario.nombre;
-    document.getElementById('profile-email').textContent = usuario.correo;
-    document.getElementById('profile-phone').textContent = usuario.telefono || '+57 300 123 4567';
+    const profileNombreElement = document.getElementById('profile-nombre');
+    if (profileNombreElement) profileNombreElement.textContent = usuario.nombre;
+
+    const profileEmailElement = document.getElementById('profile-email');
+    if (profileEmailElement) profileEmailElement.textContent = usuario.correo;
+
+    const profilePhoneElement = document.getElementById('profile-phone');
+    if (profilePhoneElement) profilePhoneElement.textContent = usuario.telefono || '+57 300 123 4567';
   }
 }
 
@@ -411,44 +532,64 @@ function actualizarEstadisticasUsuario() {
 }
 
 // ===== FUNCIONES DE VIAJES =====
-function completarViaje(viajeId) {
-  if (confirm('¿Confirmas que has completado este viaje?')) {
-    // Implementar lógica de completar viaje
-    console.log(`Viaje ${viajeId} completado`);
-    
-    // Actualizar estado del viaje
-    const viajeElement = document.querySelector(`[data-viaje-id="${viajeId}"]`);
-    if (viajeElement) {
-      viajeElement.remove();
-    }
-    
-    // Actualizar estadísticas
-    actualizarEstadisticasUsuario();
-    
-    mostrarNotificacion('¡Viaje completado exitosamente!', 'success');
-    
-    // Recargar viajes activos
-    cargarViajesActivos();
-  }
+function configurarEventosViajes() {
+  // Agregar event listeners a los botones de completar viaje
+  document.querySelectorAll('.btn-complete-trip').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const viajeId = this.getAttribute('data-trip-id');
+      completarViaje(viajeId);
+    });
+  });
+
+  // Agregar event listeners a los botones de cancelar viaje
+  document.querySelectorAll('.btn-cancel-trip').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const viajeId = this.getAttribute('data-trip-id');
+      cancelarViaje(viajeId);
+    });
+  });
 }
 
-function cancelarViaje(viajeId) {
-  if (confirm('¿Estás seguro de cancelar este viaje?')) {
-    // Implementar lógica de cancelar viaje
-    console.log(`Viaje ${viajeId} cancelado`);
-    
+function completarViaje(viajeId) {
+    // Implementar lógica de completar viaje
+    console.log(`Viaje ${viajeId} completado`);
+
+    // Remover viaje de la lista global
+    viajesActivosGlobal = viajesActivosGlobal.filter(viaje => viaje.id !== viajeId);
+
     // Actualizar estado del viaje
     const viajeElement = document.querySelector(`[data-viaje-id="${viajeId}"]`);
     if (viajeElement) {
       viajeElement.remove();
     }
-    
-    mostrarNotificacion('Viaje cancelado', 'warning');
-    
+
+    // Actualizar estadísticas
+    actualizarEstadisticasUsuario();
+
+    mostrarNotificacion('¡Viaje completado exitosamente!', 'success');
+
     // Recargar viajes activos
     cargarViajesActivos();
   }
-}
+
+function cancelarViaje(viajeId) {
+    // Implementar lógica de cancelar viaje
+    console.log(`Viaje ${viajeId} cancelado`);
+
+    // Remover viaje de la lista global
+    viajesActivosGlobal = viajesActivosGlobal.filter(viaje => viaje.id !== viajeId);
+
+    // Actualizar estado del viaje
+    const viajeElement = document.querySelector(`[data-viaje-id="${viajeId}"]`);
+    if (viajeElement) {
+      viajeElement.remove();
+    }
+
+    mostrarNotificacion('Viaje cancelado', 'warning');
+
+    // Recargar viajes activos
+    cargarViajesActivos();
+  }
 
 // ===== FUNCIONES DE NOTIFICACIONES =====
 function simularNotificacionesViajes() {
@@ -457,7 +598,7 @@ function simularNotificacionesViajes() {
     if (document.getElementById('status-indicator').classList.contains('online')) {
       mostrarNotificacionViaje();
     }
-  }, 30000);
+  }, 100000);
 }
 
 function ocultarNotificacionesViajes() {
@@ -504,7 +645,7 @@ function aceptarViajeModal() {
   const modal = document.getElementById('new-trip-modal');
   if (modal) {
     modal.style.display = 'none';
-    
+
     // Agregar viaje a la lista de activos
     const nuevoViaje = {
       id: 'TRP' + Date.now().toString().slice(-4),
@@ -514,11 +655,14 @@ function aceptarViajeModal() {
       estado: 'En Curso',
       tiempoEstimado: document.getElementById('modal-duration').textContent
     };
-    
+
+    // Agregar a la lista global de viajes activos
+    viajesActivosGlobal.push(nuevoViaje);
+
     // Aquí se implementaría la lógica real de aceptar viaje
-    
+
     mostrarNotificacion('¡Viaje aceptado! Dirígete al origen', 'success');
-    
+
     // Recargar viajes activos
     cargarViajesActivos();
   }
@@ -678,8 +822,8 @@ function actualizarGraficoPorPeriodo(periodo) {
 }
 
 // ===== ESTILOS CSS DINÁMICOS =====
-const style = document.createElement('style');
-style.textContent = `
+const conductorStyle = document.createElement('style');
+conductorStyle.textContent = `
   @keyframes slideInRight {
     from {
       transform: translateX(100%);
@@ -690,7 +834,7 @@ style.textContent = `
       opacity: 1;
     }
   }
-  
+
   @keyframes slideOutRight {
     from {
       transform: translateX(0);
@@ -701,17 +845,17 @@ style.textContent = `
       opacity: 0;
     }
   }
-  
+
   .status-indicator.online {
     background-color: #10b981;
   }
-  
+
   .status-indicator.offline {
     background-color: #6b7280;
   }
-  
+
   .btn-toggle-status.offline {
     background-color: #6b7280;
   }
 `;
-document.head.appendChild(style);
+document.head.appendChild(conductorStyle);

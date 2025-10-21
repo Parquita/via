@@ -11,12 +11,37 @@ router.get('/', (req, res) => {
   res.send('API VIA - CRUD Usuarios (Supabase)');
 });
 
+// ✅ Ruta de bienvenida con logging
+router.get('/welcome', (req, res) => {
+  const logger = require('../logger');
+  logger.info(`Welcome endpoint accessed: ${req.method} ${req.path}`);
+  res.json({
+    message: 'Welcome to the VIA API Service!',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// ✅ READ - Obtener todos los viajes
+router.get('/viajes', async (req, res) => {
+  const { data, error } = await supabase
+    .from('viajes')
+    .select('*')
+    .order('id', { ascending: true });
+
+  if (error) {
+    console.error('❌ Error al obtener viajes:', error.message);
+    return res.status(500).json({ error: 'Error al obtener los viajes.', details: error.message });
+  }
+
+  res.json(data);
+});
+
 
 // ✅ CREATE - Agregar usuario
 router.post('/usuarios/add', async (req, res) => {
-  const { nombre, correo, contrasena, rol_id, verificacion_antecedentes, estado } = req.body;
+  const { nombre, correo, contrasena, rol_id, verificacion_antecedentes, estado, contacto_emergencia } = req.body;
 
-  if (!nombre || !correo || !contrasena || !rol_id || !verificacion_antecedentes) {
+  if (!nombre || !correo || !contrasena || !rol_id || !verificacion_antecedentes || !contacto_emergencia) {
     return res.status(400).json({ error: 'Faltan datos obligatorios del usuario.' });
   }
 
@@ -29,7 +54,8 @@ router.post('/usuarios/add', async (req, res) => {
         contrasena,
         rol_id,
         verificacion_antecedentes,
-        estado: estado || 'pending'
+        estado: estado || 'pending',
+        contacto_emergencia
       }
     ])
     .select('id');

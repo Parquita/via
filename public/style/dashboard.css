@@ -57,6 +57,8 @@ body {
   box-shadow: var(--shadow-lg);
   z-index: 1000;
   transition: var(--transition);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .sidebar-header {
@@ -85,6 +87,8 @@ body {
 
 .sidebar-nav {
   padding: 1.5rem 0;
+  overflow-y: auto;
+  flex: 1;
 }
 
 .nav-item {
@@ -123,6 +127,38 @@ body {
   padding: 1.5rem;
   border-top: 1px solid var(--border-color);
   background: var(--bg-primary);
+}
+
+.sidebar-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.sidebar-actions .btn-logout,
+.sidebar-actions .btn-toggle-status {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  border-radius: var(--border-radius);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.sidebar-actions .btn-logout:hover {
+  background: var(--error-color);
+  color: white;
+}
+
+.sidebar-actions .btn-toggle-status:hover {
+  background: var(--primary-color);
+  color: white;
 }
 
 .admin-info,

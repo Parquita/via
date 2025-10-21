@@ -1,24 +1,44 @@
 // ===== DASHBOARD ADMINISTRADOR VIA =====
 
+// Variables globales para los gráficos
+let viajesChart = null;
+let usuariosChart = null;
+let ingresosChart = null;
+
 document.addEventListener('DOMContentLoaded', function() {
   // Inicializar dashboard
   inicializarDashboardAdmin();
-  
+
   // Configurar navegación
   configurarNavegacion();
-  
+
   // Configurar gráficos
   inicializarGraficos();
-  
+
   // Cargar datos iniciales
   cargarDatosDashboard();
-  
+
   // Actualizar fecha y hora
   actualizarFechaHora();
   setInterval(actualizarFechaHora, 1000);
-  
+
   // Cargar notificaciones
   cargarNotificaciones();
+
+  // Agregar event listener al botón de logout
+  const btnLogout = document.querySelector('.btn-logout');
+  if (btnLogout) {
+    btnLogout.addEventListener('click', cerrarSesion);
+  }
+
+  // Event listener para el formulario de editar usuario
+  const editForm = document.getElementById('edit-user-form');
+  if (editForm) {
+    editForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      guardarCambiosUsuario();
+    });
+  }
 });
 
 // ===== INICIALIZACIÓN =====
@@ -88,10 +108,21 @@ function actualizarTituloHeader(titulo) {
 
 // ===== GRÁFICOS =====
 function inicializarGraficos() {
+  // Destruir gráficos existentes si ya están creados
+  if (viajesChart) {
+    viajesChart.destroy();
+  }
+  if (usuariosChart) {
+    usuariosChart.destroy();
+  }
+  if (ingresosChart) {
+    ingresosChart.destroy();
+  }
+
   // Gráfico de viajes por día
   const viajesCtx = document.getElementById('viajesChart');
   if (viajesCtx) {
-    new Chart(viajesCtx, {
+    viajesChart = new Chart(viajesCtx, {
       type: 'line',
       data: {
         labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
@@ -127,11 +158,11 @@ function inicializarGraficos() {
       }
     });
   }
-  
+
   // Gráfico de distribución de usuarios
   const usuariosCtx = document.getElementById('usuariosChart');
   if (usuariosCtx) {
-    new Chart(usuariosCtx, {
+    usuariosChart = new Chart(usuariosCtx, {
       type: 'doughnut',
       data: {
         labels: ['Conductores', 'Pasajeros', 'Admins'],
@@ -151,11 +182,11 @@ function inicializarGraficos() {
       }
     });
   }
-  
+
   // Gráfico de ingresos
   const ingresosCtx = document.getElementById('ingresosChart');
   if (ingresosCtx) {
-    new Chart(ingresosCtx, {
+    ingresosChart = new Chart(ingresosCtx, {
       type: 'bar',
       data: {
         labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
@@ -478,36 +509,248 @@ function editarViaje(idViaje) {
 }
 
 function mostrarPerfilUsuario(nombre) {
-  console.log(`Mostrando perfil de: ${nombre}`);
-  // Implementar modal de perfil
+  // Buscar usuario en los datos simulados
+  const usuarios = [
+    {
+      id: 1,
+      nombre: 'Juan Pérez',
+      email: 'juan.perez@email.com',
+      telefono: '+57 300 123 4567',
+      tipo: 'pasajero',
+      estado: 'activo',
+      fechaRegistro: '2024-01-15',
+      viajesCompletados: 47,
+      ratingPromedio: 4.8,
+      ultimoAcceso: 'Hace 2 min',
+      avatar: '../style/image/cosa.jpg'
+    },
+    {
+      id: 2,
+      nombre: 'Carlos Rodríguez',
+      email: 'carlos.rodriguez@email.com',
+      telefono: '+57 301 234 5678',
+      tipo: 'conductor',
+      estado: 'verificado',
+      fechaRegistro: '2024-01-10',
+      viajesCompletados: 156,
+      ratingPromedio: 4.9,
+      ultimoAcceso: 'Hace 15 min',
+      avatar: '../style/image/cosa.jpg',
+      vehiculo: {
+        marca: 'Toyota',
+        modelo: 'Corolla 2022',
+        placa: 'ABC123',
+        color: 'Blanco'
+      }
+    },
+    {
+      id: 3,
+      nombre: 'María González',
+      email: 'maria.gonzalez@email.com',
+      telefono: '+57 302 345 6789',
+      tipo: 'pasajero',
+      estado: 'activo',
+      fechaRegistro: '2024-01-20',
+      viajesCompletados: 23,
+      ratingPromedio: 4.7,
+      ultimoAcceso: 'Hace 1 hora',
+      avatar: '../style/image/cosa.jpg'
+    }
+  ];
+
+  const usuario = usuarios.find(u => u.nombre === nombre);
+  if (!usuario) {
+    mostrarNotificacion('Usuario no encontrado', 'error');
+    return;
+  }
+
+  const modal = document.getElementById('user-profile-modal');
+  const content = document.getElementById('user-profile-content');
+
+  content.innerHTML = `
+    <div class="user-profile-details">
+      <div class="profile-header">
+        <img src="${usuario.avatar}" alt="Avatar" class="profile-avatar-large">
+        <div class="profile-info">
+          <h3>${usuario.nombre}</h3>
+          <p class="user-type-badge ${usuario.tipo}">${usuario.tipo.charAt(0).toUpperCase() + usuario.tipo.slice(1)}</p>
+          <p class="user-status-badge ${usuario.estado}">${usuario.estado.charAt(0).toUpperCase() + usuario.estado.slice(1)}</p>
+        </div>
+      </div>
+
+      <div class="profile-stats">
+        <div class="stat-item">
+          <span class="stat-label">Viajes Completados</span>
+          <span class="stat-value">${usuario.viajesCompletados}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Rating Promedio</span>
+          <span class="stat-value">${usuario.ratingPromedio} ★</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Último Acceso</span>
+          <span class="stat-value">${usuario.ultimoAcceso}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Fecha de Registro</span>
+          <span class="stat-value">${new Date(usuario.fechaRegistro).toLocaleDateString('es-ES')}</span>
+        </div>
+      </div>
+
+      <div class="profile-contact">
+        <h4>Información de Contacto</h4>
+        <div class="contact-info">
+          <p><strong>Email:</strong> ${usuario.email}</p>
+          <p><strong>Teléfono:</strong> ${usuario.telefono}</p>
+        </div>
+      </div>
+
+      ${usuario.tipo === 'conductor' && usuario.vehiculo ? `
+        <div class="profile-vehicle">
+          <h4>Información del Vehículo</h4>
+          <div class="vehicle-info">
+            <p><strong>Marca:</strong> ${usuario.vehiculo.marca}</p>
+            <p><strong>Modelo:</strong> ${usuario.vehiculo.modelo}</p>
+            <p><strong>Placa:</strong> ${usuario.vehiculo.placa}</p>
+            <p><strong>Color:</strong> ${usuario.vehiculo.color}</p>
+          </div>
+        </div>
+      ` : ''}
+
+      <div class="profile-actions">
+        <button class="btn-primary" onclick="editarUsuario('${usuario.nombre}')">
+          <i class="fas fa-edit"></i>
+          Editar Usuario
+        </button>
+        <button class="btn-secondary" onclick="closeUserProfileModal()">
+          <i class="fas fa-times"></i>
+          Cerrar
+        </button>
+      </div>
+    </div>
+  `;
+
+  modal.style.display = 'block';
+}
+
+function closeUserProfileModal() {
+  const modal = document.getElementById('user-profile-modal');
+  modal.style.display = 'none';
 }
 
 function editarUsuario(nombre) {
-  console.log(`Editando usuario: ${nombre}`);
-  // Implementar modal de edición
+  // Buscar usuario
+  const usuarios = [
+    { id: 1, nombre: 'Juan Pérez', email: 'juan.perez@email.com', telefono: '+57 300 123 4567', tipo: 'pasajero', estado: 'activo' },
+    { id: 2, nombre: 'Carlos Rodríguez', email: 'carlos.rodriguez@email.com', telefono: '+57 301 234 5678', tipo: 'conductor', estado: 'verificado' },
+    { id: 3, nombre: 'María González', email: 'maria.gonzalez@email.com', telefono: '+57 302 345 6789', tipo: 'pasajero', estado: 'activo' }
+  ];
+
+  const usuario = usuarios.find(u => u.nombre === nombre);
+  if (!usuario) {
+    mostrarNotificacion('Usuario no encontrado', 'error');
+    return;
+  }
+
+  // Llenar formulario
+  document.getElementById('edit-user-id').value = usuario.id;
+  document.getElementById('edit-nombre').value = usuario.nombre;
+  document.getElementById('edit-email').value = usuario.email;
+  document.getElementById('edit-telefono').value = usuario.telefono;
+  document.getElementById('edit-tipo').value = usuario.tipo;
+  document.getElementById('edit-estado').value = usuario.estado;
+
+  // Mostrar modal
+  const modal = document.getElementById('edit-user-modal');
+  modal.style.display = 'block';
+
+  // Cerrar modal de perfil si está abierto
+  closeUserProfileModal();
+}
+
+function closeEditUserModal() {
+  const modal = document.getElementById('edit-user-modal');
+  modal.style.display = 'none';
 }
 
 function aprobarConductor(nombre) {
-  if (confirm(`¿Estás seguro de aprobar a ${nombre} como conductor?`)) {
+  const modal = document.getElementById('conductor-action-modal');
+  const title = document.getElementById('conductor-action-title');
+  const content = document.getElementById('conductor-action-content');
+  const confirmBtn = document.getElementById('btn-confirm-action');
+
+  title.textContent = 'Aprobar Conductor';
+  content.innerHTML = `
+    <div class="conductor-action-info">
+      <i class="fas fa-user-check" style="font-size: 3rem; color: #10b981; margin-bottom: 1rem;"></i>
+      <h4>¿Aprobar a ${nombre} como conductor?</h4>
+      <p>Esta acción permitirá que ${nombre} pueda recibir viajes en la plataforma.</p>
+      <div class="action-details">
+        <p><strong>Acción:</strong> Aprobación de conductor</p>
+        <p><strong>Usuario:</strong> ${nombre}</p>
+        <p><strong>Estado resultante:</strong> Verificado</p>
+      </div>
+    </div>
+  `;
+
+  confirmBtn.textContent = 'Aprobar Conductor';
+  confirmBtn.onclick = () => {
+    // Simular aprobación
     console.log(`Conductor aprobado: ${nombre}`);
-    // Implementar lógica de aprobación
+    closeConductorActionModal();
     mostrarNotificacion('Conductor aprobado exitosamente', 'success');
-  }
+    // Recargar tabla de usuarios
+    cargarUsuarios();
+  };
+
+  modal.style.display = 'block';
 }
 
 function rechazarConductor(nombre) {
-  if (confirm(`¿Estás seguro de rechazar a ${nombre} como conductor?`)) {
+  const modal = document.getElementById('conductor-action-modal');
+  const title = document.getElementById('conductor-action-title');
+  const content = document.getElementById('conductor-action-content');
+  const confirmBtn = document.getElementById('btn-confirm-action');
+
+  title.textContent = 'Rechazar Conductor';
+  content.innerHTML = `
+    <div class="conductor-action-info">
+      <i class="fas fa-user-times" style="font-size: 3rem; color: #ef4444; margin-bottom: 1rem;"></i>
+      <h4>¿Rechazar a ${nombre} como conductor?</h4>
+      <p>Esta acción rechazará la solicitud de ${nombre} para ser conductor.</p>
+      <div class="action-details">
+        <p><strong>Acción:</strong> Rechazo de conductor</p>
+        <p><strong>Usuario:</strong> ${nombre}</p>
+        <p><strong>Estado resultante:</strong> Rechazado</p>
+      </div>
+    </div>
+  `;
+
+  confirmBtn.textContent = 'Rechazar Conductor';
+  confirmBtn.onclick = () => {
+    // Simular rechazo
     console.log(`Conductor rechazado: ${nombre}`);
-    // Implementar lógica de rechazo
+    closeConductorActionModal();
     mostrarNotificacion('Conductor rechazado', 'info');
-  }
+    // Recargar tabla de usuarios
+    cargarUsuarios();
+  };
+
+  modal.style.display = 'block';
+}
+
+function closeConductorActionModal() {
+  const modal = document.getElementById('conductor-action-modal');
+  modal.style.display = 'none';
 }
 
 function suspenderUsuario(nombre) {
-  if (confirm(`¿Estás seguro de suspender a ${nombre}?`)) {
+  if (confirm(`¿Estás seguro de suspender a ${nombre}? Esta acción limitará temporalmente el acceso del usuario a la plataforma.`)) {
+    // Simular suspensión
     console.log(`Usuario suspendido: ${nombre}`);
-    // Implementar lógica de suspensión
-    mostrarNotificacion('Usuario suspendido', 'warning');
+    mostrarNotificacion('Usuario suspendido temporalmente', 'warning');
+    // Recargar tabla de usuarios
+    cargarUsuarios();
   }
 }
 
@@ -591,13 +834,64 @@ function cerrarSesion() {
  
 }
 
-// Agregar event listener al botón de logout
+// ===== EVENT LISTENERS =====
 document.addEventListener('DOMContentLoaded', function() {
+  // Inicializar dashboard
+  inicializarDashboardAdmin();
+
+  // Configurar navegación
+  configurarNavegacion();
+
+  // Configurar gráficos
+  inicializarGraficos();
+
+  // Cargar datos iniciales
+  cargarDatosDashboard();
+
+  // Actualizar fecha y hora
+  actualizarFechaHora();
+  setInterval(actualizarFechaHora, 1000);
+
+  // Cargar notificaciones
+  cargarNotificaciones();
+
+  // Agregar event listener al botón de logout
   const btnLogout = document.querySelector('.btn-logout');
   if (btnLogout) {
     btnLogout.addEventListener('click', cerrarSesion);
   }
+
+  // Event listener para el formulario de editar usuario
+  const editForm = document.getElementById('edit-user-form');
+  if (editForm) {
+    editForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      guardarCambiosUsuario();
+    });
+  }
 });
+
+// Función para guardar cambios del usuario
+function guardarCambiosUsuario() {
+  const userId = document.getElementById('edit-user-id').value;
+  const nombre = document.getElementById('edit-nombre').value;
+  const email = document.getElementById('edit-email').value;
+  const telefono = document.getElementById('edit-telefono').value;
+  const tipo = document.getElementById('edit-tipo').value;
+  const estado = document.getElementById('edit-estado').value;
+
+  // Simular guardado
+  console.log('Guardando cambios del usuario:', { userId, nombre, email, telefono, tipo, estado });
+
+  // Cerrar modal
+  closeEditUserModal();
+
+  // Mostrar notificación
+  mostrarNotificacion('Usuario actualizado exitosamente', 'success');
+
+  // Recargar tabla de usuarios
+  cargarUsuarios();
+}
 
 // ===== EVENTOS DE PERIODO DE GRÁFICOS =====
 document.addEventListener('click', function(e) {

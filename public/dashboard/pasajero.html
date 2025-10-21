@@ -4,12 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" content="script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com;">
+  <!-- Content Security Policy removed for development -->
   <title>VIA - Dashboard Pasajero</title>
   <link rel="stylesheet" href="../style/style.css">
   <link rel="stylesheet" href="../style/dashboard.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -72,7 +71,7 @@
       </div>
       <div class="header-right">
         <div class="header-actions">
-          <button class="btn-notification" onclick="toggleNotificaciones()">
+          <button class="btn-notification">
             <i class="fas fa-bell"></i>
             <span class="notification-badge" id="notification-count">1</span>
           </button>
@@ -108,17 +107,19 @@
             
             <div class="location-inputs">
               <div class="input-group">
+                <label for="origin-input" class="sr-only">¿Dónde estás?</label>
                 <i class="fas fa-map-marker-alt origin-icon"></i>
                 <input type="text" placeholder="¿Dónde estás?" id="origin-input" class="location-input">
-                <button class="btn-current-location" onclick="usarUbicacionActual()">
-                  <i class="fas fa-crosshairs"></i>
-                </button>
+          <button class="btn-current-location">
+            <i class="fas fa-crosshairs"></i>
+          </button>
               </div>
-              
+
               <div class="input-group">
+                <label for="destination-input" class="sr-only">¿A dónde vas?</label>
                 <i class="fas fa-map-marker-alt destination-icon"></i>
                 <input type="text" placeholder="¿A dónde vas?" id="destination-input" class="location-input">
-                <button class="btn-favorites" onclick="mostrarFavoritos()">
+                <button class="btn-favorites">
                   <i class="fas fa-heart"></i>
                 </button>
               </div>
@@ -126,24 +127,24 @@
             
             <div class="trip-options">
               <div class="option-group">
-                <label>Fecha y Hora</label>
+                <label for="trip-date">Fecha y Hora</label>
                 <div class="datetime-inputs">
-                  <input type="date" id="trip-date" value="">
-                  <input type="time" id="trip-time" value="">
+                  <input type="date" id="trip-date" value="" aria-label="Fecha del viaje">
+                  <input type="time" id="trip-time" value="" aria-label="Hora del viaje">
                 </div>
               </div>
-              
+
               <div class="option-group">
                 <label>Número de Pasajeros</label>
                 <div class="passenger-count">
-                  <button class="btn-count" onclick="decrementarPasajeros()">-</button>
-                  <span id="passenger-count">1</span>
-                  <button class="btn-count" onclick="incrementarPasajeros()">+</button>
+                  <button class="btn-count" aria-label="Disminuir pasajeros">-</button>
+                  <span id="passenger-count" role="spinbutton" aria-valuenow="1" aria-valuemin="1" aria-valuemax="6">1</span>
+                  <button class="btn-count" aria-label="Aumentar pasajeros">+</button>
                 </div>
               </div>
             </div>
             
-            <button class="btn-request-trip" onclick="solicitarViaje()" id="btn-request-trip">
+            <button class="btn-request-trip" id="btn-request-trip">
               <i class="fas fa-search"></i>
               Buscar Conductor
             </button>
@@ -528,6 +529,7 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="../script/dashboard.js"></script>
   <script src="../script/pasajero-dashboard.js"></script>
 </body>

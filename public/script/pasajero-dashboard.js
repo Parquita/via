@@ -1,5 +1,12 @@
 // ===== DASHBOARD PASAJERO VIA =====
 
+// Supabase client setup
+// Using global Supabase from CDN
+
+const supabaseUrl = 'https://rjfsuxiaoovjyljaarhg.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqZnN1eGlhb292anlsamFhcmhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc0NDU1NzksImV4cCI6MjA3MzAyMTU3OX0.NtlbSC92JOLvG76OwggSNsHwYv-1ve9ebB_D4DXW9UE';
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
 document.addEventListener('DOMContentLoaded', function() {
   // Inicializar dashboard
   inicializarDashboardPasajero();
@@ -417,11 +424,18 @@ function mostrarConfirmacionViaje() {
   }
 }
 
-function confirmarViaje() {
+async function confirmarViaje() {
   const modal = document.getElementById('trip-confirmation-modal');
   if (modal) {
     modal.style.display = 'none';
-    
+
+    // Obtener usuario logueado
+    const usuario = JSON.parse(localStorage.getItem('usuarioLogueado'));
+    if (!usuario) {
+      mostrarNotificacion('Error: Usuario no encontrado', 'error');
+      return;
+    }
+
     // Crear viaje
     const nuevoViaje = {
       id: 'TRP' + Date.now().toString().slice(-4),
@@ -432,29 +446,48 @@ function confirmarViaje() {
       estado: 'En Curso',
       fecha: new Date().toISOString()
     };
-    
-    // Guardar en localStorage
-    const viajes = JSON.parse(localStorage.getItem('viajesPasajero')) || [];
-    viajes.push(nuevoViaje);
-    localStorage.setItem('viajesPasajero', JSON.stringify(viajes));
-    
-    // Limpiar formulario
-    document.getElementById('origin-input').value = '';
-    document.getElementById('destination-input').value = '';
-    
-    // Restaurar botón
-    const btnRequestTrip = document.getElementById('btn-request-trip');
-    btnRequestTrip.innerHTML = '<i class="fas fa-search"></i> Buscar Conductor';
-    btnRequestTrip.disabled = false;
-    
-    // Actualizar resumen
-    actualizarResumenViaje();
-    
-    // Mostrar notificación
-    mostrarNotificacion('¡Viaje confirmado! Tu conductor está en camino', 'success');
-    
-    // Recargar viajes recientes
-    cargarViajesRecientes();
+
+    try {
+      // Insertar en Supabase
+      const { data, error } = await supabase
+        .from('viajes')
+        .insert([nuevoViaje])
+        .select();
+
+      if (error) {
+        console.error('Error al guardar viaje en base de datos:', error);
+        mostrarNotificacion('Error al guardar viaje en base de datos', 'error');
+        return;
+      }
+
+      console.log('Viaje guardado en base de datos:', data);
+
+      // Guardar en localStorage también (para compatibilidad)
+      const viajes = JSON.parse(localStorage.getItem('viajesPasajero')) || [];
+      viajes.push(nuevoViaje);
+      localStorage.setItem('viajesPasajero', JSON.stringify(viajes));
+
+      // Limpiar formulario
+      document.getElementById('origin-input').value = '';
+      document.getElementById('destination-input').value = '';
+
+      // Restaurar botón
+      const btnRequestTrip = document.getElementById('btn-request-trip');
+      btnRequestTrip.innerHTML = '<i class="fas fa-search"></i> Buscar Conductor';
+      btnRequestTrip.disabled = false;
+
+      // Actualizar resumen
+      actualizarResumenViaje();
+
+      // Mostrar notificación
+      mostrarNotificacion('¡Viaje confirmado! Tu conductor está en camino', 'success');
+
+      // Recargar viajes recientes
+      cargarViajesRecientes();
+    } catch (err) {
+      console.error('Error inesperado:', err);
+      mostrarNotificacion('Error inesperado al confirmar viaje', 'error');
+    }
   }
 }
 
@@ -496,131 +529,201 @@ function cargarDatosDashboard() {
   cargarPerfilPasajero();
 }
 
-function cargarMetricas() {
-  // Simular datos de métricas
-  const metricas = {
-    viajesTotales: 47,
-    ratingPromedio: 4.8,
-    gastoTotal: 247.50,
-    diasActivo: 23
-  };
-  
-  // Actualizar valores en el DOM
-  Object.keys(metricas).forEach(key => {
-    const element = document.getElementById(key.replace(/([A-Z])/g, '-$1').toLowerCase());
-    if (element) {
-      if (key === 'gastoTotal') {
-        element.textContent = `$${metricas[key]}`;
-      } else {
-        element.textContent = metricas[key];
-      }
-    }
-  });
-}
+async function cargarMetricas() {
+  const usuario = JSON.parse(localStorage.getItem('usuarioLogueado'));
+  if (!usuario) return;
 
-function cargarViajesRecientes() {
-  const viajesRecientes = [
-    {
-      fecha: '15/01/2024',
-      conductor: 'Carlos Rodríguez',
-      origen: 'Centro Comercial',
-      destino: 'Zona Norte',
-      precio: '$8.50',
-      rating: 5
-    },
-    {
-      fecha: '14/01/2024',
-      conductor: 'Ana Martínez',
-      origen: 'Zona Sur',
-      destino: 'Centro',
-      precio: '$12.80',
-      rating: 4
+  try {
+    // Obtener todos los viajes desde Supabase
+    const { data: viajes, error } = await supabase
+      .from('viajes')
+      .select('*');
+
+    if (error) {
+      console.error('Error al cargar métricas:', error);
+      mostrarNotificacion('Error al cargar métricas', 'error');
+      return;
     }
-  ];
-  
-  const recentTripsGrid = document.getElementById('recent-trips-grid');
-  if (recentTripsGrid) {
-    recentTripsGrid.innerHTML = viajesRecientes.map(viaje => `
-      <div class="recent-trip-card">
-        <div class="trip-header">
-          <div class="trip-date">${viaje.fecha}</div>
-          <div class="trip-rating">
-            ${'★'.repeat(viaje.rating)}${'☆'.repeat(5 - viaje.rating)}
-          </div>
-        </div>
-        <div class="trip-route">
-          <div class="route-point">
-            <i class="fas fa-map-marker-alt origin"></i>
-            <span>${viaje.origen}</span>
-          </div>
-          <div class="route-line"></div>
-          <div class="route-point">
-            <i class="fas fa-map-marker-alt destination"></i>
-            <span>${viaje.destino}</span>
-          </div>
-        </div>
-        <div class="trip-footer">
-          <div class="conductor-info">
-            <img src="../style/image/cosa.jpg" alt="Conductor" class="conductor-avatar">
-            <span>${viaje.conductor}</span>
-          </div>
-          <div class="trip-price">${viaje.precio}</div>
-        </div>
-      </div>
-    `).join('');
+
+    // Calcular métricas reales
+    const viajesCompletados = viajes.filter(viaje => viaje.estado === 'Completado');
+    const viajesTotales = viajesCompletados.length;
+
+    // Calcular rating promedio
+    const ratings = viajesCompletados.map(v => v.rating || 5).filter(r => r > 0);
+    const ratingPromedio = ratings.length > 0 ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1) : 0;
+
+    // Calcular gasto total
+    const gastoTotal = viajesCompletados.reduce((total, viaje) => {
+      const precio = parseFloat(viaje.precio.replace('$', ''));
+      return total + (isNaN(precio) ? 0 : precio);
+    }, 0);
+
+    // Calcular días activo (desde el primer viaje hasta hoy)
+    const fechas = viajes.map(v => new Date(v.fecha));
+    const fechaMasAntigua = fechas.length > 0 ? new Date(Math.min(...fechas)) : new Date();
+    const diasActivo = Math.ceil((new Date() - fechaMasAntigua) / (1000 * 60 * 60 * 24));
+
+    const metricas = {
+      viajesTotales: viajesTotales,
+      ratingPromedio: ratingPromedio,
+      gastoTotal: gastoTotal.toFixed(2),
+      diasActivo: diasActivo
+    };
+
+    // Actualizar valores en el DOM
+    Object.keys(metricas).forEach(key => {
+      const element = document.getElementById(key.replace(/([A-Z])/g, '-$1').toLowerCase());
+      if (element) {
+        if (key === 'gastoTotal') {
+          element.textContent = `$${metricas[key]}`;
+        } else {
+          element.textContent = metricas[key];
+        }
+      }
+    });
+  } catch (err) {
+    console.error('Error inesperado al cargar métricas:', err);
+    mostrarNotificacion('Error al cargar métricas', 'error');
   }
 }
 
-function cargarHistorialViajes() {
-  const historialViajes = [
-    {
-      fecha: '15/01/2024',
-      conductor: 'Carlos Rodríguez',
-      origen: 'Centro Comercial',
-      destino: 'Zona Norte',
-      precio: '$8.50',
-      estado: 'Completado',
-      rating: 5
-    },
-    {
-      fecha: '14/01/2024',
-      conductor: 'Ana Martínez',
-      origen: 'Zona Sur',
-      destino: 'Centro',
-      precio: '$12.80',
-      estado: 'Completado',
-      rating: 4
+async function cargarViajesRecientes() {
+  const usuario = JSON.parse(localStorage.getItem('usuarioLogueado'));
+  if (!usuario) return;
+
+  try {
+    // Obtener viajes recientes desde Supabase
+    const { data: viajesRecientes, error } = await supabase
+      .from('viajes')
+      .select('*')
+      .order('hora_inicio', { ascending: false })
+      .limit(5);
+
+    if (error) {
+      console.error('Error al cargar viajes recientes:', error);
+      mostrarNotificacion('Error al cargar viajes recientes', 'error');
+      return;
     }
-  ];
-  
-  const tripsTableBody = document.getElementById('trips-table-body');
-  if (tripsTableBody) {
-    tripsTableBody.innerHTML = historialViajes.map(viaje => `
-      <tr>
-        <td>${viaje.fecha}</td>
-        <td>${viaje.conductor}</td>
-        <td>${viaje.origen}</td>
-        <td>${viaje.destino}</td>
-        <td>${viaje.precio}</td>
-        <td><span class="trip-status ${viaje.estado.toLowerCase()}">${viaje.estado}</span></td>
-        <td>
-          <span class="rating-stars">
-            ${'★'.repeat(viaje.rating)}${'☆'.repeat(5 - viaje.rating)}
-          </span>
-          <span class="rating-value">${viaje.rating}.0</span>
-        </td>
-        <td>
-          <div class="trip-actions">
-            <button class="btn-action ver" onclick="verDetalleViaje('${viaje.fecha}')">
-              <i class="fas fa-eye"></i>
-            </button>
-            <button class="btn-action repetir" onclick="repetirViaje('${viaje.fecha}')">
-              <i class="fas fa-redo"></i>
-            </button>
+
+    const recentTripsGrid = document.getElementById('recent-trips-grid');
+    if (recentTripsGrid) {
+      if (viajesRecientes && viajesRecientes.length > 0) {
+        recentTripsGrid.innerHTML = viajesRecientes.map(viaje => {
+          const fecha = new Date(viaje.fecha).toLocaleDateString('es-ES');
+          const rating = viaje.rating || 5; // Valor por defecto si no hay rating
+
+          return `
+            <div class="recent-trip-card">
+              <div class="trip-header">
+                <div class="trip-date">${fecha}</div>
+                <div class="trip-rating">
+                  ${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}
+                </div>
+              </div>
+              <div class="trip-route">
+                <div class="route-point">
+                  <i class="fas fa-map-marker-alt origin"></i>
+                  <span>${viaje.origen}</span>
+                </div>
+                <div class="route-line"></div>
+                <div class="route-point">
+                  <i class="fas fa-map-marker-alt destination"></i>
+                  <span>${viaje.destino}</span>
+                </div>
+              </div>
+              <div class="trip-footer">
+                <div class="conductor-info">
+                  <img src="../style/image/cosa.jpg" alt="Conductor" class="conductor-avatar">
+                  <span>${viaje.conductor}</span>
+                </div>
+                <div class="trip-price">${viaje.precio}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        // Si no hay viajes, mostrar mensaje
+        recentTripsGrid.innerHTML = `
+          <div class="no-trips-message">
+            <i class="fas fa-route"></i>
+            <p>No tienes viajes recientes</p>
           </div>
-        </td>
-      </tr>
-    `).join('');
+        `;
+      }
+    }
+  } catch (err) {
+    console.error('Error inesperado al cargar viajes recientes:', err);
+    mostrarNotificacion('Error al cargar viajes recientes', 'error');
+  }
+}
+
+async function cargarHistorialViajes() {
+  const usuario = JSON.parse(localStorage.getItem('usuarioLogueado'));
+  if (!usuario) return;
+
+  try {
+    // Obtener historial completo de viajes desde Supabase
+    const { data: historialViajes, error } = await supabase
+      .from('viajes')
+      .select('*')
+      .order('hora_inicio', { ascending: false });
+
+    if (error) {
+      console.error('Error al cargar historial de viajes:', error);
+      mostrarNotificacion('Error al cargar historial de viajes', 'error');
+      return;
+    }
+
+    const tripsTableBody = document.getElementById('trips-table-body');
+    if (tripsTableBody) {
+      if (historialViajes && historialViajes.length > 0) {
+        tripsTableBody.innerHTML = historialViajes.map(viaje => {
+          const fecha = new Date(viaje.fecha).toLocaleDateString('es-ES');
+          const rating = viaje.rating || 5; // Valor por defecto si no hay rating
+
+          return `
+            <tr>
+              <td>${fecha}</td>
+              <td>${viaje.conductor}</td>
+              <td>${viaje.origen}</td>
+              <td>${viaje.destino}</td>
+              <td>${viaje.precio}</td>
+              <td><span class="trip-status ${viaje.estado.toLowerCase()}">${viaje.estado}</span></td>
+              <td>
+                <span class="rating-stars">
+                  ${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}
+                </span>
+                <span class="rating-value">${rating}.0</span>
+              </td>
+              <td>
+                <div class="trip-actions">
+                  <button class="btn-action ver" onclick="verDetalleViaje('${viaje.id}')">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="btn-action repetir" onclick="repetirViaje('${viaje.id}')">
+                    <i class="fas fa-redo"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } else {
+        // Si no hay viajes, mostrar mensaje
+        tripsTableBody.innerHTML = `
+          <tr>
+            <td colspan="8" style="text-align: center; padding: 2rem;">
+              <i class="fas fa-route" style="font-size: 2rem; color: #ccc; margin-bottom: 1rem;"></i>
+              <p>No tienes viajes registrados</p>
+            </td>
+          </tr>
+        `;
+      }
+    }
+  } catch (err) {
+    console.error('Error inesperado al cargar historial de viajes:', err);
+    mostrarNotificacion('Error al cargar historial de viajes', 'error');
   }
 }
 
@@ -926,8 +1029,8 @@ function cargarFavoritosDelStorage() {
 }
 
 // ===== ESTILOS CSS DINÁMICOS =====
-const dinamicstyle = document.createElement('style');
-dinamicstyle.textContent = `
+const pasajeroStyle = document.createElement('style');
+pasajeroStyle.textContent = `
   @keyframes slideInRight {
     from {
       transform: translateX(100%);
@@ -938,7 +1041,7 @@ dinamicstyle.textContent = `
       opacity: 1;
     }
   }
-  
+
   @keyframes slideOutRight {
     from {
       transform: translateX(0);
@@ -949,33 +1052,33 @@ dinamicstyle.textContent = `
       opacity: 0;
     }
   }
-  
+
   .trip-type-badge.standard {
     background-color: #3b82f6;
   }
-  
+
   .trip-type-badge.premium {
     background-color: #f59e0b;
   }
-  
+
   .trip-type-badge.pool {
     background-color: #10b981;
   }
-  
+
   .favorite-card.home {
     border-left: 4px solid #ef4444;
   }
-  
+
   .favorite-card.work {
     border-left: 4px solid #3b82f6;
   }
-  
+
   .favorite-card.shopping {
     border-left: 4px solid #8b5cf6;
   }
-  
+
   .favorite-card.restaurant {
     border-left: 4px solid #f59e0b;
   }
 `;
-document.head.appendChild(style);
+document.head.appendChild(pasajeroStyle);

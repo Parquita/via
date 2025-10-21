@@ -2,10 +2,17 @@
 document.addEventListener('DOMContentLoaded', function() {
   const usuario = JSON.parse(localStorage.getItem('usuarioLogueado'));
   if (usuario) {
-    document.getElementById('nombre-usuario').textContent = usuario.nombre;
-    document.getElementById('correo-usuario').textContent = usuario.correo;
-    document.getElementById('telefono-usuario').textContent = usuario.telefono || '-';
-    document.getElementById('direccion-usuario').textContent = usuario.direccion || '-';
+    const nombreElement = document.getElementById('nombre-usuario');
+    if (nombreElement) nombreElement.textContent = usuario.nombre;
+
+    const correoElement = document.getElementById('correo-usuario');
+    if (correoElement) correoElement.textContent = usuario.correo;
+
+    const telefonoElement = document.getElementById('telefono-usuario');
+    if (telefonoElement) telefonoElement.textContent = usuario.telefono || '-';
+
+    const direccionElement = document.getElementById('direccion-usuario');
+    if (direccionElement) direccionElement.textContent = usuario.direccion || '-';
   }
 
   // Actualizar estadísticas del usuario
@@ -13,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Inicializar funcionalidades según el tipo de usuario
   const tipoUsuario = usuario ? usuario.tipoUsuario : '';
-  
+
   if (tipoUsuario === 'conductor') {
     inicializarDashboardConductor();
   } else if (tipoUsuario === 'pasajero') {
@@ -47,8 +54,11 @@ function actualizarEstadisticasUsuario() {
   }
   
   // También puedes actualizar la puntuación si tienes esos datos
-  document.getElementById('puntuacion-estrellas').textContent = '★★★★★';
-  document.getElementById('valor-puntuacion').textContent = '5.0';
+  const puntuacionEstrellasElement = document.getElementById('puntuacion-estrellas');
+  if (puntuacionEstrellasElement) puntuacionEstrellasElement.textContent = '★★★★★';
+
+  const valorPuntuacionElement = document.getElementById('valor-puntuacion');
+  if (valorPuntuacionElement) valorPuntuacionElement.textContent = '5.0';
 }
 
 // ===== FUNCIONALIDADES PARA CONDUCTORES =====
@@ -393,8 +403,8 @@ function mostrarNotificacion(mensaje, tipo = 'info') {
 }
 
 // Agregar estilos CSS para las animaciones
-const style = document.createElement('style');
-style.textContent = `
+const dashboardStyle = document.createElement('style');
+dashboardStyle.textContent = `
   @keyframes slideInRight {
     from {
       transform: translateX(100%);
@@ -405,7 +415,7 @@ style.textContent = `
       opacity: 1;
     }
   }
-  
+
   @keyframes slideOutRight {
     from {
       transform: translateX(0);
@@ -417,4 +427,4 @@ style.textContent = `
     }
   }
 `;
-document.head.appendChild(style);
+document.head.appendChild(dashboardStyle);
