@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- SEO Meta Tags -->
+  <title>Servidor No Disponible - VIA</title>
+  <meta name="description" content="El servidor de VIA está temporalmente no disponible. Por favor, intenta nuevamente más tarde.">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="./style/image/via.jpg">
+  <link rel="apple-touch-icon" sizes="180x180" href="./style/image/via.jpg">
+
+  <!-- Preconnect para mejorar rendimiento -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+  <!-- CSS y Fuentes -->
+  <link rel="stylesheet" href="./style/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+  <!-- Header/Navigation -->
+  <header class="header">
+    <div class="header-container">
+      <div class="logo">
+        <div class="logo-circle">
+          <div class="logo-v">
+            <img src="./style/image/via.jpg" alt="Logo VIA" style="width: 80px;">
+          </div>
+        </div>
+        <span class="logo-text">VIA</span>
+      </div>
+      <nav class="nav">
+        <a href="index.html" class="nav-link">Inicio</a>
+        <a href="nosotros.html" class="nav-link">Nosotros</a>
+        <a href="ayuda.html" class="nav-link">Ayuda</a>
+        <a href="contacto.html" class="nav-link">Contáctenos</a>
+      </nav>
+      <div class="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- Error Section -->
+  <section class="error-page">
+    <div class="container">
+      <div class="error-content">
+        <div class="error-icon">
+          <i class="fas fa-server"></i>
+        </div>
+        <h1>Servidor No Disponible</h1>
+        <p class="error-message">
+          Lo sentimos, nuestros servidores están temporalmente fuera de servicio.
+          Estamos trabajando para resolver el problema lo antes posible.
+        </p>
+        <p class="error-details">
+          Por favor, intenta nuevamente en unos minutos. Si el problema persiste,
+          contáctanos a través de nuestro <a href="contacto.html">centro de soporte</a>.
+        </p>
+        <div class="error-actions">
+          <button class="btn-primary" onclick="window.location.reload()">
+            <i class="fas fa-refresh"></i>
+            Intentar de Nuevo
+          </button>
+          <a href="index.html" class="btn-secondary">
+            <i class="fas fa-home"></i>
+            Ir al Inicio
+          </a>
+        </div>
+        <div class="error-status">
+          <small>Código de Error: 503 - Servicio No Disponible</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <div class="logo-circle">
+              <div class="logo-v">
+                <img src="./style/image/via.jpg" alt="Logo VIA" style="width: 80px;">
+              </div>
+            </div>
+          </div>
+          <span class="logo-text">VIA</span>
+          <p>Transformando la movilidad urbana con tecnología e innovación.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h4>Soporte</h4>
+          <ul>
+            <li><a href="ayuda.html">Centro de Ayuda</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 - 2025 VIA. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <style>
+    .error-page {
+      min-height: calc(100vh - 200px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      padding: 2rem 0;
+    }
+
+    .error-content {
+      text-align: center;
+      max-width: 600px;
+      padding: 3rem;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+
+    .error-icon {
+      font-size: 4rem;
+      color: #ef4444;
+      margin-bottom: 2rem;
+    }
+
+    .error-content h1 {
+      font-size: 2.5rem;
+      color: #1f2937;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .error-message {
+      font-size: 1.2rem;
+      color: #6b7280;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .error-details {
+      font-size: 1rem;
+      color: #9ca3af;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    .error-details a {
+      color: #c81a65;
+      text-decoration: none;
+    }
+
+    .error-details a:hover {
+      text-decoration: underline;
+    }
+
+    .error-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .error-actions .btn-primary,
+    .error-actions .btn-secondary {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .error-actions .btn-primary {
+      background: #c81a65;
+      color: white;
+      border: none;
+    }
+
+    .error-actions .btn-primary:hover {
+      background: #a01754;
+      transform: translateY(-2px);
+    }
+
+    .error-actions .btn-secondary {
+      background: #f3f4f6;
+      color: #374151;
+      border: 1px solid #d1d5db;
+    }
+
+    .error-actions .btn-secondary:hover {
+      background: #e5e7eb;
+    }
+
+    .error-status {
+      color: #9ca3af;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .error-content {
+        padding: 2rem;
+        margin: 1rem;
+      }
+
+      .error-content h1 {
+        font-size: 2rem;
+      }
+
+      .error-actions {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .error-actions .btn-primary,
+      .error-actions .btn-secondary {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+
+  <script src="./script/index.js"></script>
+</body>
+
+</html>

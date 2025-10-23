@@ -5,7 +5,7 @@
 
 const supabaseUrl = 'https://rjfsuxiaoovjyljaarhg.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqZnN1eGlhb292anlsamFhcmhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc0NDU1NzksImV4cCI6MjA3MzAyMTU3OX0.NtlbSC92JOLvG76OwggSNsHwYv-1ve9ebB_D4DXW9UE';
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
 // Variable global para mantener los viajes activos
 let viajesActivosGlobal = [];
@@ -271,43 +271,10 @@ async function cargarMetricas() {
   if (!usuario) return;
 
   try {
-    // Obtener viajes del conductor desde Supabase
-    const { data: viajes, error } = await supabase
-      .from('viajes')
-      .select('*')
-      .eq('conductor_id', usuario.id);
+    const response = await fetch(`http://localhost:3000/api/conductor/${usuario.id}/metrics`);
+    if (!response.ok) throw new Error('Error en la respuesta del servidor');
 
-    if (error) {
-      console.error('Error al cargar métricas:', error);
-      mostrarNotificacion('Error al cargar métricas', 'error');
-      return;
-    }
-
-    // Calcular métricas reales
-    const hoy = new Date().toISOString().split('T')[0];
-    const viajesHoy = viajes.filter(v => v.fecha.startsWith(hoy)).length;
-
-    // Calcular ganancias de hoy
-    const gananciasHoy = viajes
-      .filter(v => v.fecha.startsWith(hoy) && v.estado === 'Completado')
-      .reduce((total, viaje) => {
-        const precio = parseFloat(viaje.precio.replace('$', ''));
-        return total + (isNaN(precio) ? 0 : precio);
-      }, 0);
-
-    // Calcular rating promedio
-    const ratings = viajes.filter(v => v.rating && v.estado === 'Completado').map(v => v.rating);
-    const ratingPromedio = ratings.length > 0 ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1) : 0;
-
-    // Simular tiempo online (esto podría venir de otra tabla)
-    const tiempoOnline = '6h 23m';
-
-    const metricas = {
-      viajesHoy: viajesHoy,
-      gananciasHoy: gananciasHoy.toFixed(2),
-      ratingPromedio: ratingPromedio,
-      tiempoOnline: tiempoOnline
-    };
+    const metricas = await response.json();
 
     // Actualizar valores en el DOM
     Object.keys(metricas).forEach(key => {
@@ -321,61 +288,100 @@ async function cargarMetricas() {
       }
     });
   } catch (err) {
-    console.error('Error inesperado al cargar métricas:', err);
+    console.error('Error al cargar métricas:', err);
     mostrarNotificacion('Error al cargar métricas', 'error');
   }
 }
 
-function cargarViajesActivos() {
-  const activeTripsList = document.getElementById('active-trips-list');
-  if (activeTripsList) {
-    if (viajesActivosGlobal.length === 0) {
-      activeTripsList.innerHTML = `
-        <div class="no-active-trips">
-          <i class="fas fa-car"></i>
-          <p>No tienes viajes activos</p>
-          <small>Los viajes aceptados aparecerán aquí</small>
-        </div>
-      `;
-    } else {
-      activeTripsList.innerHTML = viajesActivosGlobal.map(viaje => `
-        <div class="active-trip-item" data-viaje-id="${viaje.id}">
-          <div class="trip-header">
-            <h4>Viaje #${viaje.id}</h4>
-            <span class="trip-status ${viaje.estado.toLowerCase().replace(' ', '-')}">${viaje.estado}</span>
-          </div>
-          <div class="trip-details">
-            <div class="passenger-info">
-              <img src="../style/image/cosa.jpg" alt="Pasajero" class="passenger-avatar">
-              <span>${viaje.pasajero}</span>
-            </div>
-            <div class="route-info">
-              <div class="route-point">
-                <i class="fas fa-map-marker-alt origin"></i>
-                <span>${viaje.origen}</span>
-              </div>
-              <div class="route-point">
-                <i class="fas fa-map-marker-alt destination"></i>
-                <span>${viaje.destino}</span>
-              </div>
-            </div>
-            <div class="trip-actions">
-              <button class="btn-complete-trip" data-trip-id="${viaje.id}" type="button">
-                <i class="fas fa-check"></i>
-                Completar
-              </button>
-              <button class="btn-cancel-trip" data-trip-id="${viaje.id}" type="button">
-                <i class="fas fa-times"></i>
-                Cancelar
-              </button>
-            </div>
-          </div>
-        </div>
-      `).join('');
+async function cargarViajesActivos() {
+  const usuario = JSON.parse(localStorage.getItem('usuarioLogueado'));
+  if (!usuario) return;
 
-      // Agregar event listeners a los botones de viaje
-      configurarEventosViajes();
+  try {
+    const response = await fetch(`http://localhost:3000/api/conductor/${usuario.id}/viajes-activos`);
+    if (!response.ok) throw new Error('Error en la respuesta del servidor');
+
+    const viajes = await response.json();
+
+    const activeTripsList = document.getElementById('active-trips-list');
+    if (activeTripsList) {
+      if (viajes.length === 0) {
+        activeTripsList.innerHTML = `
+          <div class="no-active-trips">
+            <i class="fas fa-car"></i>
+            <p>No tienes viajes activos</p>
+            <small>Los viajes aceptados aparecerán aquí</small>
+          </div>
+        `;
+      } else {
+        activeTripsList.innerHTML = viajes.map(viaje => `
+          <div class="active-trip-item" data-viaje-id="${viaje.id}">
+            <div class="trip-header">
+              <h4>Viaje #${viaje.id}</h4>
+              <span class="trip-status ${viaje.estado.toLowerCase().replace(' ', '-')}">${viaje.estado}</span>
+            </div>
+            <div class="trip-details">
+              <div class="passenger-info">
+                <img src="../style/image/cosa.jpg" alt="Pasajero" class="passenger-avatar">
+                <span>${viaje.usuarios.nombre || 'N/A'}</span>
+              </div>
+              <div class="route-info">
+                <div class="route-point">
+                  <i class="fas fa-map-marker-alt origin"></i>
+                  <span>${viaje.rutas.ubicacion_inicio}</span>
+                </div>
+                <div class="route-point">
+                  <i class="fas fa-map-marker-alt destination"></i>
+                  <span>${viaje.rutas.ubicacion_fin}</span>
+                </div>
+              </div>
+              <div class="trip-metrics">
+                <div class="metric">
+                  <i class="fas fa-route"></i>
+                  <span>${viaje.rutas.distancia_km} km</span>
+                </div>
+                <div class="metric">
+                  <i class="fas fa-dollar-sign"></i>
+                  <span>$${viaje.tarifa_dinamica || 0}</span>
+                </div>
+              </div>
+              <div class="trip-actions">
+                ${viaje.estado === 'En Curso' ? `
+                  <button class="btn-complete-trip" data-trip-id="${viaje.id}" type="button">
+                    <i class="fas fa-check"></i>
+                    Completar
+                  </button>
+                ` : viaje.estado === 'Aceptado' ? `
+                  <button class="btn-start-trip" data-trip-id="${viaje.id}" type="button">
+                    <i class="fas fa-play"></i>
+                    Iniciar Viaje
+                  </button>
+                ` : `
+                  <button class="btn-accept-trip" data-trip-id="${viaje.id}" type="button">
+                    <i class="fas fa-check"></i>
+                    Aceptar
+                  </button>
+                  <button class="btn-reject-trip" data-trip-id="${viaje.id}" type="button">
+                    <i class="fas fa-times"></i>
+                    Rechazar
+                  </button>
+                `}
+                <button class="btn-cancel-trip" data-trip-id="${viaje.id}" type="button">
+                  <i class="fas fa-times"></i>
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        // Agregar event listeners a los botones de viaje
+        configurarEventosViajes();
+      }
     }
+  } catch (err) {
+    console.error('Error al cargar viajes activos:', err);
+    mostrarNotificacion('Error al cargar viajes activos', 'error');
   }
 }
 
@@ -384,18 +390,10 @@ async function cargarHistorialViajes() {
   if (!usuario) return;
 
   try {
-    // Obtener viajes del conductor desde Supabase
-    const { data: viajes, error } = await supabase
-      .from('viajes')
-      .select('*')
-      .eq('conductor_id', usuario.id)
-      .order('hora_inicio', { ascending: false });
+    const response = await fetch(`http://localhost:3000/api/conductor/${usuario.id}/historial-viajes`);
+    if (!response.ok) throw new Error('Error en la respuesta del servidor');
 
-    if (error) {
-      console.error('Error al cargar historial de viajes:', error);
-      mostrarNotificacion('Error al cargar historial de viajes', 'error');
-      return;
-    }
+    const viajes = await response.json();
 
     const tripsTableBody = document.getElementById('trips-table-body');
     if (tripsTableBody) {
@@ -411,16 +409,16 @@ async function cargarHistorialViajes() {
         `;
       } else {
         tripsTableBody.innerHTML = viajes.map(viaje => {
-          const fecha = new Date(viaje.fecha).toLocaleDateString('es-ES');
-          const rating = viaje.rating || 0;
+          const fecha = new Date(viaje.hora_inicio).toLocaleDateString('es-ES');
+          const rating = viaje.calificacion || 0;
           return `
             <tr>
               <td>${fecha}</td>
-              <td>${viaje.pasajero || 'N/A'}</td>
-              <td>${viaje.origen}</td>
-              <td>${viaje.destino}</td>
-              <td>${viaje.distancia}</td>
-              <td>${viaje.precio}</td>
+              <td>${viaje.usuarios.nombre || 'N/A'}</td>
+              <td>${viaje.rutas.ubicacion_inicio}</td>
+              <td>${viaje.rutas.ubicacion_fin}</td>
+              <td>${viaje.rutas.distancia_km} km</td>
+              <td>$${viaje.tarifa_dinamica || 0}</td>
               <td>
                 <span class="rating-stars">
                   ${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}
@@ -434,7 +432,7 @@ async function cargarHistorialViajes() {
       }
     }
   } catch (err) {
-    console.error('Error inesperado al cargar historial de viajes:', err);
+    console.error('Error al cargar historial de viajes:', err);
     mostrarNotificacion('Error al cargar historial de viajes', 'error');
   }
 }
@@ -444,36 +442,10 @@ async function cargarDatosGanancias() {
   if (!usuario) return;
 
   try {
-    // Obtener viajes completados del conductor desde Supabase
-    const { data: viajes, error } = await supabase
-      .from('viajes')
-      .select('*')
-      .eq('conductor_id', usuario.id)
-      .eq('estado', 'Completado');
+    const response = await fetch(`http://localhost:3000/api/conductor/${usuario.id}/ganancias`);
+    if (!response.ok) throw new Error('Error en la respuesta del servidor');
 
-    if (error) {
-      console.error('Error al cargar datos de ganancias:', error);
-      mostrarNotificacion('Error al cargar datos de ganancias', 'error');
-      return;
-    }
-
-    // Calcular ganancias totales
-    const gananciasTotales = viajes.reduce((total, viaje) => {
-      const precio = parseFloat(viaje.precio.replace('$', ''));
-      return total + (isNaN(precio) ? 0 : precio);
-    }, 0);
-
-    // Calcular promedio por viaje
-    const promedioViaje = viajes.length > 0 ? (gananciasTotales / viajes.length).toFixed(2) : 0;
-
-    // Simular horas trabajadas (esto podría venir de otra tabla o cálculo)
-    const horasTrabajadas = '147h 32m';
-
-    const ganancias = {
-      gananciasTotales: gananciasTotales.toFixed(2),
-      promedioViaje: promedioViaje,
-      horasTrabajadas: horasTrabajadas
-    };
+    const ganancias = await response.json();
 
     // Actualizar valores en el DOM
     Object.keys(ganancias).forEach(key => {
@@ -487,7 +459,7 @@ async function cargarDatosGanancias() {
       }
     });
   } catch (err) {
-    console.error('Error inesperado al cargar datos de ganancias:', err);
+    console.error('Error al cargar datos de ganancias:', err);
     mostrarNotificacion('Error al cargar datos de ganancias', 'error');
   }
 }
@@ -541,6 +513,30 @@ function configurarEventosViajes() {
     });
   });
 
+  // Agregar event listeners a los botones de iniciar viaje
+  document.querySelectorAll('.btn-start-trip').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const viajeId = this.getAttribute('data-trip-id');
+      iniciarViaje(viajeId);
+    });
+  });
+
+  // Agregar event listeners a los botones de aceptar viaje
+  document.querySelectorAll('.btn-accept-trip').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const viajeId = this.getAttribute('data-trip-id');
+      aceptarViaje(viajeId);
+    });
+  });
+
+  // Agregar event listeners a los botones de rechazar viaje
+  document.querySelectorAll('.btn-reject-trip').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const viajeId = this.getAttribute('data-trip-id');
+      rechazarViaje(viajeId);
+    });
+  });
+
   // Agregar event listeners a los botones de cancelar viaje
   document.querySelectorAll('.btn-cancel-trip').forEach(btn => {
     btn.addEventListener('click', function() {
@@ -550,14 +546,25 @@ function configurarEventosViajes() {
   });
 }
 
-function completarViaje(viajeId) {
-    // Implementar lógica de completar viaje
-    console.log(`Viaje ${viajeId} completado`);
+async function completarViaje(viajeId) {
+  try {
+    const response = await fetch(`http://localhost:3000/api/viajes/${viajeId}/complete`, {
+      method: 'PUT'
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Error al completar viaje:', errorData);
+      mostrarNotificacion('Error al completar viaje', 'error');
+      return;
+    }
+
+    const data = await response.json();
 
     // Remover viaje de la lista global
     viajesActivosGlobal = viajesActivosGlobal.filter(viaje => viaje.id !== viajeId);
 
-    // Actualizar estado del viaje
+    // Actualizar estado del viaje en el DOM
     const viajeElement = document.querySelector(`[data-viaje-id="${viajeId}"]`);
     if (viajeElement) {
       viajeElement.remove();
@@ -570,16 +577,112 @@ function completarViaje(viajeId) {
 
     // Recargar viajes activos
     cargarViajesActivos();
+  } catch (err) {
+    console.error('Error inesperado al completar viaje:', err);
+    mostrarNotificacion('Error al completar viaje', 'error');
+  }
+}
+
+async function iniciarViaje(viajeId) {
+  try {
+    const response = await fetch(`http://localhost:3000/api/viajes/${viajeId}/start`, {
+      method: 'PUT'
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Error al iniciar viaje:', errorData);
+      mostrarNotificacion('Error al iniciar viaje', 'error');
+      return;
+    }
+
+    const data = await response.json();
+
+    mostrarNotificacion('¡Viaje iniciado! Dirígete al destino', 'success');
+
+    // Recargar viajes activos para actualizar la UI
+    cargarViajesActivos();
+  } catch (err) {
+    console.error('Error inesperado al iniciar viaje:', err);
+    mostrarNotificacion('Error al iniciar viaje', 'error');
+  }
+}
+
+async function aceptarViaje(viajeId) {
+  try {
+    const response = await fetch(`http://localhost:3000/api/viajes/${viajeId}/accept`, {
+      method: 'PUT'
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Error al aceptar viaje:', errorData);
+      mostrarNotificacion('Error al aceptar viaje', 'error');
+      return;
+    }
+
+    const data = await response.json();
+
+    mostrarNotificacion('¡Viaje aceptado! Dirígete al origen', 'success');
+
+    // Recargar viajes activos para actualizar la UI
+    cargarViajesActivos();
+  } catch (err) {
+    console.error('Error inesperado al aceptar viaje:', err);
+    mostrarNotificacion('Error al aceptar viaje', 'error');
+  }
+}
+
+async function rechazarViaje(viajeId) {
+  if (!viajeId || viajeId === 'null') {
+    console.error('Invalid viajeId:', viajeId);
+    mostrarNotificacion('ID de viaje inválido', 'error');
+    return;
   }
 
-function cancelarViaje(viajeId) {
-    // Implementar lógica de cancelar viaje
-    console.log(`Viaje ${viajeId} cancelado`);
+  try {
+    const response = await fetch(`http://localhost:3000/api/viajes/${viajeId}/reject`, {
+      method: 'PUT'
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Error al rechazar viaje:', errorData);
+      mostrarNotificacion('Error al rechazar viaje', 'error');
+      return;
+    }
+
+    const data = await response.json();
+
+    mostrarNotificacion('Viaje rechazado', 'info');
+
+    // Recargar viajes activos para actualizar la UI
+    cargarViajesActivos();
+  } catch (err) {
+    console.error('Error inesperado al rechazar viaje:', err);
+    mostrarNotificacion('Error al rechazar viaje', 'error');
+  }
+}
+
+async function cancelarViaje(viajeId) {
+  try {
+    const response = await fetch(`http://localhost:3000/api/viajes/${viajeId}/cancel`, {
+      method: 'PUT'
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Error al cancelar viaje:', errorData);
+      mostrarNotificacion('Error al cancelar viaje', 'error');
+      return;
+    }
+
+    const data = await response.json();
 
     // Remover viaje de la lista global
     viajesActivosGlobal = viajesActivosGlobal.filter(viaje => viaje.id !== viajeId);
 
-    // Actualizar estado del viaje
+    // Actualizar estado del viaje en el DOM
     const viajeElement = document.querySelector(`[data-viaje-id="${viajeId}"]`);
     if (viajeElement) {
       viajeElement.remove();
@@ -589,7 +692,11 @@ function cancelarViaje(viajeId) {
 
     // Recargar viajes activos
     cargarViajesActivos();
+  } catch (err) {
+    console.error('Error inesperado al cancelar viaje:', err);
+    mostrarNotificacion('Error al cancelar viaje', 'error');
   }
+}
 
 // ===== FUNCIONES DE NOTIFICACIONES =====
 function simularNotificacionesViajes() {
@@ -598,7 +705,7 @@ function simularNotificacionesViajes() {
     if (document.getElementById('status-indicator').classList.contains('online')) {
       mostrarNotificacionViaje();
     }
-  }, 100000);
+  }, 15000);
 }
 
 function ocultarNotificacionesViajes() {
@@ -641,30 +748,130 @@ function mostrarNotificacionViaje() {
   }
 }
 
-function aceptarViajeModal() {
+async function aceptarViajeModal() {
   const modal = document.getElementById('new-trip-modal');
   if (modal) {
     modal.style.display = 'none';
 
-    // Agregar viaje a la lista de activos
-    const nuevoViaje = {
-      id: 'TRP' + Date.now().toString().slice(-4),
+    // Obtener datos del viaje simulado del modal
+    const viajeSimulado = {
       pasajero: document.getElementById('modal-passenger-name').textContent,
       origen: document.getElementById('modal-origin').textContent,
       destino: document.getElementById('modal-destination').textContent,
-      estado: 'En Curso',
-      tiempoEstimado: document.getElementById('modal-duration').textContent
+      distancia: document.getElementById('modal-distance').textContent,
+      precio: document.getElementById('modal-fare').textContent,
+      duracion: document.getElementById('modal-duration').textContent
     };
 
-    // Agregar a la lista global de viajes activos
-    viajesActivosGlobal.push(nuevoViaje);
+    try {
+      // Crear un nuevo viaje en Supabase
+      const usuario = JSON.parse(localStorage.getItem('usuarioLogueado'));
+      if (!usuario) {
+        mostrarNotificacion('Usuario no encontrado', 'error');
+        return;
+      }
 
-    // Aquí se implementaría la lógica real de aceptar viaje
+      // Primero obtener o crear una ruta
+      const { data: rutaExistente, error: rutaError } = await supabase
+        .from('rutas')
+        .select('id')
+        .eq('ubicacion_inicio', viajeSimulado.origen)
+        .eq('ubicacion_fin', viajeSimulado.destino)
+        .maybeSingle();
 
-    mostrarNotificacion('¡Viaje aceptado! Dirígete al origen', 'success');
+      let rutaId;
+      if (rutaExistente) {
+        rutaId = rutaExistente.id;
+      } else {
+        // Crear nueva ruta
+        const { data: nuevaRuta, error: nuevaRutaError } = await supabase
+          .from('rutas')
+          .insert({
+            ubicacion_inicio: viajeSimulado.origen,
+            ubicacion_fin: viajeSimulado.destino,
+            distancia_km: parseFloat(viajeSimulado.distancia.replace(' km', ''))
+          })
+          .select('id')
+          .single();
 
-    // Recargar viajes activos
-    cargarViajesActivos();
+        if (nuevaRutaError) {
+          console.error('Error al crear ruta:', nuevaRutaError);
+          mostrarNotificacion('Error al crear ruta', 'error');
+          return;
+        }
+        rutaId = nuevaRuta.id;
+      }
+
+      // Obtener el vehículo del conductor
+      let { data: vehiculo, error: vehiculoError } = await supabase
+        .from('vehiculos')
+        .select('id')
+        .eq('usuario_id', usuario.id)
+        .maybeSingle();
+
+      if (vehiculoError) {
+        console.error('Error al obtener vehículo:', vehiculoError);
+        mostrarNotificacion('Error al obtener vehículo', 'error');
+        return;
+      }
+
+      if (!vehiculo) {
+        // Crear un vehículo por defecto para el conductor
+        const { data: nuevoVehiculo, error: crearVehiculoError } = await supabase
+          .from('vehiculos')
+          .insert({
+            usuario_id: usuario.id,
+            tipo: 'car',
+            placa: 'DEFAULT-' + usuario.id,
+            modelo: 'Vehículo por defecto',
+            ano: 2020,
+            fotos: [],
+            marca: 'VIA',
+            tipo_vehiculo_id: 1 // ID for 'Sedán' from tipos_vehiculo table
+          })
+          .select('id')
+          .single();
+
+        if (crearVehiculoError) {
+          console.error('Error al crear vehículo por defecto:', crearVehiculoError);
+          mostrarNotificacion('Error al crear vehículo por defecto', 'error');
+          return;
+        }
+
+        vehiculo = nuevoVehiculo;
+        console.log('Vehículo por defecto creado para el conductor');
+      }
+
+      // Crear el viaje
+      const { data: nuevoViaje, error: viajeError } = await supabase
+        .from('viajes')
+        .insert({
+          usuario_id: 1, // ID de pasajero simulado (debe existir en la tabla usuarios)
+          vehiculo_id: vehiculo.id,
+          ruta_id: rutaId,
+          tarifa_dinamica: parseFloat(viajeSimulado.precio.replace('$', '')),
+          estado: 'Aceptado',
+          hora_inicio: new Date().toISOString()
+        })
+        .select('*')
+
+      if (viajeError) {
+        console.error('Error al crear viaje:', viajeError);
+        mostrarNotificacion('Error al aceptar viaje', 'error');
+        return;
+      }
+
+      // Agregar a la lista global de viajes activos
+      viajesActivosGlobal.push(nuevoViaje);
+
+      mostrarNotificacion('¡Viaje aceptado! Dirígete al origen', 'success');
+
+      // Recargar viajes activos
+      cargarViajesActivos();
+    } catch (err) {
+      console.error('Error inesperado al aceptar viaje:', err);
+      mostrarNotificacion('Error al aceptar viaje', 'error');
+    }
   }
 }
 

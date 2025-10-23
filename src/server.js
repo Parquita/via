@@ -87,10 +87,47 @@ app.use('*', (req, res) => {
 // Middleware de manejo de errores
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ 
+  res.status(500).json({
     error: 'Error interno del servidor',
     message: process.env.NODE_ENV === 'development' ? err.message : 'Algo salió mal'
   });
+});
+
+// Middleware para detectar si el servidor está caído y redirigir a página de error
+app.use(async (req, res, next) => {
+  // Verificar si la solicitud es para archivos estáticos o API (excepto health check)
+  if ((req.path.startsWith('/api/') || req.path === '/api') && req.path !== '/api/health') {
+    try {
+      // Verificar conexión a la base de datos usando el endpoint de health
+      const healthResponse = await fetch(`http://localhost:${PORT}/api/health`, {
+        timeout: 5000 // Timeout de 5 segundos
+      });
+
+      if (!healthResponse.ok) {
+        throw new Error('Health check failed');
+      }
+
+      const healthData = await healthResponse.json();
+      if (healthData.status !== 'healthy') {
+        throw new Error('Server unhealthy');
+      }
+    } catch (err) {
+      console.error('Server health check failed:', err.message);
+
+      // Redirigir a página de error para solicitudes desde el navegador
+      if (req.headers.accept && req.headers.accept.includes('text/html')) {
+        return res.redirect('/error.html');
+      } else {
+        // Para solicitudes AJAX/API, devolver error JSON
+        return res.status(503).json({
+          error: 'Servicio no disponible',
+          message: 'El servidor está temporalmente fuera de servicio. Por favor, intenta nuevamente más tarde.',
+          code: 'SERVER_UNAVAILABLE'
+        });
+      }
+    }
+  }
+  next();
 });
 
 // Iniciar servidor
