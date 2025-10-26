@@ -325,15 +325,14 @@ function calcularTiempoReal(distance) {
 }
 
 function calcularPrecioReal(distance, time, passengers) {
-  // Validar y convertir parámetros
-  const distanceNum = parseFloat(distance) || 0;
-  const timeNum = parseFloat(time) || 0;
-  const passengersNum = parseInt(passengers) || 1;
-
-  // Validar que los valores sean positivos
-  if (distanceNum <= 0 || timeNum <= 0 || passengersNum <= 0) {
+  // Validar parámetros originales antes de convertir
+  if (distance <= 0 || passengers <= 0) {
     return 0;
   }
+
+  // Convertir parámetros después de validación
+  const distanceNum = parseFloat(distance) || 0;
+  const passengersNum = parseInt(passengers) || 1;
 
   const tripType = document.querySelector('.trip-type-btn.active')?.getAttribute('data-type') || 'standard';
   const basePrice = getBasePrice(tripType);
@@ -341,11 +340,8 @@ function calcularPrecioReal(distance, time, passengers) {
   // Precio base por distancia
   const distancePrice = basePrice * distanceNum;
 
-  // Componente por tiempo (menor)
-  const timePrice = (basePrice * 0.3) * (timeNum / 60); // precio por hora
-
   // Multiplicar por número de pasajeros
-  const totalPrice = (distancePrice + timePrice) * passengersNum;
+  const totalPrice = distancePrice * passengersNum;
 
   return Math.round(totalPrice);
 }
