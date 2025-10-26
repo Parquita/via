@@ -701,6 +701,129 @@ body {
   color: white;
 }
 
+/* ===== MAP STYLES ===== */
+.map-container {
+  margin-bottom: 1.5rem;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+}
+
+.trip-map {
+  height: 400px;
+  width: 100%;
+  background: var(--bg-secondary);
+}
+
+.map-instructions {
+  padding: 1rem;
+  background: var(--bg-tertiary);
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.map-instructions p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+/* ===== LEAFLET MAP CUSTOM STYLES ===== */
+.leaflet-container {
+  border-radius: var(--border-radius);
+}
+
+.leaflet-control-container .leaflet-routing-container-hide {
+  display: none;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-lg);
+}
+
+.leaflet-popup-tip {
+  background-color: var(--bg-primary);
+}
+
+/* ===== CUSTOM MARKERS ===== */
+.custom-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.25rem;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  box-shadow: var(--shadow-md);
+}
+
+.origin-marker {
+  background: linear-gradient(135deg, var(--success-color), #22c55e);
+}
+
+.destination-marker {
+  background: linear-gradient(135deg, var(--error-color), #ef4444);
+}
+
+.origin-marker i {
+  color: white;
+}
+
+.destination-marker i {
+  color: white;
+}
+
+/* ===== STREET SELECTION MODAL ===== */
+.street-selection-content {
+  max-width: 500px;
+}
+
+.street-options {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.street-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: var(--transition);
+  background: var(--bg-primary);
+}
+
+.street-option:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--primary-color);
+}
+
+.street-info strong {
+  display: block;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.street-info small {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.street-select {
+  color: var(--text-secondary);
+  transition: var(--transition);
+}
+
+.street-option:hover .street-select {
+  color: var(--primary-color);
+}
+
 .trip-options {
   display: grid;
   grid-template-columns: 1fr 1fr;

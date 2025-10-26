@@ -7,43 +7,55 @@ const supabaseUrl = 'https://rjfsuxiaoovjyljaarhg.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqZnN1eGlhb292anlsamFhcmhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc0NDU1NzksImV4cCI6MjA3MzAyMTU3OX0.NtlbSC92JOLvG76OwggSNsHwYv-1ve9ebB_D4DXW9UE';
 const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
+// Map variables
+let map;
+let markers = [];
+let clickCount = 0;
+let geocoder;
+
 document.addEventListener('DOMContentLoaded', function() {
   // Inicializar dashboard
   inicializarDashboardPasajero();
-  
+
   // Configurar navegación
   configurarNavegacion();
-  
+
   // Configurar funcionalidades del formulario
   configurarFormularioViaje();
-  
+
   // Cargar datos iniciales
   cargarDatosDashboard();
-  
+
   // Actualizar fecha y hora
   actualizarFechaHora();
   setInterval(actualizarFechaHora, 1000);
-  
+
   // Cargar notificaciones
   cargarNotificaciones();
-  
+
   // Configurar selectores de tipo de viaje
   configurarSelectoresViaje();
-  
+
   // Configurar contador de pasajeros
   configurarContadorPasajeros();
-  
+
   // Cargar viajes recientes
   cargarViajesRecientes();
-  
+
   // Cargar métodos de pago
   cargarMetodosPago();
-  
+
   // Cargar lugares favoritos
   cargarLugaresFavoritos();
-  
+
   // Configurar búsqueda de usuarios
   configurarBusquedaUsuarios();
+
+  // Inicializar mapa
+  inicializarMapa();
+
+  // Configurar event listeners para modales
+  configurarEventListenersModales();
 });
 
 // ===== INICIALIZACIÓN =====
@@ -178,22 +190,22 @@ function actualizarResumenViaje() {
   const destination = document.getElementById('destination-input').value;
   const tripType = document.querySelector('.trip-type-btn.active').getAttribute('data-type');
   const passengers = document.getElementById('passenger-count').textContent;
-  
+
   const previewContent = document.getElementById('trip-preview-content');
-  
+
   if (origin && destination) {
-    // Calcular precio estimado (simulación)
-    const basePrice = getBasePrice(tripType);
-    const distance = calcularDistanciaEstimada(origin, destination);
-    const totalPrice = (basePrice * distance * parseInt(passengers)).toFixed(2);
-    
+    // Calcular distancia real usando coordenadas de marcadores
+    const distance = calcularDistanciaReal();
+    const time = calcularTiempoReal(distance);
+    const price = calcularPrecioReal(distance, time, passengers);
+
     previewContent.innerHTML = `
       <div class="trip-summary">
         <div class="summary-header">
           <h4>Resumen del Viaje</h4>
           <span class="trip-type-badge ${tripType}">${getTripTypeName(tripType)}</span>
         </div>
-        
+
         <div class="route-summary">
           <div class="route-point">
             <i class="fas fa-map-marker-alt origin"></i>
@@ -205,15 +217,15 @@ function actualizarResumenViaje() {
             <span>${destination}</span>
           </div>
         </div>
-        
+
         <div class="trip-details">
           <div class="detail-item">
             <i class="fas fa-route"></i>
-            <span>Distancia estimada: ${distance.toFixed(1)} km</span>
+            <span>Distancia: ${distance.toFixed(1)} km</span>
           </div>
           <div class="detail-item">
             <i class="fas fa-clock"></i>
-            <span>Tiempo estimado: ${calcularTiempoEstimado(distance)} min</span>
+            <span>Tiempo estimado: ${time} min</span>
           </div>
           <div class="detail-item">
             <i class="fas fa-users"></i>
@@ -221,7 +233,7 @@ function actualizarResumenViaje() {
           </div>
           <div class="detail-item price">
             <i class="fas fa-dollar-sign"></i>
-            <span>Precio estimado: $${totalPrice}</span>
+            <span>Precio estimado: $${price} COP</span>
           </div>
         </div>
       </div>
@@ -238,10 +250,10 @@ function actualizarResumenViaje() {
 
 function getBasePrice(tripType) {
   switch(tripType) {
-    case 'standard': return 2.5;
-    case 'premium': return 4.0;
-    case 'pool': return 1.8;
-    default: return 2.5;
+    case 'standard': return 8000; // COP por km
+    case 'premium': return 12000; // COP por km
+    case 'pool': return 6000; // COP por km
+    default: return 8000;
   }
 }
 
@@ -278,6 +290,64 @@ function calcularDistanciaEstimada(origin, destination) {
 function calcularTiempoEstimado(distancia) {
   // Simulación: 2 minutos por km + 5 minutos base
   return Math.round(distancia * 2 + 5);
+}
+
+// ===== FUNCIONES DE CÁLCULO REAL =====
+function calcularDistanciaReal() {
+  if (markers.length < 2) return 0;
+
+  const lat1 = markers[0].getLatLng().lat;
+  const lng1 = markers[0].getLatLng().lng;
+  const lat2 = markers[1].getLatLng().lat;
+  const lng2 = markers[1].getLatLng().lng;
+
+  // Fórmula de Haversine para calcular distancia entre dos puntos
+  const R = 6371; // Radio de la Tierra en km
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLng/2) * Math.sin(dLng/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  const distance = R * c;
+
+  return distance;
+}
+
+function calcularTiempoReal(distance) {
+  // Asumir velocidad promedio de 30 km/h en ciudad
+  const velocidadPromedio = 30; // km/h
+  const tiempoHoras = distance / velocidadPromedio;
+  const tiempoMinutos = tiempoHoras * 60;
+
+  // Agregar tiempo base de 3 minutos para recoger/pagar
+  return Math.round(tiempoMinutos + 3);
+}
+
+function calcularPrecioReal(distance, time, passengers) {
+  // Validar y convertir parámetros
+  const distanceNum = parseFloat(distance) || 0;
+  const timeNum = parseFloat(time) || 0;
+  const passengersNum = parseInt(passengers) || 1;
+
+  // Validar que los valores sean positivos
+  if (distanceNum <= 0 || timeNum <= 0 || passengersNum <= 0) {
+    return 0;
+  }
+
+  const tripType = document.querySelector('.trip-type-btn.active')?.getAttribute('data-type') || 'standard';
+  const basePrice = getBasePrice(tripType);
+
+  // Precio base por distancia
+  const distancePrice = basePrice * distanceNum;
+
+  // Componente por tiempo (menor)
+  const timePrice = (basePrice * 0.3) * (timeNum / 60); // precio por hora
+
+  // Multiplicar por número de pasajeros
+  const totalPrice = (distancePrice + timePrice) * passengersNum;
+
+  return Math.round(totalPrice);
 }
 
 function configurarAutocompletado(input) {
@@ -555,7 +625,7 @@ async function cargarMetricas() {
 
     // Calcular gasto total
     const gastoTotal = viajesCompletados.reduce((total, viaje) => {
-      const precio = parseFloat(viaje.precio.replace('$', ''));
+      const precio = parseFloat(viaje.precio ? viaje.precio.replace('$', '') : '0');
       return total + (isNaN(precio) ? 0 : precio);
     }, 0);
 
@@ -1017,6 +1087,421 @@ document.addEventListener('DOMContentLoaded', function() {
     btnLogout.addEventListener('click', cerrarSesion);
   }
 });
+
+// ===== FUNCIONES DE MAPA =====
+function inicializarMapa() {
+  // Intentar obtener ubicación actual del usuario
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function(position) {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        // Inicializar mapa centrado en la ubicación del usuario
+        inicializarMapaEnCoordenadas(lat, lng);
+      },
+      function(error) {
+        console.log('No se pudo obtener ubicación, usando Medellín por defecto');
+        // Si no se puede obtener ubicación, usar Medellín
+        inicializarMapaEnCoordenadas(6.2442, -75.5812);
+      }
+    );
+  } else {
+    // Si no hay soporte de geolocalización, usar Medellín
+    inicializarMapaEnCoordenadas(6.2442, -75.5812);
+  }
+}
+
+function inicializarMapaEnCoordenadas(lat, lng) {
+  // Inicializar mapa centrado en las coordenadas proporcionadas
+  map = L.map('trip-map').setView([lat, lng], 13);
+
+  // Agregar capa de tiles
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  // Agregar control de escala
+  L.control.scale().addTo(map);
+
+  // Evento de clic en el mapa
+  map.on('click', function(e) {
+    colocarMarcador(e.latlng);
+  });
+
+  // Limpiar marcadores al cambiar inputs
+  document.getElementById('origin-input').addEventListener('input', limpiarMarcadores);
+  document.getElementById('destination-input').addEventListener('input', limpiarMarcadores);
+}
+
+async function colocarMarcador(latlng) {
+  if (clickCount >= 2) {
+    // Limpiar marcadores si ya hay 2
+    limpiarMarcadores();
+    clickCount = 0;
+  }
+
+  const marker = L.marker(latlng, {
+    draggable: true,
+    icon: clickCount === 0 ?
+      L.divIcon({
+        className: 'custom-marker origin-marker',
+        html: '<i class="fas fa-map-marker-alt"></i>',
+        iconSize: [30, 30],
+        iconAnchor: [15, 30]
+      }) :
+      L.divIcon({
+        className: 'custom-marker destination-marker',
+        html: '<i class="fas fa-map-marker-alt"></i>',
+        iconSize: [30, 30],
+        iconAnchor: [15, 30]
+      })
+  }).addTo(map);
+
+  // Evento de drag para actualizar inputs
+  marker.on('dragend', async function(e) {
+    await actualizarInputDesdeMarcador(e.target, e.target.getLatLng());
+  });
+
+  markers.push(marker);
+
+  // Automáticamente obtener y establecer la dirección aproximada
+  const inputId = clickCount === 0 ? 'origin-input' : 'destination-input';
+  await obtenerDireccionAproximada(latlng, inputId);
+
+  // Mostrar notificación de dirección seleccionada
+  mostrarNotificacion('Dirección seleccionada automáticamente', 'success');
+
+  clickCount++;
+
+  // Actualizar resumen del viaje después de colocar el marcador
+  setTimeout(() => {
+    actualizarResumenViaje();
+  }, 100);
+}
+
+async function obtenerDireccionAproximada(latlng, inputId) {
+  const lat = latlng.lat;
+  const lng = latlng.lng;
+
+  try {
+    // Intentar usar Nominatim API para geocodificación inversa (OpenStreetMap)
+    // Nota: Esta API puede tener restricciones CORS, por lo que implementamos fallback
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // Timeout de 5 segundos
+
+    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1&accept-language=es`, {
+      signal: controller.signal
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error('Error en la geocodificación');
+    }
+
+    const data = await response.json();
+
+    if (data && data.display_name) {
+      // Limpiar y formatear la dirección obtenida
+      let direccion = data.display_name;
+
+      // Si hay información de dirección más detallada, usarla
+      if (data.address) {
+        const addr = data.address;
+        const partes = [];
+
+        // Construir dirección en formato colombiano
+        if (addr.road) {
+          // Convertir nombres de calles comunes
+          let calle = addr.road;
+          if (calle.toLowerCase().includes('street')) {
+            calle = calle.replace(/street/i, 'Calle');
+          } else if (calle.toLowerCase().includes('avenue') || calle.toLowerCase().includes('ave')) {
+            calle = calle.replace(/avenue|ave/i, 'Avenida');
+          }
+
+          partes.push(calle);
+        }
+
+        if (addr.house_number) {
+          partes.push('#' + addr.house_number);
+        }
+
+        if (addr.neighbourhood || addr.suburb) {
+          partes.push(addr.neighbourhood || addr.suburb);
+        }
+
+        if (addr.city || addr.town || addr.village) {
+          partes.push(addr.city || addr.town || addr.village);
+        }
+
+        if (addr.state || addr.region) {
+          partes.push(addr.state || addr.region);
+        }
+
+        if (addr.country) {
+          partes.push(addr.country);
+        }
+
+        if (partes.length > 0) {
+          direccion = partes.join(', ');
+        }
+      }
+
+      // Limitar longitud y limpiar caracteres extraños
+      direccion = direccion.replace(/,\s*,/g, ',').replace(/^,\s*|,\s*$/g, '');
+      if (direccion.length > 100) {
+        direccion = direccion.substring(0, 97) + '...';
+      }
+
+      document.getElementById(inputId).value = direccion;
+    } else {
+      // Fallback a dirección simulada si no se encuentra dirección
+      const direccionSimulada = generarDireccionSimulada(lat, lng);
+      document.getElementById(inputId).value = direccionSimulada;
+    }
+  } catch (error) {
+    console.warn('Error obteniendo dirección desde API externa, usando dirección simulada:', error.message);
+    // Fallback a dirección simulada en caso de error (CORS, timeout, etc.)
+    const direccionSimulada = generarDireccionSimulada(lat, lng);
+    document.getElementById(inputId).value = direccionSimulada;
+    // No mostrar notificación de error para evitar molestar al usuario
+  }
+}
+
+// Función para generar una dirección simulada basada en coordenadas
+function generarDireccionSimulada(lat, lng) {
+  // Crear un hash determinístico basado en las coordenadas para consistencia
+  const hash = Math.abs(Math.floor((lat * lng * 10000) % 1000));
+
+  // Determinar ciudad aproximada basada en coordenadas conocidas
+  let ciudad = 'Colombia';
+
+  if (lat >= 6.0 && lat <= 6.5 && lng >= -75.8 && lng <= -75.3) {
+    // Medellín
+    if (lat >= 6.20 && lat <= 6.25 && lng >= -75.55 && lng <= -75.50) {
+      ciudad = 'El Poblado, Medellín';
+    } else if (lat >= 6.23 && lat <= 6.27 && lng >= -75.58 && lng <= -75.55) {
+      ciudad = 'Laureles, Medellín';
+    } else {
+      ciudad = 'Centro, Medellín';
+    }
+  } else if (lat >= 4.5 && lat <= 4.8 && lng >= -74.2 && lng <= -74.0) {
+    // Bogotá
+    if (lat >= 4.65 && lat <= 4.70 && lng >= -74.05 && lng <= -74.03) {
+      ciudad = 'Usaquén, Bogotá';
+    } else if (lat >= 4.63 && lat <= 4.67 && lng >= -74.08 && lng <= -74.05) {
+      ciudad = 'Chapinero, Bogotá';
+    } else {
+      ciudad = 'Centro, Bogotá';
+    }
+  }
+
+  // Generar dirección simulada
+  const tiposCalle = ['Calle', 'Carrera', 'Avenida', 'Diagonal'];
+  const tipoCalle = tiposCalle[hash % tiposCalle.length];
+  const numeroCalle = 10 + (hash % 90);
+  const numeroCasa = 10 + ((hash * 7) % 90);
+
+  return `${tipoCalle} ${numeroCalle} #${numeroCasa}-${10 + (hash % 90)}, ${ciudad}`;
+}
+
+function actualizarInputDesdeMarcador(marker, latlng) {
+  const index = markers.indexOf(marker);
+  const inputId = index === 0 ? 'origin-input' : 'destination-input';
+  obtenerDireccionAproximada(latlng, inputId);
+  actualizarResumenViaje();
+}
+
+function mostrarModalSeleccionCalle(latlng, inputId) {
+  // Crear modal si no existe
+  let modal = document.getElementById('street-selection-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'street-selection-modal';
+    modal.className = 'modal';
+    modal.innerHTML = `
+      <div class="modal-content street-selection-content">
+        <div class="modal-header">
+          <h3>Seleccionar Dirección</h3>
+          <span class="close" id="close-street-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+          <p>Selecciona la dirección más cercana a tu ubicación:</p>
+          <div id="street-options" class="street-options">
+            <!-- Opciones se cargarán aquí -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" id="cancel-street-selection">Cancelar</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    // Agregar event listeners después de crear el modal
+    document.getElementById('close-street-modal').addEventListener('click', cerrarModalSeleccionCalle);
+    document.getElementById('cancel-street-selection').addEventListener('click', cerrarModalSeleccionCalle);
+  }
+
+  // Generar opciones de direcciones basadas en las coordenadas
+  const opciones = generarOpcionesDirecciones(latlng);
+
+  const streetOptions = modal.querySelector('#street-options');
+  streetOptions.innerHTML = opciones.map((opcion, index) => `
+    <div class="street-option" data-direccion="${opcion.direccion}" data-input="${inputId}">
+      <div class="street-info">
+        <strong>${opcion.direccion}</strong>
+        <small>${opcion.distancia} metros de distancia</small>
+      </div>
+      <div class="street-select">
+        <i class="fas fa-chevron-right"></i>
+      </div>
+    </div>
+  `).join('');
+
+  // Agregar event listeners a las opciones
+  const streetOptionElements = streetOptions.querySelectorAll('.street-option');
+  streetOptionElements.forEach(option => {
+    option.addEventListener('click', function() {
+      const direccion = this.getAttribute('data-direccion');
+      const inputId = this.getAttribute('data-input');
+      seleccionarDireccion(direccion, inputId);
+    });
+  });
+
+  // Mostrar modal
+  modal.style.display = 'block';
+}
+
+function generarOpcionesDirecciones(latlng) {
+  const lat = latlng.lat;
+  const lng = latlng.lng;
+
+  // Crear un hash determinístico basado en las coordenadas
+  const hash = Math.abs(Math.floor((lat * lng * 10000) % 1000));
+
+  let opciones = [];
+
+  // Determinar ciudad y zona
+  if (lat >= 6.0 && lat <= 6.5 && lng >= -75.8 && lng <= -75.3) {
+    // Medellín
+    if (lat >= 6.20 && lat <= 6.25 && lng >= -75.55 && lng <= -75.50) {
+      // El Poblado
+      opciones = [
+        { direccion: `Calle 10 #${15 + (hash % 85)}-${10 + (hash % 90)}, El Poblado, Medellín`, distancia: Math.floor(Math.random() * 50) + 10 },
+        { direccion: `Carrera 43A #${15 + (hash % 85)}-${10 + (hash % 90)}, El Poblado, Medellín`, distancia: Math.floor(Math.random() * 50) + 20 },
+        { direccion: `Calle 8 #${15 + (hash % 85)}-${10 + (hash % 90)}, El Poblado, Medellín`, distancia: Math.floor(Math.random() * 50) + 30 },
+        { direccion: `Carrera 39 #${15 + (hash % 85)}-${10 + (hash % 90)}, El Poblado, Medellín`, distancia: Math.floor(Math.random() * 50) + 40 }
+      ];
+    } else if (lat >= 6.23 && lat <= 6.27 && lng >= -75.58 && lng <= -75.55) {
+      // Laureles
+      opciones = [
+        { direccion: `Carrera 70 #${30 + (hash % 70)}-${10 + (hash % 90)}, Laureles, Medellín`, distancia: Math.floor(Math.random() * 50) + 10 },
+        { direccion: `Calle 33 #${30 + (hash % 70)}-${10 + (hash % 90)}, Laureles, Medellín`, distancia: Math.floor(Math.random() * 50) + 20 },
+        { direccion: `Carrera 65 #${30 + (hash % 70)}-${10 + (hash % 90)}, Laureles, Medellín`, distancia: Math.floor(Math.random() * 50) + 30 },
+        { direccion: `Calle 30 #${30 + (hash % 70)}-${10 + (hash % 90)}, Laureles, Medellín`, distancia: Math.floor(Math.random() * 50) + 40 }
+      ];
+    } else {
+      // Centro de Medellín
+      opciones = [
+        { direccion: `Carrera 52 #${45 + (hash % 55)}-${10 + (hash % 90)}, Centro, Medellín`, distancia: Math.floor(Math.random() * 50) + 10 },
+        { direccion: `Calle 52 #${45 + (hash % 55)}-${10 + (hash % 90)}, Centro, Medellín`, distancia: Math.floor(Math.random() * 50) + 20 },
+        { direccion: `Carrera 50 #${45 + (hash % 55)}-${10 + (hash % 90)}, Centro, Medellín`, distancia: Math.floor(Math.random() * 50) + 30 },
+        { direccion: `Calle 50 #${45 + (hash % 55)}-${10 + (hash % 90)}, Centro, Medellín`, distancia: Math.floor(Math.random() * 50) + 40 }
+      ];
+    }
+  } else if (lat >= 4.5 && lat <= 4.8 && lng >= -74.2 && lng <= -74.0) {
+    // Bogotá
+    if (lat >= 4.65 && lat <= 4.70 && lng >= -74.05 && lng <= -74.03) {
+      // Usaquén
+      opciones = [
+        { direccion: `Carrera 7 #${115 + (hash % 25)}-${10 + (hash % 90)}, Usaquén, Bogotá`, distancia: Math.floor(Math.random() * 50) + 10 },
+        { direccion: `Calle 127 #${115 + (hash % 25)}-${10 + (hash % 90)}, Usaquén, Bogotá`, distancia: Math.floor(Math.random() * 50) + 20 },
+        { direccion: `Carrera 6 #${115 + (hash % 25)}-${10 + (hash % 90)}, Usaquén, Bogotá`, distancia: Math.floor(Math.random() * 50) + 30 },
+        { direccion: `Calle 126 #${115 + (hash % 25)}-${10 + (hash % 90)}, Usaquén, Bogotá`, distancia: Math.floor(Math.random() * 50) + 40 }
+      ];
+    } else if (lat >= 4.63 && lat <= 4.67 && lng >= -74.08 && lng <= -74.05) {
+      // Chapinero
+      opciones = [
+        { direccion: `Carrera 7 #${55 + (hash % 25)}-${10 + (hash % 90)}, Chapinero, Bogotá`, distancia: Math.floor(Math.random() * 50) + 10 },
+        { direccion: `Calle 67 #${55 + (hash % 25)}-${10 + (hash % 90)}, Chapinero, Bogotá`, distancia: Math.floor(Math.random() * 50) + 20 },
+        { direccion: `Carrera 9 #${55 + (hash % 25)}-${10 + (hash % 90)}, Chapinero, Bogotá`, distancia: Math.floor(Math.random() * 50) + 30 },
+        { direccion: `Calle 65 #${55 + (hash % 25)}-${10 + (hash % 90)}, Chapinero, Bogotá`, distancia: Math.floor(Math.random() * 50) + 40 }
+      ];
+    } else {
+      // Centro de Bogotá
+      opciones = [
+        { direccion: `Carrera 7 #${10 + (hash % 25)}-${10 + (hash % 90)}, Centro, Bogotá`, distancia: Math.floor(Math.random() * 50) + 10 },
+        { direccion: `Calle 72 #${10 + (hash % 25)}-${10 + (hash % 90)}, Centro, Bogotá`, distancia: Math.floor(Math.random() * 50) + 20 },
+        { direccion: `Carrera 8 #${10 + (hash % 25)}-${10 + (hash % 90)}, Centro, Bogotá`, distancia: Math.floor(Math.random() * 50) + 30 },
+        { direccion: `Calle 70 #${10 + (hash % 25)}-${10 + (hash % 90)}, Centro, Bogotá`, distancia: Math.floor(Math.random() * 50) + 40 }
+      ];
+    }
+  } else {
+    // Otras ubicaciones
+    opciones = [
+      { direccion: `Calle ${10 + (hash % 90)} #${10 + (hash % 90)}-${10 + (hash % 90)}, ${lat.toFixed(4)}, ${lng.toFixed(4)}`, distancia: Math.floor(Math.random() * 50) + 10 },
+      { direccion: `Carrera ${10 + (hash % 90)} #${10 + (hash % 90)}-${10 + (hash % 90)}, ${lat.toFixed(4)}, ${lng.toFixed(4)}`, distancia: Math.floor(Math.random() * 50) + 20 },
+      { direccion: `Avenida ${10 + (hash % 90)} #${10 + (hash % 90)}-${10 + (hash % 90)}, ${lat.toFixed(4)}, ${lng.toFixed(4)}`, distancia: Math.floor(Math.random() * 50) + 30 },
+      { direccion: `Diagonal ${10 + (hash % 90)} #${10 + (hash % 90)}-${10 + (hash % 90)}, ${lat.toFixed(4)}, ${lng.toFixed(4)}`, distancia: Math.floor(Math.random() * 50) + 40 }
+    ];
+  }
+
+  return opciones;
+}
+
+function seleccionarDireccion(direccion, inputId) {
+  // Colocar la dirección seleccionada en el input correspondiente
+  document.getElementById(inputId).value = direccion;
+
+  // Cerrar modal
+  cerrarModalSeleccionCalle();
+
+  // Actualizar resumen si hay ambos puntos
+  if (clickCount === 1) {
+    actualizarResumenViaje();
+  }
+
+  // Mostrar notificación
+  mostrarNotificacion('Dirección seleccionada correctamente', 'success');
+}
+
+function cerrarModalSeleccionCalle() {
+  const modal = document.getElementById('street-selection-modal');
+  if (modal) {
+    modal.style.display = 'none';
+  }
+}
+
+function configurarEventListenersModales() {
+  // Event listener for closing modals when clicking outside
+  window.addEventListener('click', function(event) {
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  });
+
+  // Event listeners for close buttons
+  const closeButtons = document.querySelectorAll('.close');
+  closeButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const modal = this.closest('.modal');
+      if (modal) {
+        modal.style.display = 'none';
+      }
+    });
+  });
+}
+
+function limpiarMarcadores() {
+  markers.forEach(marker => map.removeLayer(marker));
+  markers = [];
+  clickCount = 0;
+}
 
 // ===== FUNCIONES DE FAVORITOS =====
 function cargarFavoritosDelStorage() {
